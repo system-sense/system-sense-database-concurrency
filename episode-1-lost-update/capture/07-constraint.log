@@ -1,0 +1,9 @@
+-- the guard every reviewer asks for
+       conname        | pg_get_constraintdef 
+----------------------+----------------------
+ stock_never_negative | CHECK ((stock >= 0))
+(1 row)
+
+
+-- times it fired during the naive run, from the application's own counter:
+0

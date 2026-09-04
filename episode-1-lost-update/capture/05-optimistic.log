@@ -1,0 +1,4 @@
+  confirmed        86
+  conflict         214
+DRIVER label=optimistic orders_fired=300 concurrency=25 qty_per_order=1 confirmed=86 sold_out=0 conflict=214 check_violation=0 other_errors=0 p50_ms=912 p99_ms=1513 p50_confirmed_ms=187 p99_confirmed_ms=1303 wall_ms=10931 orders_per_sec=27.4
+RESULT optimistic stock_before=100 stock_after=14 orders_created=86 units_sold=86

@@ -1,0 +1,4 @@
+  confirmed        100
+  sold_out         200
+DRIVER label=atomic orders_fired=300 concurrency=25 qty_per_order=1 confirmed=100 sold_out=200 conflict=0 check_violation=0 other_errors=0 p50_ms=188 p99_ms=322 p50_confirmed_ms=183 p99_confirmed_ms=329 wall_ms=2442 orders_per_sec=122.8
+RESULT atomic stock_before=100 stock_after=0 orders_created=100 units_sold=100

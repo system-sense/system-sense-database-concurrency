@@ -1,0 +1,1 @@
+{"sold_out":200,"check_constraint_violations":0,"retries_total":0,"max_retries_one_order":0,"abandoned_after_max_retries":0,"errors":0,"mode":"pessimistic","window":{"requests":100,"min_ms":63.7,"median_ms":188.7,"max_ms":310.9}}

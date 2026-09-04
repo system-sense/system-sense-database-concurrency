@@ -1,0 +1,3 @@
+  confirmed        300
+DRIVER label=naive orders_fired=300 concurrency=25 qty_per_order=1 confirmed=300 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=196 p99_ms=536 p50_confirmed_ms=196 p99_confirmed_ms=536 wall_ms=2628 orders_per_sec=114.1
+RESULT naive stock_before=100 stock_after=88 orders_created=300 units_sold=300

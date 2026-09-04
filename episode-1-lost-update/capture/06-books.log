@@ -1,0 +1,12 @@
+-- after the naive run the numbers are in capture/02-naive.log;
+-- this is the state the LAST run left behind, for orientation only.
+ sku_id |      name      | stock | version 
+--------+----------------+-------+---------
+      1 | Front row seat |    14 |      86
+(1 row)
+
+ orders | units_sold 
+--------+------------
+     86 |         86
+(1 row)
+
