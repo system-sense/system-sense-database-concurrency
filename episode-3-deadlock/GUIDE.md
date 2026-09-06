@@ -125,16 +125,22 @@ Same unit as the rest of the series. Opposite sign.
 
 ## 5. Reading a Postgres deadlock report
 
-Postgres logs the whole thing. `capture/pglog-pg-basket.log` has it unsummarised;
-a single report looks like this:
+Postgres logs the whole thing. Here is a real one out of
+`capture/05-deadlock-report.log`, untouched except for the timestamp:
 
 ```
-ERROR:  deadlock detected
-DETAIL:  Process 1234 waits for ShareLock on transaction 5678; blocked by process 1235.
-         Process 1235 waits for ShareLock on transaction 5677; blocked by process 1234.
-HINT:  See server log for query details.
-CONTEXT:  while updating tuple (0,42) in relation "inventory"
+[183] ERROR:  deadlock detected
+[183] DETAIL:  Process 183 waits for ShareLock on transaction 4703; blocked by process 42.
+	Process 42 waits for ShareLock on transaction 4704; blocked by process 183.
+	Process 183: UPDATE inventory SET stock = stock - $1 WHERE sku_id = $2 AND stock >= $3
+	Process 42: UPDATE inventory SET stock = stock - $1 WHERE sku_id = $2 AND stock >= $3
+[183] HINT:  See server log for query details.
 ```
+
+**Read the last two lines first.** Both processes are running *the identical
+statement*. Not similar code, not two versions of a query — the same prepared
+statement with the same parameters' shape. That is the episode in the engine's
+own words: there is nothing to fix in the SQL, and the report says so.
 
 Line by line:
 
@@ -144,9 +150,21 @@ Line by line:
   pair of unlucky requests.
 - **`blocked by process N`** — follow those process ids around the cycle and you
   have the lock order each transaction took.
-- **`CONTEXT: while updating tuple (0,42) in relation "inventory"`** is the row
-  the victim died on. `(0,42)` is a ctid — block 0, tuple 42. Turn it back into
-  a business key with:
+- **Longer cycles appear too**, and they are worth alerting on separately. Later
+  in the same capture:
+
+  ```
+  Process 175 waits for ShareLock on transaction 4715; blocked by process 187.
+  Process 187 waits for ShareLock on transaction 4708; blocked by process 184.
+  Process 184 waits for ExclusiveLock on tuple (1,6) of relation 16385 ...
+  Process 43  waits for ShareLock on transaction 4709; blocked by process 189.
+  ```
+
+  Four participants. A two-process cycle is a pair of unlucky requests; a chain
+  this long means a hot region rather than a coincidence.
+- Where a report carries **`CONTEXT: while updating tuple (0,42)`**, that is the
+  row the victim died on. `(0,42)` is a ctid — block 0, tuple 42 — and you can
+  turn it back into a business key with:
 
   ```sql
   SELECT * FROM inventory WHERE ctid = '(0,42)';

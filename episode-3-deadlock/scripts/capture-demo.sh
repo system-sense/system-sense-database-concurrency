@@ -78,7 +78,12 @@ print(d["engine"] + "/" + d["lock_order"] + "/" + d["scenario"] + "/" + str(d["r
     echo "STATS $tag $(curl -fsS localhost:8000/admin/stats)"
   } 2>&1 | tee "$OUT/cell-$tag.log"
 
-  dc logs postgres 2>/dev/null | tail -n +"$((pg_mark + 1))" | grep -E "deadlock|still waiting|acquired" \
+  # DETAIL and CONTEXT are the point, and the first version of this grep dropped
+  # both: a DETAIL line reads "Process 1234 waits for ShareLock on transaction
+  # 5678; blocked by process 1235" and contains none of the words that were
+  # being matched. The cycle itself was being filtered out of the evidence.
+  dc logs postgres 2>/dev/null | tail -n +"$((pg_mark + 1))" \
+    | grep -E "deadlock|still waiting|acquired|DETAIL|CONTEXT|HINT" \
     > "$OUT/pglog-$tag.log" 2>/dev/null || true
 }
 
@@ -145,6 +150,37 @@ log "4b/6  What the planner actually does with a multi-row UPDATE"
   echo
   echo "-- neither statement contains an ORDER BY, because an UPDATE cannot take one"
 } 2>&1 | tee "$OUT/04-plans.log"
+
+# Postgres's own deadlock report, on its own load.
+#
+# A SEPARATE pass, and deliberately so. The measured cells above are what the
+# voiceover quotes, and re-running one to improve its logging would change the
+# numbers the narration was written against -- which PRODUCTION.md forbids for
+# exactly this reason. So this fires its own load and captures the whole report,
+# and produces NO figure the episode quotes.
+deadlock_evidence() {
+  curl -fsS -X POST localhost:8000/admin/config -H 'content-type: application/json' \
+    -d '{"engine":"postgres","lock_order":"basket","scenario":"basket_checkout","retries":0,"lock_timeout_ms":0}' >/dev/null
+  curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=$STOCK" >/dev/null
+  local mark
+  mark=$(dc logs postgres 2>/dev/null | wc -l | tr -d ' ')
+  python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" \
+    --max-basket-items "$BASKET" --label evidence >/dev/null 2>&1 || true
+  # Anchored on "deadlock detected" and the lines that follow it. A bare DETAIL
+  # grep does not work here: log_min_duration_statement=0 makes Postgres emit a
+  # DETAIL line carrying the bound parameters for EVERY statement, and forty of
+  # those arrive before the first deadlock report does.
+  {
+    echo "-- evidence only: the counts from this load are NOT the episode's numbers"
+    dc logs postgres 2>/dev/null | tail -n +"$((mark + 1))" \
+      | sed 's/^postgres-1  | //' \
+      | grep -A5 "deadlock detected" | head -30
+  } > "$OUT/05-deadlock-report.log" 2>&1
+  echo "  05-deadlock-report.log  $(grep -c 'deadlock detected' "$OUT/05-deadlock-report.log" || echo 0) reports"
+}
+
+log "4c/6  Postgres's deadlock report, on its own load"
+deadlock_evidence
 
 log "5/6  What the engines logged about the cycle"
 {

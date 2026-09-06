@@ -1,0 +1,31 @@
+-- evidence only: the counts from this load are NOT the episode's numbers
+2026-09-06 21:08:57.116 UTC [183] ERROR:  deadlock detected
+2026-09-06 21:08:57.116 UTC [183] DETAIL:  Process 183 waits for ShareLock on transaction 4703; blocked by process 42.
+	Process 42 waits for ShareLock on transaction 4704; blocked by process 183.
+	Process 183: UPDATE inventory SET stock = stock - $1 WHERE sku_id = $2 AND stock >= $3
+	Process 42: UPDATE inventory SET stock = stock - $1 WHERE sku_id = $2 AND stock >= $3
+2026-09-06 21:08:57.116 UTC [183] HINT:  See server log for query details.
+--
+2026-09-06 21:08:57.240 UTC [175] ERROR:  deadlock detected
+2026-09-06 21:08:57.240 UTC [175] DETAIL:  Process 175 waits for ShareLock on transaction 4715; blocked by process 187.
+	Process 187 waits for ShareLock on transaction 4708; blocked by process 184.
+	Process 184 waits for ExclusiveLock on tuple (1,6) of relation 16385 of database 16384; blocked by process 43.
+	Process 43 waits for ShareLock on transaction 4709; blocked by process 189.
+	Process 189 waits for ExclusiveLock on tuple (2,6) of relation 16385 of database 16384; blocked by process 175.
+--
+2026-09-06 21:08:58.138 UTC [43] ERROR:  deadlock detected
+2026-09-06 21:08:58.138 UTC [43] DETAIL:  Process 43 waits for ShareLock on transaction 4709; blocked by process 189.
+	Process 189 waits for ShareLock on transaction 4715; blocked by process 187.
+	Process 187 waits for ShareLock on transaction 4708; blocked by process 184.
+	Process 184 waits for ExclusiveLock on tuple (1,6) of relation 16385 of database 16384; blocked by process 43.
+	Process 43: UPDATE inventory SET stock = stock - $1 WHERE sku_id = $2 AND stock >= $3
+--
+2026-09-06 21:08:58.246 UTC [189] ERROR:  deadlock detected
+2026-09-06 21:08:58.246 UTC [189] DETAIL:  Process 189 waits for ShareLock on transaction 4715; blocked by process 187.
+	Process 187 waits for ShareLock on transaction 4708; blocked by process 184.
+	Process 184 waits for ShareLock on transaction 4709; blocked by process 189.
+	Process 189: UPDATE inventory SET stock = stock - $1 WHERE sku_id = $2 AND stock >= $3
+	Process 187: UPDATE inventory SET stock = stock - $1 WHERE sku_id = $2 AND stock >= $3
+--
+2026-09-06 21:08:59.143 UTC [177] ERROR:  deadlock detected
+2026-09-06 21:08:59.143 UTC [177] DETAIL:  Process 177 waits for ShareLock on transaction 4706; blocked by process 174.
