@@ -1,0 +1,12 @@
+LOCKS pg-rr-cti engine=postgres isolation=repeatable-read scenario=count_then_insert
+-- evidence only: the counts from this load are NOT the episode's numbers
+-- sample 1 --
+virtualxid ExclusiveLock t 1
+relation AccessShareLock t 1
+0
+-- sample 2 --
+relation RowShareLock t 50
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+transactionid ExclusiveLock t 25
+0

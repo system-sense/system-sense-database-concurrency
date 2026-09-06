@@ -11,6 +11,12 @@ MYSQL_DB = os.getenv("MYSQL_DB", "sysense")
 PRICING_URL = os.getenv("PRICING_URL", "http://localhost:9000")
 PRICING_TIMEOUT_SECONDS = float(os.getenv("PRICING_TIMEOUT_SECONDS", "30"))
 
+# The WHERE-guard is Episode 1's optimistic mode, and Episode 1 gave it five
+# attempts. It keeps that number so the two episodes can be read against each
+# other: without a retry loop a lost race is a refused customer, which measures
+# the contention rather than the fix.
+MAX_GUARD_RETRIES = int(os.getenv("MAX_GUARD_RETRIES", "5"))
+
 ENGINES = ("postgres", "mysql")
 
 # ─────────────────────────────────────────────────────────────────────────────

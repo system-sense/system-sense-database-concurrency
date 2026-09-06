@@ -1,6 +1,6 @@
 CELL pg-rr-cti engine=postgres isolation=repeatable-read scenario=count_then_insert
   confirmed        124
   sold_out         176
-DRIVER label=pg-rr-cti orders_fired=300 concurrency=25 qty_per_order=1 confirmed=124 sold_out=176 conflict=0 check_violation=0 other_errors=0 p50_ms=8 p99_ms=318 p50_confirmed_ms=198 p99_confirmed_ms=322 wall_ms=1117 orders_per_sec=268.6
+DRIVER label=pg-rr-cti orders_fired=300 concurrency=25 qty_per_order=1 confirmed=124 sold_out=176 conflict=0 check_violation=0 other_errors=0 p50_ms=5 p99_ms=327 p50_confirmed_ms=197 p99_confirmed_ms=334 wall_ms=1113 orders_per_sec=269.4
 STATE pg-rr-cti {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":124},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":0}}
-STATS pg-rr-cti {"statuses":{"confirmed":124,"sold_out":176},"codes":{},"window":{"requests":124,"min_ms":62.2,"median_ms":182.6,"max_ms":316.2},"engine":"postgres","isolation":"repeatable-read","scenario":"count_then_insert"}
+STATS pg-rr-cti {"statuses":{"confirmed":124,"sold_out":176},"codes":{},"window":{"requests":124,"min_ms":63.6,"median_ms":183.6,"max_ms":323.6},"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"postgres","isolation":"repeatable-read","scenario":"count_then_insert"}

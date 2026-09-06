@@ -20,22 +20,28 @@
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 88,
+      "stock_after": 87,
       "orders": 300,
       "units_sold": 300,
       "reservations": 0,
       "booked": 300,
       "oversold_units": 200,
       "p50_ms": 196,
-      "p99_ms": 590,
+      "p99_ms": 546,
       "p50_confirmed_ms": 196,
-      "p99_confirmed_ms": 590,
-      "orders_per_sec": 112.0,
+      "p99_confirmed_ms": 546,
+      "orders_per_sec": 113.7,
       "window": {
         "requests": 300,
-        "min_ms": 64.1,
-        "median_ms": 187.8,
-        "max_ms": 355.3
+        "min_ms": 62.1,
+        "median_ms": 187.2,
+        "max_ms": 360.0
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -51,22 +57,28 @@
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 88,
+      "stock_after": 86,
       "orders": 300,
       "units_sold": 300,
       "reservations": 0,
       "booked": 300,
       "oversold_units": 200,
-      "p50_ms": 190,
-      "p99_ms": 326,
+      "p50_ms": 189,
+      "p99_ms": 321,
       "p50_confirmed_ms": 190,
-      "p99_confirmed_ms": 326,
-      "orders_per_sec": 122.3,
+      "p99_confirmed_ms": 321,
+      "orders_per_sec": 121.4,
       "window": {
         "requests": 300,
-        "min_ms": 64.4,
-        "median_ms": 182.8,
+        "min_ms": 62.8,
+        "median_ms": 184.5,
         "max_ms": 308.6
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -74,32 +86,38 @@
       "engine": "postgres",
       "isolation": "repeatable-read",
       "scenario": "read_modify_write",
-      "confirmed": 21,
+      "confirmed": 20,
       "sold_out": 0,
       "lost_race": 0,
-      "aborted": 279,
+      "aborted": 280,
       "check_violation": 0,
       "errors": 0,
       "codes": {
-        "40001": 279
+        "40001": 280
       },
       "stock_before": 100,
-      "stock_after": 79,
-      "orders": 21,
-      "units_sold": 21,
+      "stock_after": 80,
+      "orders": 20,
+      "units_sold": 20,
       "reservations": 0,
-      "booked": 21,
+      "booked": 20,
       "oversold_units": 0,
       "p50_ms": 189,
-      "p99_ms": 317,
-      "p50_confirmed_ms": 90,
-      "p99_confirmed_ms": 118,
-      "orders_per_sec": 123.2,
+      "p99_ms": 310,
+      "p50_confirmed_ms": 89,
+      "p99_confirmed_ms": 150,
+      "orders_per_sec": 122.9,
       "window": {
-        "requests": 21,
-        "min_ms": 63.3,
-        "median_ms": 82.0,
-        "max_ms": 115.7
+        "requests": 20,
+        "min_ms": 63.7,
+        "median_ms": 82.5,
+        "max_ms": 147.3
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -115,22 +133,28 @@
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 85,
+      "stock_after": 87,
       "orders": 300,
       "units_sold": 300,
       "reservations": 0,
       "booked": 300,
       "oversold_units": 200,
-      "p50_ms": 190,
-      "p99_ms": 321,
-      "p50_confirmed_ms": 191,
-      "p99_confirmed_ms": 321,
+      "p50_ms": 187,
+      "p99_ms": 311,
+      "p50_confirmed_ms": 188,
+      "p99_confirmed_ms": 311,
       "orders_per_sec": 122.5,
       "window": {
         "requests": 300,
-        "min_ms": 62.5,
-        "median_ms": 182.2,
-        "max_ms": 336.3
+        "min_ms": 62.8,
+        "median_ms": 183.4,
+        "max_ms": 303.2
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -152,16 +176,22 @@
       "reservations": 124,
       "booked": 124,
       "oversold_units": 24,
-      "p50_ms": 8,
-      "p99_ms": 318,
-      "p50_confirmed_ms": 198,
-      "p99_confirmed_ms": 322,
-      "orders_per_sec": 268.6,
+      "p50_ms": 5,
+      "p99_ms": 327,
+      "p50_confirmed_ms": 197,
+      "p99_confirmed_ms": 334,
+      "orders_per_sec": 269.4,
       "window": {
         "requests": 124,
-        "min_ms": 62.2,
-        "median_ms": 182.6,
-        "max_ms": 316.2
+        "min_ms": 63.6,
+        "median_ms": 183.6,
+        "max_ms": 323.6
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -169,32 +199,38 @@
       "engine": "mysql",
       "isolation": "repeatable-read",
       "scenario": "count_then_insert",
-      "confirmed": 3,
+      "confirmed": 5,
       "sold_out": 0,
       "lost_race": 0,
-      "aborted": 297,
+      "aborted": 295,
       "check_violation": 0,
       "errors": 0,
       "codes": {
-        "1213": 297
+        "1213": 295
       },
       "stock_before": 100,
       "stock_after": 100,
       "orders": 0,
       "units_sold": 0,
-      "reservations": 3,
-      "booked": 3,
+      "reservations": 5,
+      "booked": 5,
       "oversold_units": 0,
-      "p50_ms": 350,
-      "p99_ms": 628,
-      "p50_confirmed_ms": 1826,
-      "p99_confirmed_ms": 2813,
-      "orders_per_sec": 57.4,
+      "p50_ms": 396,
+      "p99_ms": 916,
+      "p50_confirmed_ms": 916,
+      "p99_confirmed_ms": 1660,
+      "orders_per_sec": 56.2,
       "window": {
         "requests": 300,
-        "min_ms": 67.8,
-        "median_ms": 195.1,
-        "max_ms": 331.3
+        "min_ms": 73.2,
+        "median_ms": 197.2,
+        "max_ms": 328.5
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -202,32 +238,38 @@
       "engine": "postgres",
       "isolation": "serializable",
       "scenario": "read_modify_write",
-      "confirmed": 20,
+      "confirmed": 21,
       "sold_out": 0,
       "lost_race": 0,
-      "aborted": 280,
+      "aborted": 279,
       "check_violation": 0,
       "errors": 0,
       "codes": {
-        "40001": 280
+        "40001": 279
       },
       "stock_before": 100,
-      "stock_after": 80,
-      "orders": 20,
-      "units_sold": 20,
+      "stock_after": 79,
+      "orders": 21,
+      "units_sold": 21,
       "reservations": 0,
-      "booked": 20,
+      "booked": 21,
       "oversold_units": 0,
-      "p50_ms": 188,
-      "p99_ms": 306,
-      "p50_confirmed_ms": 90,
-      "p99_confirmed_ms": 144,
-      "orders_per_sec": 122.9,
+      "p50_ms": 189,
+      "p99_ms": 321,
+      "p50_confirmed_ms": 89,
+      "p99_confirmed_ms": 142,
+      "orders_per_sec": 123.6,
       "window": {
-        "requests": 20,
-        "min_ms": 69.8,
-        "median_ms": 81.8,
-        "max_ms": 140.3
+        "requests": 21,
+        "min_ms": 65.0,
+        "median_ms": 86.0,
+        "max_ms": 138.5
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -251,16 +293,22 @@
       "reservations": 0,
       "booked": 12,
       "oversold_units": 0,
-      "p50_ms": 346,
-      "p99_ms": 506,
-      "p50_confirmed_ms": 365,
-      "p99_confirmed_ms": 491,
-      "orders_per_sec": 72.6,
+      "p50_ms": 335,
+      "p99_ms": 491,
+      "p50_confirmed_ms": 358,
+      "p99_confirmed_ms": 433,
+      "orders_per_sec": 74.3,
       "window": {
         "requests": 12,
-        "min_ms": 318.2,
-        "median_ms": 331.1,
-        "max_ms": 348.4
+        "min_ms": 312.2,
+        "median_ms": 326.0,
+        "max_ms": 347.5
+      },
+      "retries": {
+        "total": 0,
+        "max_one_order": 0,
+        "abandoned": 0,
+        "limit": 5
       }
     },
     {
@@ -268,30 +316,36 @@
       "engine": "postgres",
       "isolation": "read-committed",
       "scenario": "where_guard",
-      "confirmed": 21,
+      "confirmed": 86,
       "sold_out": 0,
-      "lost_race": 279,
+      "lost_race": 214,
       "aborted": 0,
       "check_violation": 0,
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 79,
-      "orders": 21,
-      "units_sold": 21,
+      "stock_after": 14,
+      "orders": 86,
+      "units_sold": 86,
       "reservations": 0,
-      "booked": 21,
+      "booked": 86,
       "oversold_units": 0,
-      "p50_ms": 189,
-      "p99_ms": 318,
-      "p50_confirmed_ms": 88,
-      "p99_confirmed_ms": 149,
-      "orders_per_sec": 122.7,
+      "p50_ms": 926,
+      "p99_ms": 1521,
+      "p50_confirmed_ms": 219,
+      "p99_confirmed_ms": 1464,
+      "orders_per_sec": 27.0,
       "window": {
-        "requests": 300,
-        "min_ms": 61.9,
-        "median_ms": 182.8,
-        "max_ms": 315.7
+        "requests": 1272,
+        "min_ms": 62.3,
+        "median_ms": 201.3,
+        "max_ms": 316.5
+      },
+      "retries": {
+        "total": 1186,
+        "max_one_order": 5,
+        "abandoned": 214,
+        "limit": 5
       }
     },
     {
@@ -299,30 +353,36 @@
       "engine": "mysql",
       "isolation": "read-committed",
       "scenario": "where_guard",
-      "confirmed": 21,
-      "sold_out": 0,
-      "lost_race": 279,
+      "confirmed": 100,
+      "sold_out": 200,
+      "lost_race": 0,
       "aborted": 0,
       "check_violation": 0,
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 79,
-      "orders": 21,
-      "units_sold": 21,
+      "stock_after": 0,
+      "orders": 100,
+      "units_sold": 100,
       "reservations": 0,
-      "booked": 21,
+      "booked": 100,
       "oversold_units": 0,
-      "p50_ms": 190,
-      "p99_ms": 327,
-      "p50_confirmed_ms": 85,
-      "p99_confirmed_ms": 129,
-      "orders_per_sec": 121.9,
+      "p50_ms": 7,
+      "p99_ms": 5333,
+      "p50_confirmed_ms": 4785,
+      "p99_confirmed_ms": 5402,
+      "orders_per_sec": 15.3,
       "window": {
-        "requests": 300,
-        "min_ms": 64.1,
-        "median_ms": 183.5,
-        "max_ms": 308.5
+        "requests": 233,
+        "min_ms": 64.0,
+        "median_ms": 181.6,
+        "max_ms": 310.7
+      },
+      "retries": {
+        "total": 133,
+        "max_one_order": 4,
+        "abandoned": 0,
+        "limit": 5
       }
     }
   ]

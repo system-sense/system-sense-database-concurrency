@@ -32,7 +32,8 @@ stats: dict = {}
 
 def reset_stats() -> None:
     stats.clear()
-    stats.update(codes={}, statuses={}, windows_ms=[])
+    stats.update(codes={}, statuses={}, windows_ms=[],
+                 retries_total=0, max_attempts_one_order=0, abandoned=0)
 
 
 def tally(out: Outcome) -> Outcome:
@@ -127,22 +128,47 @@ async def where_guard(cx, req: OrderRequest) -> Outcome:
     `WHERE stock = <the value I read>` is a current read on Postgres and on
     MySQL alike: it is evaluated against the row as it is at the moment of
     writing. Zero rows means somebody moved it under you.
+
+    Losing the race is not the same as being sold out, so the loop is not
+    optional. This is Episode 1's optimistic mode, and Episode 1 gave it five
+    attempts; measured without one, the guard books about twenty of the hundred
+    seats and the episode's landing looks worse than the levels it is arguing
+    against. What is being compared is the fix, not the contention.
+
+    The pricing call stays inside the loop for the reason Episode 1 gave: a
+    price is part of the order, so if the write has to be redone the price has
+    to be redone with it. Hoisting it out would narrow the window artificially
+    and flatter the retry count.
+
+    The retries happen inside the one transaction, which is what makes this
+    portable: at READ COMMITTED both engines give every statement a fresh
+    snapshot, so the re-read sees the value that beat us. Nothing here branches
+    on the engine.
     """
-    row = await cx.fetchrow(SQL_SELECT_STOCK, req.sku_id)
-    if row is None or row["stock"] < req.qty:
-        return SOLD_OUT
+    for attempt in range(1, config.MAX_GUARD_RETRIES + 1):
+        row = await cx.fetchrow(SQL_SELECT_STOCK, req.sku_id)
+        if row is None or row["stock"] < req.qty:
+            stats["max_attempts_one_order"] = max(stats["max_attempts_one_order"], attempt)
+            return SOLD_OUT
 
-    started = time.perf_counter()
-    await price_line(req.sku_id, req.customer_id, req.qty)
-    stats["windows_ms"].append((time.perf_counter() - started) * 1000)
+        started = time.perf_counter()
+        await price_line(req.sku_id, req.customer_id, req.qty)
+        stats["windows_ms"].append((time.perf_counter() - started) * 1000)
 
-    applied = await cx.execute(
-        SQL_UPDATE_GUARDED, row["stock"] - req.qty, req.sku_id, row["stock"]
-    )
-    if applied != 1:
-        return Outcome("lost_race")
-    await cx.execute(SQL_INSERT_ORDER, req.sku_id, req.customer_id, req.qty)
-    return Outcome("confirmed")
+        applied = await cx.execute(
+            SQL_UPDATE_GUARDED, row["stock"] - req.qty, req.sku_id, row["stock"]
+        )
+        stats["max_attempts_one_order"] = max(stats["max_attempts_one_order"], attempt)
+        if applied == 1:
+            await cx.execute(SQL_INSERT_ORDER, req.sku_id, req.customer_id, req.qty)
+            return Outcome("confirmed")
+
+        # Zero rows. Somebody else's number is in the column now, so read it
+        # again and price the order against what is actually on the shelf.
+        stats["retries_total"] += 1
+
+    stats["abandoned"] += 1
+    return Outcome("lost_race")
 
 
 SCENARIOS = {
@@ -216,6 +242,10 @@ async def read_stats():
         window |= {"min_ms": round(w[0], 1), "median_ms": round(statistics.median(w), 1),
                    "max_ms": round(w[-1], 1)}
     return {"statuses": stats["statuses"], "codes": stats["codes"], "window": window,
+            "retries": {"total": stats["retries_total"],
+                        "max_one_order": stats["max_attempts_one_order"],
+                        "abandoned": stats["abandoned"],
+                        "limit": config.MAX_GUARD_RETRIES},
             **{k: config.get(k) for k in ("engine", "isolation", "scenario")}}
 
 

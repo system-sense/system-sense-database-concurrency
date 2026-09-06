@@ -1,6 +1,6 @@
 CELL pg-rc-guard engine=postgres isolation=read-committed scenario=where_guard
-  confirmed        21
-  lost_race        279
-DRIVER label=pg-rc-guard orders_fired=300 concurrency=25 qty_per_order=1 confirmed=21 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=189 p99_ms=318 p50_confirmed_ms=88 p99_confirmed_ms=149 wall_ms=2445 orders_per_sec=122.7
-STATE pg-rc-guard {"postgres":{"stock":79,"orders":21,"units_sold":21,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":0}}
-STATS pg-rc-guard {"statuses":{"confirmed":21,"lost_race":279},"codes":{},"window":{"requests":300,"min_ms":61.9,"median_ms":182.8,"max_ms":315.7},"engine":"postgres","isolation":"read-committed","scenario":"where_guard"}
+  confirmed        86
+  lost_race        214
+DRIVER label=pg-rc-guard orders_fired=300 concurrency=25 qty_per_order=1 confirmed=86 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=926 p99_ms=1521 p50_confirmed_ms=219 p99_confirmed_ms=1464 wall_ms=11117 orders_per_sec=27.0
+STATE pg-rc-guard {"postgres":{"stock":14,"orders":86,"units_sold":86,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":0}}
+STATS pg-rc-guard {"statuses":{"confirmed":86,"lost_race":214},"codes":{},"window":{"requests":1272,"min_ms":62.3,"median_ms":201.3,"max_ms":316.5},"retries":{"total":1186,"max_one_order":5,"abandoned":214,"limit":5},"engine":"postgres","isolation":"read-committed","scenario":"where_guard"}

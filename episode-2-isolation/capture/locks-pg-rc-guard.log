@@ -1,0 +1,94 @@
+LOCKS pg-rc-guard engine=postgres isolation=read-committed scenario=where_guard
+-- evidence only: the counts from this load are NOT the episode's numbers
+-- sample 1 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+0
+-- sample 2 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 21
+0
+-- sample 3 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 19
+0
+-- sample 4 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 22
+0
+-- sample 5 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 21
+relation RowShareLock t 2
+transactionid ExclusiveLock t 1
+0
+-- sample 6 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 19
+0
+-- sample 7 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 19
+0
+-- sample 8 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 20
+0
+-- sample 9 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 19
+0
+-- sample 10 --
+virtualxid ExclusiveLock t 25
+relation AccessShareLock t 25
+relation RowExclusiveLock t 20
+0
+-- sample 11 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 21
+0
+-- sample 12 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 19
+0
+-- sample 13 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 20
+transactionid ExclusiveLock t 1
+0
+-- sample 14 --
+virtualxid ExclusiveLock t 25
+relation AccessShareLock t 25
+relation RowExclusiveLock t 20
+0
+-- sample 15 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 19
+0
+-- sample 16 --
+virtualxid ExclusiveLock t 26
+relation AccessShareLock t 26
+relation RowExclusiveLock t 19
+0
+-- sample 17 --
+virtualxid ExclusiveLock t 11
+relation AccessShareLock t 11
+relation RowExclusiveLock t 10
+0
+-- sample 18 --
+virtualxid ExclusiveLock t 2
+relation AccessShareLock t 2
+relation RowExclusiveLock t 1
+0

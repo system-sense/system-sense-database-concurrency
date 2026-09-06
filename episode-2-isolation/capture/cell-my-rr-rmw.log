@@ -1,5 +1,5 @@
 CELL my-rr-rmw engine=mysql isolation=repeatable-read scenario=read_modify_write
   confirmed        300
-DRIVER label=my-rr-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=300 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=190 p99_ms=321 p50_confirmed_ms=191 p99_confirmed_ms=321 wall_ms=2448 orders_per_sec=122.5
-STATE my-rr-rmw {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":85,"orders":300,"units_sold":300,"reservations":0}}
-STATS my-rr-rmw {"statuses":{"confirmed":300},"codes":{},"window":{"requests":300,"min_ms":62.5,"median_ms":182.2,"max_ms":336.3},"engine":"mysql","isolation":"repeatable-read","scenario":"read_modify_write"}
+DRIVER label=my-rr-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=300 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=187 p99_ms=311 p50_confirmed_ms=188 p99_confirmed_ms=311 wall_ms=2448 orders_per_sec=122.5
+STATE my-rr-rmw {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":87,"orders":300,"units_sold":300,"reservations":0}}
+STATS my-rr-rmw {"statuses":{"confirmed":300},"codes":{},"window":{"requests":300,"min_ms":62.8,"median_ms":183.4,"max_ms":303.2},"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"mysql","isolation":"repeatable-read","scenario":"read_modify_write"}

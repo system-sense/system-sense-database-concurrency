@@ -1,6 +1,6 @@
 CELL my-rc-guard engine=mysql isolation=read-committed scenario=where_guard
-  confirmed        21
-  lost_race        279
-DRIVER label=my-rc-guard orders_fired=300 concurrency=25 qty_per_order=1 confirmed=21 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=190 p99_ms=327 p50_confirmed_ms=85 p99_confirmed_ms=129 wall_ms=2460 orders_per_sec=121.9
-STATE my-rc-guard {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":79,"orders":21,"units_sold":21,"reservations":0}}
-STATS my-rc-guard {"statuses":{"confirmed":21,"lost_race":279},"codes":{},"window":{"requests":300,"min_ms":64.1,"median_ms":183.5,"max_ms":308.5},"engine":"mysql","isolation":"read-committed","scenario":"where_guard"}
+  confirmed        100
+  sold_out         200
+DRIVER label=my-rc-guard orders_fired=300 concurrency=25 qty_per_order=1 confirmed=100 sold_out=200 conflict=0 check_violation=0 other_errors=0 p50_ms=7 p99_ms=5333 p50_confirmed_ms=4785 p99_confirmed_ms=5402 wall_ms=19597 orders_per_sec=15.3
+STATE my-rc-guard {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":0,"orders":100,"units_sold":100,"reservations":0}}
+STATS my-rc-guard {"statuses":{"confirmed":100,"sold_out":200},"codes":{},"window":{"requests":233,"min_ms":64.0,"median_ms":181.6,"max_ms":310.7},"retries":{"total":133,"max_one_order":4,"abandoned":0,"limit":5},"engine":"mysql","isolation":"read-committed","scenario":"where_guard"}

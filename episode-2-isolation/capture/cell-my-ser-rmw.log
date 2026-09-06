@@ -1,6 +1,6 @@
 CELL my-ser-rmw engine=mysql isolation=serializable scenario=read_modify_write
   aborted          288
   confirmed        12
-DRIVER label=my-ser-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=12 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=346 p99_ms=506 p50_confirmed_ms=365 p99_confirmed_ms=491 wall_ms=4131 orders_per_sec=72.6
+DRIVER label=my-ser-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=12 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=335 p99_ms=491 p50_confirmed_ms=358 p99_confirmed_ms=433 wall_ms=4036 orders_per_sec=74.3
 STATE my-ser-rmw {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":88,"orders":12,"units_sold":12,"reservations":0}}
-STATS my-ser-rmw {"statuses":{"aborted":288,"confirmed":12},"codes":{"1213":288},"window":{"requests":12,"min_ms":318.2,"median_ms":331.1,"max_ms":348.4},"engine":"mysql","isolation":"serializable","scenario":"read_modify_write"}
+STATS my-ser-rmw {"statuses":{"aborted":288,"confirmed":12},"codes":{"1213":288},"window":{"requests":12,"min_ms":312.2,"median_ms":326.0,"max_ms":347.5},"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"mysql","isolation":"serializable","scenario":"read_modify_write"}

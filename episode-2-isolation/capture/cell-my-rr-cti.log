@@ -1,6 +1,6 @@
 CELL my-rr-cti engine=mysql isolation=repeatable-read scenario=count_then_insert
-  aborted          297
-  confirmed        3
-DRIVER label=my-rr-cti orders_fired=300 concurrency=25 qty_per_order=1 confirmed=3 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=350 p99_ms=628 p50_confirmed_ms=1826 p99_confirmed_ms=2813 wall_ms=5230 orders_per_sec=57.4
-STATE my-rr-cti {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":3}}
-STATS my-rr-cti {"statuses":{"aborted":297,"confirmed":3},"codes":{"1213":297},"window":{"requests":300,"min_ms":67.8,"median_ms":195.1,"max_ms":331.3},"engine":"mysql","isolation":"repeatable-read","scenario":"count_then_insert"}
+  aborted          295
+  confirmed        5
+DRIVER label=my-rr-cti orders_fired=300 concurrency=25 qty_per_order=1 confirmed=5 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=396 p99_ms=916 p50_confirmed_ms=916 p99_confirmed_ms=1660 wall_ms=5335 orders_per_sec=56.2
+STATE my-rr-cti {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":5}}
+STATS my-rr-cti {"statuses":{"aborted":295,"confirmed":5},"codes":{"1213":295},"window":{"requests":300,"min_ms":73.2,"median_ms":197.2,"max_ms":328.5},"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"mysql","isolation":"repeatable-read","scenario":"count_then_insert"}

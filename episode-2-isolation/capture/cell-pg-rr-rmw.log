@@ -1,6 +1,6 @@
 CELL pg-rr-rmw engine=postgres isolation=repeatable-read scenario=read_modify_write
-  aborted          279
-  confirmed        21
-DRIVER label=pg-rr-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=21 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=189 p99_ms=317 p50_confirmed_ms=90 p99_confirmed_ms=118 wall_ms=2435 orders_per_sec=123.2
-STATE pg-rr-rmw {"postgres":{"stock":79,"orders":21,"units_sold":21,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":0}}
-STATS pg-rr-rmw {"statuses":{"confirmed":21,"aborted":279},"codes":{"40001":279},"window":{"requests":21,"min_ms":63.3,"median_ms":82.0,"max_ms":115.7},"engine":"postgres","isolation":"repeatable-read","scenario":"read_modify_write"}
+  aborted          280
+  confirmed        20
+DRIVER label=pg-rr-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=20 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=189 p99_ms=310 p50_confirmed_ms=89 p99_confirmed_ms=150 wall_ms=2441 orders_per_sec=122.9
+STATE pg-rr-rmw {"postgres":{"stock":80,"orders":20,"units_sold":20,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":0}}
+STATS pg-rr-rmw {"statuses":{"confirmed":20,"aborted":280},"codes":{"40001":280},"window":{"requests":20,"min_ms":63.7,"median_ms":82.5,"max_ms":147.3},"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"postgres","isolation":"repeatable-read","scenario":"read_modify_write"}

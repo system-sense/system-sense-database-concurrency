@@ -91,6 +91,10 @@ def cell(tag: str, engine: str, isolation: str, scenario: str) -> dict:
         "p99_confirmed_ms": driver.get("p99_confirmed_ms", 0),
         "orders_per_sec": driver.get("orders_per_sec", 0),
         "window": st.get("window", {}),
+        # Only the WHERE-guard retries. Every other cell leaves these at zero,
+        # which is the point: the levels hand the application an exception and
+        # no loop to catch it in.
+        "retries": st.get("retries", {}),
     }
 
 
@@ -126,6 +130,15 @@ def main() -> None:
         codes = " ".join(f"{k}x{v}" for k, v in sorted(c["codes"].items())) or "-"
         print(f"  {c['tag']:<13}{c['engine']:<10}{c['isolation']:<17}"
               f"{c['booked']:>7}{c['oversold_units']:>10}{c['aborted']:>9}  {codes}")
+
+    guard = [c for c in cells if c["scenario"] == "where_guard"]
+    if any(c["retries"] for c in guard):
+        print("\n  THE PORTABLE FIX, WITH THE RETRY LOOP IT NEEDS")
+        for c in guard:
+            r = c["retries"]
+            print(f"    {c['engine']:<9} booked {c['booked']:>3}   oversold {c['oversold_units']:>3}"
+                  f"   gave up {r.get('abandoned', 0):>3}   retries {r.get('total', 0):>4}"
+                  f"   worst order {r.get('max_one_order', 0)} attempts")
 
     print("\n  THE TWO ROWS THE EPISODE RESTS ON")
     for a, b, what in [("pg-rr-rmw", "my-rr-rmw", "read-modify-write at REPEATABLE READ"),

@@ -108,15 +108,62 @@ cell mysql    read-committed  where_guard        my-rc-guard
 
 log "5/6  What the engines say about their own locks"
 {
-  echo "-- postgres: gap locks do not exist here, so there is nothing to show but row locks"
-  psql -c "SELECT locktype, mode, count(*) FROM pg_locks WHERE locktype IN ('tuple','transactionid','relation') GROUP BY 1,2 ORDER BY 3 DESC LIMIT 8;"
-  echo
-  echo "-- mysql: the index the next-key locks are taken on"
+  echo "-- mysql: the index the next-key locks are taken on."
+  echo "-- Non_unique=1 is the load-bearing fact: read off the engine, not assumed."
   mysql_ -e "SHOW INDEX FROM reservations;" || true
   echo
   echo "-- mysql: deadlocks recorded during this run"
   dc logs mysql 2>&1 | grep -c "TRANSACTION" || true
 } 2>&1 | tee "$OUT/03-locks.log"
+
+# The locks themselves have to be caught WHILE the load is on: once the last
+# transaction commits there is nothing left in either view to look at.
+#
+# This is a SEPARATE pass, and deliberately so. Polling two engines over
+# `docker compose exec` costs a few hundred milliseconds a sample, and the
+# matrix above is measuring latency to the millisecond -- sampling inside those
+# cells would mean publishing numbers taken from a system that was being probed
+# while it was timed. So the matrix runs clean, and the lock evidence is
+# gathered afterwards on its own load.
+#
+# THESE RUNS PRODUCE NO NUMBERS THE EPISODE QUOTES. Only lock modes, which are
+# qualitative: whether InnoDB takes a gap lock where Postgres takes none, and
+# whether the WHERE-guard queues or spins. Both are claims the episode makes
+# about somebody else's database, so neither may come from documentation.
+lock_evidence() {
+  local engine=$1 isolation=$2 scenario=$3 tag=$4
+  curl -fsS -X POST localhost:8000/admin/config -H 'content-type: application/json' \
+    -d "{\"engine\":\"$engine\",\"isolation\":\"$isolation\",\"scenario\":\"$scenario\"}" >/dev/null
+  curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=$STOCK" >/dev/null
+
+  {
+    echo "LOCKS $tag engine=$engine isolation=$isolation scenario=$scenario"
+    echo "-- evidence only: the counts from this load are NOT the episode's numbers"
+    for i in $(seq 1 60); do
+      echo "-- sample $i --"
+      if [ "$engine" = "postgres" ]; then
+        psql -c "SELECT locktype, mode, granted, count(*) FROM pg_locks GROUP BY 1,2,3 ORDER BY 4 DESC LIMIT 6;" || true
+        psql -c "SELECT count(*) FROM pg_locks WHERE NOT granted;" || true
+      else
+        mysql_ -e "SELECT OBJECT_NAME, INDEX_NAME, LOCK_TYPE, LOCK_MODE, LOCK_STATUS, count(*) FROM performance_schema.data_locks GROUP BY 1,2,3,4,5 ORDER BY 6 DESC LIMIT 8;" || true
+        mysql_ -e "SELECT count(*) FROM performance_schema.data_lock_waits;" || true
+      fi
+      sleep 0.4
+    done
+  } > "$OUT/locks-$tag.log" 2>&1 &
+  local sampler=$!
+
+  python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" --label "locks-$tag" >/dev/null 2>&1 || true
+  kill "$sampler" 2>/dev/null || true
+  wait "$sampler" 2>/dev/null || true
+  echo "  locks-$tag.log  $(grep -c '^-- sample' "$OUT/locks-$tag.log") samples"
+}
+
+log "5b/6  Lock evidence, on its own load"
+lock_evidence postgres repeatable-read count_then_insert pg-rr-cti
+lock_evidence mysql    repeatable-read count_then_insert my-rr-cti
+lock_evidence postgres read-committed  where_guard       pg-rc-guard
+lock_evidence mysql    read-committed  where_guard       my-rc-guard
 
 log "6/6  Summarising"
 python3 scripts/summarise.py
