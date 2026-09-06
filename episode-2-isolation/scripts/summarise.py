@@ -124,12 +124,19 @@ def main() -> None:
     }
     (OUT / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
 
+    # The matrix, written to a file as well as printed. The video quotes this
+    # table on screen and the narration calls it "the table you have been
+    # looking at all episode", so it has to be the table the script really
+    # emitted rather than one redrawn from the JSON.
     hdr = f"  {'cell':<13}{'engine':<10}{'isolation':<17}{'booked':>7}{'oversold':>10}{'aborted':>9}  codes"
-    print(f"\n{hdr}")
+    rows = [hdr]
     for c in cells:
         codes = " ".join(f"{k}x{v}" for k, v in sorted(c["codes"].items())) or "-"
-        print(f"  {c['tag']:<13}{c['engine']:<10}{c['isolation']:<17}"
-              f"{c['booked']:>7}{c['oversold_units']:>10}{c['aborted']:>9}  {codes}")
+        rows.append(f"  {c['tag']:<13}{c['engine']:<10}{c['isolation']:<17}"
+                    f"{c['booked']:>7}{c['oversold_units']:>10}{c['aborted']:>9}  {codes}")
+    (OUT / "matrix.txt").write_text("\n".join(rows) + "\n")
+    print()
+    print("\n".join(rows))
 
     guard = [c for c in cells if c["scenario"] == "where_guard"]
     if any(c["retries"] for c in guard):

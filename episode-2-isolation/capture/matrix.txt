@@ -1,0 +1,11 @@
+  cell         engine    isolation         booked  oversold  aborted  codes
+  pg-rc-rmw    postgres  read-committed       300       200        0  -
+  my-rc-rmw    mysql     read-committed       300       200        0  -
+  pg-rr-rmw    postgres  repeatable-read       20         0      280  40001x280
+  my-rr-rmw    mysql     repeatable-read      300       200        0  -
+  pg-rr-cti    postgres  repeatable-read      124        24        0  -
+  my-rr-cti    mysql     repeatable-read        5         0      295  1213x295
+  pg-ser-rmw   postgres  serializable          21         0      279  40001x279
+  my-ser-rmw   mysql     serializable          12         0      288  1213x288
+  pg-rc-guard  postgres  read-committed        86         0        0  -
+  my-rc-guard  mysql     read-committed       100         0        0  -
