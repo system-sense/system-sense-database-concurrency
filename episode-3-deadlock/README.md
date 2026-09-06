@@ -12,6 +12,12 @@ docker compose up --build          # in one terminal
 ./scripts/capture-demo.sh          # in another — runs all ten cells
 ```
 
+> **[GUIDE.md](GUIDE.md)** is the written companion: the same ground more
+> slowly, plus what would not fit — how to read a Postgres deadlock report line
+> by line, why `deadlock_timeout` is a full second, when `lock_timeout` beats a
+> retry, and how to find lock-order bugs in code that has no bug in it.
+
+
 ## The one table to remember
 
 Eight SKUs, a hundred units each. Three hundred customers, twenty-five in

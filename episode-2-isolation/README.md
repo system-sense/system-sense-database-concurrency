@@ -12,6 +12,12 @@ docker compose up --build          # in one terminal
 ./scripts/capture-demo.sh          # in another — runs all ten cells, writes capture/metrics.json
 ```
 
+> **[GUIDE.md](GUIDE.md)** is the written companion: the same ground more
+> slowly, plus what would not fit — what the SQL standard actually defines, how
+> to read a lock view while a load is running, a cheat sheet for the level you
+> are on, and the retry loop every one of these levels assumes you have.
+
+
 ## The matrix
 
 One hundred units of one SKU. Three hundred customers, twenty-five in flight,

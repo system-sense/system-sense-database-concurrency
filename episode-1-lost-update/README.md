@@ -14,6 +14,12 @@ docker compose up --build          # in one terminal
 ./scripts/capture-demo.sh          # in another — runs all four modes, writes capture/metrics.json
 ```
 
+> **[GUIDE.md](GUIDE.md)** is the written companion: the same ground more
+> slowly, plus what would not fit in eleven minutes — what an ORM emits for
+> `item.stock -= 1`, how to choose between the four fixes, how to find this in
+> a codebase you did not write, and what to log so it is not invisible.
+
+
 ## The one table to remember
 
 One hundred units of one SKU. Three hundred customers, twenty-five in flight at
