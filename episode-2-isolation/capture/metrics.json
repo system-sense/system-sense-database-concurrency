@@ -20,22 +20,22 @@
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 90,
+      "stock_after": 88,
       "orders": 300,
       "units_sold": 300,
       "reservations": 0,
       "booked": 300,
       "oversold_units": 200,
-      "p50_ms": 197,
-      "p99_ms": 543,
-      "p50_confirmed_ms": 197,
-      "p99_confirmed_ms": 543,
-      "orders_per_sec": 113.5,
+      "p50_ms": 196,
+      "p99_ms": 590,
+      "p50_confirmed_ms": 196,
+      "p99_confirmed_ms": 590,
+      "orders_per_sec": 112.0,
       "window": {
         "requests": 300,
-        "min_ms": 61.9,
-        "median_ms": 186.7,
-        "max_ms": 340.1
+        "min_ms": 64.1,
+        "median_ms": 187.8,
+        "max_ms": 355.3
       }
     },
     {
@@ -57,16 +57,16 @@
       "reservations": 0,
       "booked": 300,
       "oversold_units": 200,
-      "p50_ms": 189,
-      "p99_ms": 342,
+      "p50_ms": 190,
+      "p99_ms": 326,
       "p50_confirmed_ms": 190,
-      "p99_confirmed_ms": 342,
-      "orders_per_sec": 122.0,
+      "p99_confirmed_ms": 326,
+      "orders_per_sec": 122.3,
       "window": {
         "requests": 300,
-        "min_ms": 63.4,
-        "median_ms": 183.1,
-        "max_ms": 307.8
+        "min_ms": 64.4,
+        "median_ms": 182.8,
+        "max_ms": 308.6
       }
     },
     {
@@ -74,32 +74,32 @@
       "engine": "postgres",
       "isolation": "repeatable-read",
       "scenario": "read_modify_write",
-      "confirmed": 22,
+      "confirmed": 21,
       "sold_out": 0,
       "lost_race": 0,
-      "aborted": 278,
+      "aborted": 279,
       "check_violation": 0,
       "errors": 0,
       "codes": {
-        "40001": 278
+        "40001": 279
       },
       "stock_before": 100,
-      "stock_after": 78,
-      "orders": 22,
-      "units_sold": 22,
+      "stock_after": 79,
+      "orders": 21,
+      "units_sold": 21,
       "reservations": 0,
-      "booked": 22,
+      "booked": 21,
       "oversold_units": 0,
-      "p50_ms": 192,
-      "p99_ms": 312,
-      "p50_confirmed_ms": 88,
-      "p99_confirmed_ms": 114,
-      "orders_per_sec": 122.5,
+      "p50_ms": 189,
+      "p99_ms": 317,
+      "p50_confirmed_ms": 90,
+      "p99_confirmed_ms": 118,
+      "orders_per_sec": 123.2,
       "window": {
-        "requests": 22,
-        "min_ms": 66.8,
-        "median_ms": 84.4,
-        "max_ms": 110.4
+        "requests": 21,
+        "min_ms": 63.3,
+        "median_ms": 82.0,
+        "max_ms": 115.7
       }
     },
     {
@@ -115,22 +115,22 @@
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 89,
+      "stock_after": 85,
       "orders": 300,
       "units_sold": 300,
       "reservations": 0,
       "booked": 300,
       "oversold_units": 200,
       "p50_ms": 190,
-      "p99_ms": 331,
-      "p50_confirmed_ms": 190,
-      "p99_confirmed_ms": 331,
-      "orders_per_sec": 122.7,
+      "p99_ms": 321,
+      "p50_confirmed_ms": 191,
+      "p99_confirmed_ms": 321,
+      "orders_per_sec": 122.5,
       "window": {
         "requests": 300,
-        "min_ms": 63.1,
-        "median_ms": 183.8,
-        "max_ms": 326.7
+        "min_ms": 62.5,
+        "median_ms": 182.2,
+        "max_ms": 336.3
       }
     },
     {
@@ -138,8 +138,8 @@
       "engine": "postgres",
       "isolation": "repeatable-read",
       "scenario": "count_then_insert",
-      "confirmed": 123,
-      "sold_out": 177,
+      "confirmed": 124,
+      "sold_out": 176,
       "lost_race": 0,
       "aborted": 0,
       "check_violation": 0,
@@ -149,19 +149,19 @@
       "stock_after": 100,
       "orders": 0,
       "units_sold": 0,
-      "reservations": 123,
-      "booked": 123,
-      "oversold_units": 23,
-      "p50_ms": 5,
-      "p99_ms": 320,
-      "p50_confirmed_ms": 191,
-      "p99_confirmed_ms": 342,
-      "orders_per_sec": 266.2,
+      "reservations": 124,
+      "booked": 124,
+      "oversold_units": 24,
+      "p50_ms": 8,
+      "p99_ms": 318,
+      "p50_confirmed_ms": 198,
+      "p99_confirmed_ms": 322,
+      "orders_per_sec": 268.6,
       "window": {
-        "requests": 123,
-        "min_ms": 62.0,
-        "median_ms": 186.8,
-        "max_ms": 324.7
+        "requests": 124,
+        "min_ms": 62.2,
+        "median_ms": 182.6,
+        "max_ms": 316.2
       }
     },
     {
@@ -169,32 +169,32 @@
       "engine": "mysql",
       "isolation": "repeatable-read",
       "scenario": "count_then_insert",
-      "confirmed": 4,
+      "confirmed": 3,
       "sold_out": 0,
       "lost_race": 0,
-      "aborted": 296,
+      "aborted": 297,
       "check_violation": 0,
       "errors": 0,
       "codes": {
-        "1213": 296
+        "1213": 297
       },
       "stock_before": 100,
       "stock_after": 100,
       "orders": 0,
       "units_sold": 0,
-      "reservations": 4,
-      "booked": 4,
+      "reservations": 3,
+      "booked": 3,
       "oversold_units": 0,
-      "p50_ms": 356,
-      "p99_ms": 594,
-      "p50_confirmed_ms": 1091,
-      "p99_confirmed_ms": 3033,
-      "orders_per_sec": 62.6,
+      "p50_ms": 350,
+      "p99_ms": 628,
+      "p50_confirmed_ms": 1826,
+      "p99_confirmed_ms": 2813,
+      "orders_per_sec": 57.4,
       "window": {
         "requests": 300,
-        "min_ms": 66.9,
-        "median_ms": 198.2,
-        "max_ms": 324.4
+        "min_ms": 67.8,
+        "median_ms": 195.1,
+        "max_ms": 331.3
       }
     },
     {
@@ -218,16 +218,16 @@
       "reservations": 0,
       "booked": 20,
       "oversold_units": 0,
-      "p50_ms": 189,
-      "p99_ms": 320,
-      "p50_confirmed_ms": 88,
-      "p99_confirmed_ms": 145,
-      "orders_per_sec": 122.7,
+      "p50_ms": 188,
+      "p99_ms": 306,
+      "p50_confirmed_ms": 90,
+      "p99_confirmed_ms": 144,
+      "orders_per_sec": 122.9,
       "window": {
         "requests": 20,
-        "min_ms": 69.9,
-        "median_ms": 78.8,
-        "max_ms": 140.9
+        "min_ms": 69.8,
+        "median_ms": 81.8,
+        "max_ms": 140.3
       }
     },
     {
@@ -251,16 +251,16 @@
       "reservations": 0,
       "booked": 12,
       "oversold_units": 0,
-      "p50_ms": 344,
-      "p99_ms": 470,
-      "p50_confirmed_ms": 359,
-      "p99_confirmed_ms": 417,
-      "orders_per_sec": 72.9,
+      "p50_ms": 346,
+      "p99_ms": 506,
+      "p50_confirmed_ms": 365,
+      "p99_confirmed_ms": 491,
+      "orders_per_sec": 72.6,
       "window": {
         "requests": 12,
-        "min_ms": 317.6,
-        "median_ms": 330.6,
-        "max_ms": 348.1
+        "min_ms": 318.2,
+        "median_ms": 331.1,
+        "max_ms": 348.4
       }
     },
     {
@@ -283,15 +283,15 @@
       "booked": 21,
       "oversold_units": 0,
       "p50_ms": 189,
-      "p99_ms": 317,
-      "p50_confirmed_ms": 84,
-      "p99_confirmed_ms": 110,
+      "p99_ms": 318,
+      "p50_confirmed_ms": 88,
+      "p99_confirmed_ms": 149,
       "orders_per_sec": 122.7,
       "window": {
         "requests": 300,
-        "min_ms": 65.7,
-        "median_ms": 183.6,
-        "max_ms": 328.7
+        "min_ms": 61.9,
+        "median_ms": 182.8,
+        "max_ms": 315.7
       }
     },
     {
@@ -299,30 +299,30 @@
       "engine": "mysql",
       "isolation": "read-committed",
       "scenario": "where_guard",
-      "confirmed": 20,
+      "confirmed": 21,
       "sold_out": 0,
-      "lost_race": 280,
+      "lost_race": 279,
       "aborted": 0,
       "check_violation": 0,
       "errors": 0,
       "codes": {},
       "stock_before": 100,
-      "stock_after": 80,
-      "orders": 20,
-      "units_sold": 20,
+      "stock_after": 79,
+      "orders": 21,
+      "units_sold": 21,
       "reservations": 0,
-      "booked": 20,
+      "booked": 21,
       "oversold_units": 0,
       "p50_ms": 190,
-      "p99_ms": 320,
-      "p50_confirmed_ms": 90,
-      "p99_confirmed_ms": 144,
-      "orders_per_sec": 123.1,
+      "p99_ms": 327,
+      "p50_confirmed_ms": 85,
+      "p99_confirmed_ms": 129,
+      "orders_per_sec": 121.9,
       "window": {
         "requests": 300,
-        "min_ms": 62.8,
-        "median_ms": 182.4,
-        "max_ms": 313.2
+        "min_ms": 64.1,
+        "median_ms": 183.5,
+        "max_ms": 308.5
       }
     }
   ]

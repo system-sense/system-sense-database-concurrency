@@ -6,4 +6,4 @@ reservations	0	PRIMARY	1	id	A	0	NULL	NULL		BTREE			YES	NULL
 reservations	1	reservations_sku_idx	1	sku_id	A	0	NULL	NULL		BTREE			YES	NULL
 
 -- mysql: deadlocks recorded during this run
-1302
+1298

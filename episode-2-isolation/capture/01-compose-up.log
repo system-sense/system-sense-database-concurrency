@@ -194,3 +194,110 @@ orders=300 concurrency=25 stock=100
  Container episode-2-isolation-mysql-1 Healthy 
 {"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
 orders=300 concurrency=25 stock=100
+ Image episode-2-isolation-pricing Building 
+ Image episode-2-isolation-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.18kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 277B done
+#2 DONE 0.0s
+
+#3 [pricing internal] load build definition from Dockerfile
+#3 transferring dockerfile: 273B done
+#3 DONE 0.0s
+
+#4 [pricing internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.2s
+
+#5 [app internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [pricing internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [app internal] load build context
+#7 transferring context: 190B done
+#7 DONE 0.0s
+
+#8 [app 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#8 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#8 DONE 0.0s
+
+#9 [pricing internal] load build context
+#9 transferring context: 64B done
+#9 DONE 0.0s
+
+#10 [pricing 3/5] COPY requirements.txt .
+#10 CACHED
+
+#11 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [pricing 5/5] COPY main.py .
+#12 CACHED
+
+#13 [app 3/5] COPY requirements.txt .
+#13 CACHED
+
+#14 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [app 2/5] WORKDIR /srv
+#15 CACHED
+
+#16 [app 5/5] COPY app ./app
+#16 CACHED
+
+#17 [app] exporting to image
+#17 exporting layers done
+#17 writing image sha256:58eccc2d3727733f1e2c1e0f0bb257c7f3b96bfb06a3c63533a02edfb87564ff done
+#17 naming to docker.io/library/episode-2-isolation-app done
+#17 DONE 0.0s
+
+#18 [pricing] exporting to image
+#18 exporting layers done
+#18 writing image sha256:f87fea525513e7aeb645b2d8132ce097ab2f397b41d48c90f8fe4c77cec5ce6c done
+#18 naming to docker.io/library/episode-2-isolation-pricing done
+#18 DONE 0.0s
+
+#19 [pricing] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#20 [app] resolving provenance for metadata file
+#20 DONE 0.0s
+ Image episode-2-isolation-pricing Built 
+ Image episode-2-isolation-app Built 
+ Network episode-2-isolation_default Creating 
+ Network episode-2-isolation_default Created 
+ Volume episode-2-isolation_mysqldata Creating 
+ Volume episode-2-isolation_mysqldata Created 
+ Volume episode-2-isolation_pgdata Creating 
+ Volume episode-2-isolation_pgdata Created 
+ Container episode-2-isolation-mysql-1 Creating 
+ Container episode-2-isolation-postgres-1 Creating 
+ Container episode-2-isolation-mysql-1 Created 
+ Container episode-2-isolation-postgres-1 Created 
+ Container episode-2-isolation-pricing-1 Creating 
+ Container episode-2-isolation-pricing-1 Created 
+ Container episode-2-isolation-app-1 Creating 
+ Container episode-2-isolation-app-1 Created 
+ Container episode-2-isolation-postgres-1 Starting 
+ Container episode-2-isolation-mysql-1 Starting 
+ Container episode-2-isolation-postgres-1 Started 
+ Container episode-2-isolation-postgres-1 Waiting 
+ Container episode-2-isolation-mysql-1 Started 
+ Container episode-2-isolation-postgres-1 Healthy 
+ Container episode-2-isolation-pricing-1 Starting 
+ Container episode-2-isolation-pricing-1 Started 
+ Container episode-2-isolation-postgres-1 Waiting 
+ Container episode-2-isolation-mysql-1 Waiting 
+ Container episode-2-isolation-postgres-1 Healthy 
+ Container episode-2-isolation-mysql-1 Healthy 
+ Container episode-2-isolation-app-1 Starting 
+ Container episode-2-isolation-app-1 Started 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock=100

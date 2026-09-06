@@ -3,6 +3,8 @@
 **System Sense — Database Concurrency**, episode 1 of 4.
 *A hundred seats. Three hundred sold. And the shelf says 88 are left.*
 
+**▶ Watch the episode:** https://youtu.be/IU96-QIg7no · [full playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)
+
 A runnable demo of the oldest bug in transactional software: reading a number,
 changing it in your application, and writing it back. Clone it, run one command,
 and watch a correct-looking checkout sell stock that does not exist.
