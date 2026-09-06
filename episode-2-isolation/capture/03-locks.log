@@ -1,0 +1,9 @@
+-- postgres: gap locks do not exist here, so there is nothing to show but row locks
+relation AccessShareLock 1
+
+-- mysql: the index the next-key locks are taken on
+reservations	0	PRIMARY	1	id	A	0	NULL	NULL		BTREE			YES	NULL
+reservations	1	reservations_sku_idx	1	sku_id	A	0	NULL	NULL		BTREE			YES	NULL
+
+-- mysql: deadlocks recorded during this run
+1302

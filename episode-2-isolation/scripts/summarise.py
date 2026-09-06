@@ -1,20 +1,28 @@
 """Turns the raw capture logs into capture/metrics.json.
 
-Two numbers carry this episode and both come from here:
-
-    units sold     — what the order book says three hundred customers bought.
-    stock left     — what the shelf says is still there.
-
-Add them up against the hundred units that existed and the difference is stock
-you have already sold and do not have. Nothing in the application notices,
-because neither number is wrong on its own.
+One row per cell of the matrix. The engines' error codes are kept as the driver
+reported them -- SQLSTATE on Postgres, errno on MySQL -- and deliberately never
+normalised into a shared vocabulary, because the episode is about the two of
+them disagreeing and flattening the codes would hide the thing being measured.
 """
 import json
 import pathlib
 import re
 
 OUT = pathlib.Path("capture")
-MODES = ("naive", "atomic", "pessimistic", "optimistic")
+
+CELLS = [
+    ("pg-rc-rmw", "postgres", "read-committed", "read_modify_write"),
+    ("my-rc-rmw", "mysql", "read-committed", "read_modify_write"),
+    ("pg-rr-rmw", "postgres", "repeatable-read", "read_modify_write"),
+    ("my-rr-rmw", "mysql", "repeatable-read", "read_modify_write"),
+    ("pg-rr-cti", "postgres", "repeatable-read", "count_then_insert"),
+    ("my-rr-cti", "mysql", "repeatable-read", "count_then_insert"),
+    ("pg-ser-rmw", "postgres", "serializable", "read_modify_write"),
+    ("my-ser-rmw", "mysql", "serializable", "read_modify_write"),
+    ("pg-rc-guard", "postgres", "read-committed", "where_guard"),
+    ("my-rc-guard", "mysql", "read-committed", "where_guard"),
+]
 
 
 def text(name: str) -> str:
@@ -23,7 +31,6 @@ def text(name: str) -> str:
 
 
 def kv(prefix: str, body: str) -> dict:
-    """Parse the last `PREFIX k=v k=v ...` line in a log."""
     found: dict = {}
     for line in body.splitlines():
         if line.startswith(prefix):
@@ -33,108 +40,100 @@ def kv(prefix: str, body: str) -> dict:
     return found
 
 
-def stats(mode: str) -> dict:
-    p = OUT / f"stats-{mode}.json"
-    return json.loads(p.read_text()) if p.exists() else {}
+def blob(prefix: str, body: str) -> dict:
+    for line in body.splitlines():
+        if line.startswith(prefix):
+            try:
+                return json.loads(line[len(prefix):].strip())
+            except json.JSONDecodeError:
+                return {}
+    return {}
 
 
-def scenario_for(mode: str, log: str) -> dict:
-    body = text(log)
+def cell(tag: str, engine: str, isolation: str, scenario: str) -> dict:
+    body = text(f"cell-{tag}.log")
     driver = kv("DRIVER", body)
-    result = kv(f"RESULT {mode}", body)
-    app = stats(mode)
+    state = blob(f"STATE {tag}", body).get(engine, {})
+    st = blob(f"STATS {tag}", body)
+    statuses = st.get("statuses", {})
 
-    stock_before = result.get("stock_before", 0)
-    stock_after = result.get("stock_after", 0)
-    units_sold = result.get("units_sold", 0)
-
-    # What actually left the shelf, against what we told customers they bought.
-    left_the_shelf = stock_before - stock_after
-    lost_decrements = units_sold - left_the_shelf
-    oversold = max(0, units_sold - stock_before)
-    # Stock the database believes it still has, all of which is already sold.
-    phantom = stock_after if units_sold >= stock_before else 0
+    stock_before = 100
+    units_sold = state.get("units_sold", 0)
+    reservations = state.get("reservations", 0)
+    # The count_then_insert scenario books reservations rather than orders, so
+    # the unit that oversells is different. Same question either way: how many
+    # seats does the system believe it has sold, against how many existed.
+    booked = reservations if scenario == "count_then_insert" else units_sold
 
     return {
-        "mode": mode,
-        "orders_fired": driver.get("orders_fired", 0),
-        "concurrency": driver.get("concurrency", 0),
-        "orders_created": result.get("orders_created", 0),
-        "units_sold": units_sold,
+        "tag": tag,
+        "engine": engine,
+        "isolation": isolation,
+        "scenario": scenario,
+        "confirmed": statuses.get("confirmed", 0),
+        "sold_out": statuses.get("sold_out", 0),
+        "lost_race": statuses.get("lost_race", 0),
+        "aborted": statuses.get("aborted", 0),
+        "check_violation": statuses.get("check_violation", 0),
+        "errors": statuses.get("error", 0),
+        # SQLSTATE on Postgres, errno on MySQL. Never normalised.
+        "codes": st.get("codes", {}),
         "stock_before": stock_before,
-        "stock_after": stock_after,
-        "units_left_the_shelf": left_the_shelf,
-        "lost_decrements": lost_decrements,
-        "oversold_units": oversold,
-        "oversold_pct": round(100 * oversold / stock_before, 1) if stock_before else 0.0,
-        "phantom_stock": phantom,
-        "sold_out_rejections": driver.get("sold_out", 0),
-        "conflict_rejections": driver.get("conflict", 0),
-        "check_constraint_violations": app.get("check_constraint_violations", 0),
-        "other_errors": driver.get("other_errors", 0),
-        "retries_total": app.get("retries_total", 0),
-        "max_retries_one_order": app.get("max_retries_one_order", 0),
-        "abandoned_after_max_retries": app.get("abandoned_after_max_retries", 0),
+        "stock_after": state.get("stock", 0),
+        "orders": state.get("orders", 0),
+        "units_sold": units_sold,
+        "reservations": reservations,
+        "booked": booked,
+        "oversold_units": max(0, booked - stock_before),
         "p50_ms": driver.get("p50_ms", 0),
         "p99_ms": driver.get("p99_ms", 0),
         "p50_confirmed_ms": driver.get("p50_confirmed_ms", 0),
         "p99_confirmed_ms": driver.get("p99_confirmed_ms", 0),
-        "wall_ms": driver.get("wall_ms", 0),
         "orders_per_sec": driver.get("orders_per_sec", 0),
+        "window": st.get("window", {}),
     }
 
 
 def main() -> None:
     up = text("01-compose-up.log")
-    base, spread = 60, 240
-    m = re.search(r"^(\d+) (\d+)\s*$", up, re.M)
+    versions = {}
+    m = re.search(r'\{"postgres":.*?\}', up)
     if m:
-        base, spread = int(m.group(1)), int(m.group(2))
-    conf = kv("orders=", up.replace("orders=", "CONF orders="))
+        try:
+            versions = json.loads(m.group(0))
+        except json.JSONDecodeError:
+            versions = {}
 
-    logs = {"naive": "02-naive.log", "atomic": "03-atomic.log",
-            "pessimistic": "04-pessimistic.log", "optimistic": "05-optimistic.log"}
-    modes = {m_: scenario_for(m_, logs[m_]) for m_ in MODES}
-
-    orders_fired = modes["naive"]["orders_fired"] or conf.get("orders", 0)
-    # The window is a real network call, so its span is knowable exactly:
-    # every customer id that placed an order produced one of these.
-    lat = [base + (1 * 137 + c * 31) % spread for c in range(1, orders_fired + 1)]
+    cells = [cell(*c) for c in CELLS]
+    by = {c["tag"]: c for c in cells}
 
     metrics = {
         "scenario": {
-            "sku_id": 1,
-            "sku_stock": modes["naive"]["stock_before"] or conf.get("stock", 0),
-            "orders_fired": orders_fired,
-            "concurrency": modes["naive"]["concurrency"] or conf.get("concurrency", 0),
-            "qty_per_order": 1,
-            "pricing_base_ms": base,
-            "pricing_spread_ms": spread,
-            "pricing_min_ms": min(lat) if lat else 0,
-            "pricing_max_ms": max(lat) if lat else 0,
-            "max_optimistic_retries": int(
-                (re.search(r"max optimistic retries = (\d+)", up) or ["", 0])[1]
-            ),
+            "sku_stock": 100,
+            "orders_fired": cells[0]["confirmed"] + cells[0]["sold_out"] + cells[0]["aborted"]
+            + cells[0]["lost_race"] + cells[0]["errors"],
+            "concurrency": 25,
+            "postgres_version": versions.get("postgres", ""),
+            "mysql_version": versions.get("mysql", ""),
         },
-        "window": stats("naive").get("window", {}),
-        **modes,
+        "cells": cells,
     }
-
     (OUT / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
 
-    s = metrics["scenario"]
-    n, a = metrics["naive"], metrics["atomic"]
-    print(f"\n  {s['orders_fired']} orders, {s['concurrency']} at a time, "
-          f"{s['sku_stock']} units in stock\n")
-    print(f"  {'':<14}{'sold':>6}{'shelf':>7}{'oversold':>10}{'lost':>7}"
-          f"{'p99 sale':>10}{'ord/s':>8}")
-    for k in MODES:
-        r = metrics[k]
-        print(f"  {k:<14}{r['units_sold']:>6}{r['stock_after']:>7}"
-              f"{r['oversold_units']:>10}{r['lost_decrements']:>7}"
-              f"{r['p99_confirmed_ms']:>10}{r['orders_per_sec']:>8}")
-    print(f"\n  the CHECK constraint fired {n['check_constraint_violations']} times")
-    print(f"  atomic oversold {a['oversold_units']} units")
+    hdr = f"  {'cell':<13}{'engine':<10}{'isolation':<17}{'booked':>7}{'oversold':>10}{'aborted':>9}  codes"
+    print(f"\n{hdr}")
+    for c in cells:
+        codes = " ".join(f"{k}x{v}" for k, v in sorted(c["codes"].items())) or "-"
+        print(f"  {c['tag']:<13}{c['engine']:<10}{c['isolation']:<17}"
+              f"{c['booked']:>7}{c['oversold_units']:>10}{c['aborted']:>9}  {codes}")
+
+    print("\n  THE TWO ROWS THE EPISODE RESTS ON")
+    for a, b, what in [("pg-rr-rmw", "my-rr-rmw", "read-modify-write at REPEATABLE READ"),
+                       ("pg-rr-cti", "my-rr-cti", "count-then-insert at REPEATABLE READ")]:
+        p, m_ = by[a], by[b]
+        print(f"  {what}")
+        print(f"    postgres  oversold {p['oversold_units']:>3}   aborted {p['aborted']:>3}")
+        print(f"    mysql     oversold {m_['oversold_units']:>3}   aborted {m_['aborted']:>3}")
 
 
 if __name__ == "__main__":

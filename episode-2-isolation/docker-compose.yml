@@ -35,6 +35,40 @@ services:
   #  Nothing has been fixed. The window is narrower, so fewer requests land
   #  inside it. That is why this passes on a laptop and fails on a Friday.
   # ─────────────────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────────────────
+  #  EPISODE 2 ADDS THIS, AND THIS ALONE.
+  #
+  #  The episode's claim is that identical code at an identically named
+  #  isolation level behaves differently here than on Postgres. That claim can
+  #  only be measured with both engines in the same compose file, running the
+  #  same load, in the same run.
+  #
+  #  innodb_print_all_deadlocks puts every deadlock in the error log rather than
+  #  only the latest in SHOW ENGINE INNODB STATUS, because row C is expected to
+  #  produce a lot of them and "the latest one" is not evidence.
+  # ─────────────────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8
+    command: >
+      --innodb-print-all-deadlocks=ON
+      --innodb-deadlock-detect=ON
+      --character-set-server=utf8mb4
+    environment:
+      MYSQL_ROOT_PASSWORD: sysense
+      MYSQL_DATABASE: sysense
+      MYSQL_USER: sysense
+      MYSQL_PASSWORD: sysense
+    volumes:
+      - ./db/init.mysql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -usysense -psysense --silent"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+
   pricing:
     build: ./pricing
     environment:
@@ -50,17 +84,26 @@ services:
     build: .
     environment:
       DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
+      MYSQL_HOST: "mysql"
+      MYSQL_PORT: "3306"
+      MYSQL_USER: "sysense"
+      MYSQL_PASSWORD: "sysense"
+      MYSQL_DB: "sysense"
       PRICING_URL: "http://pricing:9000"
       PRICING_TIMEOUT_SECONDS: "30"
-      ORDER_MODE: "${ORDER_MODE:-naive}"
-      MAX_OPTIMISTIC_RETRIES: "${MAX_OPTIMISTIC_RETRIES:-5}"
+      ENGINE: "${ENGINE:-postgres}"
+      ISOLATION: "${ISOLATION:-read-committed}"
+      SCENARIO: "${SCENARIO:-read_modify_write}"
     ports:
       - "8000:8000"
     depends_on:
       postgres:
+        condition: service_healthy
+      mysql:
         condition: service_healthy
       pricing:
         condition: service_started
 
 volumes:
   pgdata:
+  mysqldata:

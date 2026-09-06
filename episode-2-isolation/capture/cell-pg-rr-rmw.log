@@ -1,0 +1,6 @@
+CELL pg-rr-rmw engine=postgres isolation=repeatable-read scenario=read_modify_write
+  aborted          278
+  confirmed        22
+DRIVER label=pg-rr-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=22 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=192 p99_ms=312 p50_confirmed_ms=88 p99_confirmed_ms=114 wall_ms=2449 orders_per_sec=122.5
+STATE pg-rr-rmw {"postgres":{"stock":78,"orders":22,"units_sold":22,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":0}}
+STATS pg-rr-rmw {"statuses":{"confirmed":22,"aborted":278},"codes":{"40001":278},"window":{"requests":22,"min_ms":66.8,"median_ms":84.4,"max_ms":110.4},"engine":"postgres","isolation":"repeatable-read","scenario":"read_modify_write"}

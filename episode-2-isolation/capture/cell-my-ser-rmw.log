@@ -1,0 +1,6 @@
+CELL my-ser-rmw engine=mysql isolation=serializable scenario=read_modify_write
+  aborted          288
+  confirmed        12
+DRIVER label=my-ser-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=12 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=344 p99_ms=470 p50_confirmed_ms=359 p99_confirmed_ms=417 wall_ms=4114 orders_per_sec=72.9
+STATE my-ser-rmw {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":88,"orders":12,"units_sold":12,"reservations":0}}
+STATS my-ser-rmw {"statuses":{"aborted":288,"confirmed":12},"codes":{"1213":288},"window":{"requests":12,"min_ms":317.6,"median_ms":330.6,"max_ms":348.1},"engine":"mysql","isolation":"serializable","scenario":"read_modify_write"}

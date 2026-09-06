@@ -1,0 +1,22 @@
+{
+    "select_stock": {
+        "postgres": "SELECT stock, version FROM inventory WHERE sku_id = $1",
+        "mysql": "SELECT stock, version FROM inventory WHERE sku_id = %s"
+    },
+    "update_literal": {
+        "postgres": "UPDATE inventory SET stock = $1, version = version + 1 WHERE sku_id = $2",
+        "mysql": "UPDATE inventory SET stock = %s, version = version + 1 WHERE sku_id = %s"
+    },
+    "update_guarded": {
+        "postgres": "UPDATE inventory SET stock = $1, version = version + 1 WHERE sku_id = $2 AND stock = $3",
+        "mysql": "UPDATE inventory SET stock = %s, version = version + 1 WHERE sku_id = %s AND stock = %s"
+    },
+    "select_reserved": {
+        "postgres": "SELECT id FROM reservations WHERE sku_id = $1 FOR SHARE",
+        "mysql": "SELECT id FROM reservations WHERE sku_id = %s FOR SHARE"
+    },
+    "insert_reservation": {
+        "postgres": "INSERT INTO reservations (sku_id, customer_id) VALUES ($1, $2)",
+        "mysql": "INSERT INTO reservations (sku_id, customer_id) VALUES (%s, %s)"
+    }
+}

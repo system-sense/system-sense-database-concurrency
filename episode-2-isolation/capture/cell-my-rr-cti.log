@@ -1,0 +1,6 @@
+CELL my-rr-cti engine=mysql isolation=repeatable-read scenario=count_then_insert
+  aborted          296
+  confirmed        4
+DRIVER label=my-rr-cti orders_fired=300 concurrency=25 qty_per_order=1 confirmed=4 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=356 p99_ms=594 p50_confirmed_ms=1091 p99_confirmed_ms=3033 wall_ms=4795 orders_per_sec=62.6
+STATE my-rr-cti {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":4}}
+STATS my-rr-cti {"statuses":{"aborted":296,"confirmed":4},"codes":{"1213":296},"window":{"requests":300,"min_ms":66.9,"median_ms":198.2,"max_ms":324.4},"engine":"mysql","isolation":"repeatable-read","scenario":"count_then_insert"}

@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 #
-# Runs the Episode 1 demo end to end and records what actually happened.
-#
-# Everything the episode claims on screen comes out of this script. If a number
-# changes when you run it on your machine, the number was real.
+# Runs the Episode 2 matrix and records what actually happened.
 #
 #   ./scripts/capture-demo.sh
+#
+# The episode's claim is that identical code at an identically named isolation
+# level behaves differently on two engines. So every cell is run against BOTH,
+# back to back, from the same load generator, in the same run. A result from one
+# engine alone proves nothing here.
 #
 # Writes:  capture/*.log  and  capture/metrics.json
 set -euo pipefail
@@ -14,97 +16,109 @@ cd "$(dirname "$0")/.."
 OUT=capture
 mkdir -p "$OUT"
 
+# RESUME=1 keeps the stack and any cells already measured, and re-runs only what
+# is missing. The matrix is ten cells across two engines and a kill partway
+# through used to cost all of them; each cell resets its own state before it
+# runs, so skipping finished ones is safe.
+RESUME=${RESUME:-0}
+
 ORDERS=${ORDERS:-300}
 CONCURRENCY=${CONCURRENCY:-25}
 STOCK=${STOCK:-100}
 
-log()   { printf '\n\033[1m== %s\033[0m\n' "$*"; }
-dc()    { docker compose "$@"; }
-psql()  { dc exec -T postgres psql -U sysense -d sysense -At -F' ' "$@"; }
-psqlt() { dc exec -T postgres psql -U sysense -d sysense "$@"; }
+log()  { printf '\n\033[1m== %s\033[0m\n' "$*"; }
+dc()   { docker compose "$@"; }
+psql() { dc exec -T postgres psql -U sysense -d sysense -At -F' ' "$@"; }
+mysql_() { dc exec -T mysql mysql -usysense -psysense sysense -N -B "$@" 2>/dev/null; }
 
 wait_healthy() {
   printf 'waiting for the stack '
-  for _ in $(seq 1 90); do
+  for _ in $(seq 1 120); do
     if curl -fsS localhost:8000/health >/dev/null 2>&1 &&
        curl -fsS localhost:9000/health >/dev/null 2>&1; then echo ' ready'; return 0; fi
     printf '.'; sleep 1
   done
-  echo ' TIMED OUT'; dc logs app pricing | tail -40; return 1
+  echo ' TIMED OUT'; dc logs app mysql | tail -40; return 1
 }
 
-# Reads the shelf and the order book and prints one machine-parsable line.
-tally() {
-  local name=$1 stock orders units
-  stock=$(psql -c 'SELECT stock FROM inventory WHERE sku_id = 1;')
-  orders=$(psql -c 'SELECT count(*) FROM orders;')
-  units=$(psql -c 'SELECT coalesce(sum(qty),0) FROM orders;')
-  echo "RESULT $name stock_before=$STOCK stock_after=$stock orders_created=$orders units_sold=$units"
-}
-
-# One scenario: set the mode, put the shelf back, fire the orders, read both books.
+# One cell of the matrix: engine x isolation x scenario.
 #
-# The mode is asserted rather than assumed. Running the naive numbers against
-# the atomic handler because a POST silently failed would be a very quiet way to
-# publish a wrong episode.
-run_mode() {
-  local mode=$1 n=$2
-  log "$n  ORDER_MODE=$mode"
+# The config is asserted rather than assumed. Attributing MySQL's numbers to
+# Postgres because a POST silently failed would be a very quiet way to publish
+# a wrong episode, and this episode is entirely a claim about which engine did
+# what.
+cell() {
+  local engine=$1 isolation=$2 scenario=$3 tag=$4
   local got
-  got=$(curl -fsS -X POST localhost:8000/admin/mode \
-          -H 'content-type: application/json' -d "{\"mode\":\"$mode\"}" \
-        | python3 -c 'import json,sys; print(json.load(sys.stdin)["mode"])')
-  [ "$got" = "$mode" ] || { echo "mode did not take: wanted $mode, got $got"; exit 1; }
+
+  # A cell is finished when its log carries the STATS line, which is written
+  # last. A half-written log from a killed run is re-run rather than trusted.
+  if [ "$RESUME" = "1" ] && grep -q "^STATS $tag " "$OUT/cell-$tag.log" 2>/dev/null; then
+    log "$tag  -- already measured, skipping"
+    return 0
+  fi
+  got=$(curl -fsS -X POST localhost:8000/admin/config -H 'content-type: application/json' \
+        -d "{\"engine\":\"$engine\",\"isolation\":\"$isolation\",\"scenario\":\"$scenario\"}" \
+        | python3 -c 'import json,sys
+d = json.load(sys.stdin)
+print(d["engine"] + "/" + d["isolation"] + "/" + d["scenario"])')
+  [ "$got" = "$engine/$isolation/$scenario" ] || { echo "config did not take: wanted $engine/$isolation/$scenario, got $got"; exit 1; }
+
   curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=$STOCK" >/dev/null
 
   {
-    python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" --label "$mode"
-    tally "$mode"
-  } 2>&1 | tee "$OUT/$n-$mode.log"
-
-  curl -fsS localhost:8000/admin/stats > "$OUT/stats-$mode.json"
-  echo "  app counters -> $OUT/stats-$mode.json"
+    echo "CELL $tag engine=$engine isolation=$isolation scenario=$scenario"
+    python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" --label "$tag"
+    echo "STATE $tag $(curl -fsS localhost:8000/api/state)"
+    echo "STATS $tag $(curl -fsS localhost:8000/admin/stats)"
+  } 2>&1 | tee "$OUT/cell-$tag.log"
 }
 
-log "1/8  Tearing down any previous run"
-dc down -v --remove-orphans >/dev/null 2>&1 || true
+if [ "$RESUME" = "1" ]; then
+  log "1/6  Resuming -- keeping the stack and any cells already measured"
+else
+  log "1/6  Tearing down any previous run"
+  dc down -v --remove-orphans >/dev/null 2>&1 || true
+fi
 
-log "2/8  Starting the stack"
-dc up --build -d 2>&1 | tee "$OUT/01-compose-up.log"
+log "2/6  Starting the stack (postgres + mysql + pricing + app)"
+dc up --build -d 2>&1 | tee -a "$OUT/01-compose-up.log"
 wait_healthy
 {
-  echo "pricing latency = PRICING_BASE_MS + (sku_id * 137 + customer_id * 31) % PRICING_SPREAD_MS"
-  dc exec -T pricing printenv PRICING_BASE_MS PRICING_SPREAD_MS | tr '\n' ' '
-  echo
-  printf 'max optimistic retries = '
-  dc exec -T app printenv MAX_OPTIMISTIC_RETRIES | tr -d '\r'
+  curl -fsS localhost:8000/api/versions
   echo
   echo "orders=$ORDERS concurrency=$CONCURRENCY stock=$STOCK"
 } >> "$OUT/01-compose-up.log"
 
-run_mode naive       02
-run_mode atomic      03
-run_mode pessimistic 04
-run_mode optimistic  05
+log "3/6  The same statements, as each engine receives them"
+curl -fsS localhost:8000/admin/sql | python3 -m json.tool | tee "$OUT/02-statements.log"
 
-log "6/8  The shelf and the order book, side by side"
-{
-  echo "-- after the naive run the numbers are in capture/02-naive.log;"
-  echo "-- this is the state the LAST run left behind, for orientation only."
-  psqlt -c "SELECT sku_id, name, stock, version FROM inventory;"
-  psqlt -c "SELECT count(*) AS orders, coalesce(sum(qty),0) AS units_sold FROM orders;"
-} 2>&1 | tee "$OUT/06-books.log"
+log "4/6  The matrix"
+#      engine    isolation        scenario           tag
+cell postgres read-committed  read_modify_write  pg-rc-rmw
+cell mysql    read-committed  read_modify_write  my-rc-rmw
+cell postgres repeatable-read read_modify_write  pg-rr-rmw
+cell mysql    repeatable-read read_modify_write  my-rr-rmw
+cell postgres repeatable-read count_then_insert  pg-rr-cti
+cell mysql    repeatable-read count_then_insert  my-rr-cti
+cell postgres serializable    read_modify_write  pg-ser-rmw
+cell mysql    serializable    read_modify_write  my-ser-rmw
+cell postgres read-committed  where_guard        pg-rc-guard
+cell mysql    read-committed  where_guard        my-rc-guard
 
-log "7/8  The constraint that never fired"
+log "5/6  What the engines say about their own locks"
 {
-  echo "-- the guard every reviewer asks for"
-  psqlt -c "SELECT conname, pg_get_constraintdef(oid) FROM pg_constraint WHERE conname = 'stock_never_negative';"
+  echo "-- postgres: gap locks do not exist here, so there is nothing to show but row locks"
+  psql -c "SELECT locktype, mode, count(*) FROM pg_locks WHERE locktype IN ('tuple','transactionid','relation') GROUP BY 1,2 ORDER BY 3 DESC LIMIT 8;"
   echo
-  echo "-- times it fired during the naive run, from the application's own counter:"
-  python3 -c "import json;print(json.load(open('capture/stats-naive.json'))['check_constraint_violations'])"
-} 2>&1 | tee "$OUT/07-constraint.log"
+  echo "-- mysql: the index the next-key locks are taken on"
+  mysql_ -e "SHOW INDEX FROM reservations;" || true
+  echo
+  echo "-- mysql: deadlocks recorded during this run"
+  dc logs mysql 2>&1 | grep -c "TRANSACTION" || true
+} 2>&1 | tee "$OUT/03-locks.log"
 
-log "8/8  Summarising"
+log "6/6  Summarising"
 python3 scripts/summarise.py
 
 echo

@@ -1,0 +1,6 @@
+CELL pg-rc-guard engine=postgres isolation=read-committed scenario=where_guard
+  confirmed        21
+  lost_race        279
+DRIVER label=pg-rc-guard orders_fired=300 concurrency=25 qty_per_order=1 confirmed=21 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=189 p99_ms=317 p50_confirmed_ms=84 p99_confirmed_ms=110 wall_ms=2445 orders_per_sec=122.7
+STATE pg-rc-guard {"postgres":{"stock":79,"orders":21,"units_sold":21,"reservations":0},"mysql":{"stock":100,"orders":0,"units_sold":0,"reservations":0}}
+STATS pg-rc-guard {"statuses":{"confirmed":21,"lost_race":279},"codes":{},"window":{"requests":300,"min_ms":65.7,"median_ms":183.6,"max_ms":328.7},"engine":"postgres","isolation":"read-committed","scenario":"where_guard"}

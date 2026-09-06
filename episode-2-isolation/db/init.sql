@@ -34,3 +34,22 @@ CREATE TABLE orders (
 );
 
 CREATE INDEX orders_sku_idx ON orders (sku_id, created_at);
+
+-- ── Episode 2 ──────────────────────────────────────────────────────────────
+-- A row per reserved seat, for the count-then-insert anomaly.
+--
+-- `sku_id` is on a NON-UNIQUE secondary index on purpose, and the choice is
+-- load-bearing rather than incidental. InnoDB's gap locking under REPEATABLE
+-- READ behaves differently for a unique index matching an existing row (record
+-- lock only) than for a non-unique one (next-key lock, gap included), and the
+-- whole point of this episode is what the two engines do with the same schema.
+-- Pinning the index shape here means the capture measures one thing rather than
+-- two.
+CREATE TABLE reservations (
+    id          BIGSERIAL   PRIMARY KEY,
+    sku_id      INT         NOT NULL,
+    customer_id INT         NOT NULL,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX reservations_sku_idx ON reservations (sku_id);

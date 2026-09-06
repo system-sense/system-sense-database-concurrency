@@ -1,0 +1,5 @@
+CELL my-rc-rmw engine=mysql isolation=read-committed scenario=read_modify_write
+  confirmed        300
+DRIVER label=my-rc-rmw orders_fired=300 concurrency=25 qty_per_order=1 confirmed=300 sold_out=0 conflict=0 check_violation=0 other_errors=0 p50_ms=189 p99_ms=342 p50_confirmed_ms=190 p99_confirmed_ms=342 wall_ms=2459 orders_per_sec=122.0
+STATE my-rc-rmw {"postgres":{"stock":100,"orders":0,"units_sold":0,"reservations":0},"mysql":{"stock":88,"orders":300,"units_sold":300,"reservations":0}}
+STATS my-rc-rmw {"statuses":{"confirmed":300},"codes":{},"window":{"requests":300,"min_ms":63.4,"median_ms":183.1,"max_ms":307.8},"engine":"mysql","isolation":"read-committed","scenario":"read_modify_write"}
