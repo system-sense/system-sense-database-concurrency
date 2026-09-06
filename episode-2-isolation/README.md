@@ -3,6 +3,8 @@
 **System Sense — Database Concurrency**, episode 2 of 4.
 *One level name. Two databases. They swap which one is safe.*
 
+**▶ Watch the episode:** https://youtu.be/ZAnJ6O1rVDk · [full playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)
+
 Episode 1 ended on a setting: raise the isolation level, because that is what it
 is for. This folder turns it on, runs the same statements against **PostgreSQL 16
 and MySQL 8**, and lets them disagree.
@@ -182,7 +184,7 @@ moves.
 Previous: **[Episode 1 — The Phantom Update](../episode-1-lost-update/)**, where
 three hundred people bought one of a hundred seats and the shelf still said 88.
 
-Next: **Episode 3 — The 2-Second Deadlock**. Every answer here that was actually
+Next: **Episode 3 — The Deadlock**. Every answer here that was actually
 safe worked by making something wait, or by killing it. Next time the thing that
 gets killed is a customer's checkout, and nobody wrote a line of wrong code.
 

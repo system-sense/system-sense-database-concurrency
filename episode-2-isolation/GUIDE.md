@@ -2,7 +2,7 @@
 
 **A written companion to Episode 2 of System Sense — [Your Database Is Not Protecting You](../).**
 
-**Watch it instead:** Transaction Isolation Is a Lie · [full playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)
+**Watch it instead:** [Transaction Isolation Is a Lie](https://youtu.be/ZAnJ6O1rVDk) · [full playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)
 
 The video is about fifteen minutes. This covers the same ground more slowly,
 with the statements in full, and then goes on into what would not fit: what the
