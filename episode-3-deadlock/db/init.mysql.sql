@@ -17,11 +17,20 @@ CREATE TABLE inventory (
     CONSTRAINT stock_never_negative CHECK (stock >= 0)
 ) ENGINE=InnoDB;
 
-INSERT INTO inventory (sku_id, name, stock) VALUES (1, 'Front row seat', 100);
+INSERT INTO inventory (sku_id, name, stock) VALUES
+    (1, 'Front row seat',      100),
+    (2, 'Second row seat',     100),
+    (3, 'Third row seat',      100),
+    (4, 'Balcony seat',        100),
+    (5, 'Standing ticket',     100),
+    (6, 'Programme',           100),
+    (7, 'Cloakroom ticket',    100),
+    (8, 'Interval drink',      100);
 
 CREATE TABLE orders (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    sku_id      INT NOT NULL,
+    -- Nullable from Episode 3: a basket order's lines live in order_items.
+    sku_id      INT NULL,
     customer_id INT NOT NULL,
     qty         INT NOT NULL,
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -36,6 +45,16 @@ CREATE TABLE reservations (
     customer_id INT NOT NULL,
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     KEY reservations_sku_idx (sku_id)
+) ENGINE=InnoDB;
+
+-- ── Episode 3 ──────────────────────────────────────────────────────────────
+-- The basket, same shape as db/init.sql. See the note there.
+CREATE TABLE order_items (
+    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    sku_id   INT    NOT NULL,
+    qty      INT    NOT NULL,
+    KEY order_items_order_idx (order_id)
 ) ENGINE=InnoDB;
 
 -- Reading performance_schema.data_locks needs the PROCESS privilege, and the

@@ -1,0 +1,15 @@
+-- IN-list form: the order the rows come back in is the planner's choice
+Update on inventory  (cost=0.00..5.13 rows=0 width=0)
+  ->  Seq Scan on inventory  (cost=0.00..5.13 rows=2 width=10)
+        Filter: ((stock >= 1) AND (sku_id = ANY ('{8,3,4}'::integer[])))
+
+-- VALUES-join form: the rows arrive in the order they were written
+Update on inventory  (cost=0.08..5.22 rows=0 width=0)
+  ->  Hash Join  (cost=0.08..5.22 rows=1 width=42)
+        Hash Cond: (inventory.sku_id = "*VALUES*".column1)
+        Join Filter: (inventory.stock >= "*VALUES*".column2)
+        ->  Seq Scan on inventory  (cost=0.00..5.08 rows=8 width=14)
+        ->  Hash  (cost=0.04..0.04 rows=3 width=40)
+              ->  Values Scan on "*VALUES*"  (cost=0.00..0.04 rows=3 width=40)
+
+-- neither statement contains an ORDER BY, because an UPDATE cannot take one

@@ -1,0 +1,7 @@
+CELL my-basket engine=mysql lock_order=basket scenario=basket_checkout retries=0 items=3 lock_timeout_ms=0
+  confirmed        290
+  deadlocked       6
+  sold_out         4
+DRIVER label=my-basket orders_fired=300 concurrency=25 qty_per_order=1 confirmed=290 sold_out=4 deadlocked=6 conflict=0 check_violation=0 other_errors=0 p50_ms=189 p99_ms=306 p50_confirmed_ms=187 p99_confirmed_ms=306 wall_ms=2434 orders_per_sec=123.2
+STATE my-basket {"postgres":{"stock":100,"stock_total":800,"orders":0,"units_sold":0,"items_sold":0,"reservations":0},"mysql":{"stock":15,"stock_total":55,"orders":290,"units_sold":741,"items_sold":741,"reservations":0}}
+STATS my-basket {"statuses":{"confirmed":290,"deadlocked":6,"sold_out":4},"codes":{"1213":6},"window":{"requests":300,"min_ms":62.2,"median_ms":183.8,"max_ms":304.8},"deadlock_wait":{"count":6,"min_ms":112.3,"median_ms":215.5,"p99_ms":292.7,"max_ms":292.7},"retries_configured":0,"lock_timeout_ms":0,"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"mysql","isolation":"read-committed","scenario":"basket_checkout","lock_order":"basket"}

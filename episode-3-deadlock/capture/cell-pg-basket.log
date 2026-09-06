@@ -1,0 +1,6 @@
+CELL pg-basket engine=postgres lock_order=basket scenario=basket_checkout retries=0 items=3 lock_timeout_ms=0
+  confirmed        141
+  deadlocked       159
+DRIVER label=pg-basket orders_fired=300 concurrency=25 qty_per_order=1 confirmed=141 sold_out=0 deadlocked=159 conflict=0 check_violation=0 other_errors=0 p50_ms=4353 p99_ms=49954 p50_confirmed_ms=273 p99_confirmed_ms=34413 wall_ms=102534 orders_per_sec=2.9
+STATE pg-basket {"postgres":{"stock":55,"stock_total":446,"orders":141,"units_sold":354,"items_sold":354,"reservations":0},"mysql":{"stock":100,"stock_total":800,"orders":0,"units_sold":0,"items_sold":0,"reservations":0}}
+STATS pg-basket {"statuses":{"confirmed":141,"deadlocked":159},"codes":{"40P01":159},"window":{"requests":300,"min_ms":61.3,"median_ms":191.9,"max_ms":383.8},"deadlock_wait":{"count":159,"min_ms":1092.4,"median_ms":9053.7,"p99_ms":52969.0,"max_ms":52980.6},"retries_configured":0,"lock_timeout_ms":0,"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"postgres","isolation":"read-committed","scenario":"basket_checkout","lock_order":"basket"}

@@ -1,0 +1,6 @@
+-- postgres: the detector does not run until a backend has waited this long
+1s
+on
+
+-- mysql: InnoDB checks for a cycle on every lock wait
+1	50	1

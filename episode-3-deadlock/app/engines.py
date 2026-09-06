@@ -12,6 +12,7 @@ the capture prints both renderings side by side so a viewer can confirm it with
 their eyes rather than take it on trust.
 """
 import re
+import time
 from typing import Any, Protocol
 
 import aiomysql
@@ -47,12 +48,17 @@ class Outcome:
     would hide exactly the thing being measured.
     """
 
-    __slots__ = ("status", "code", "detail")
+    __slots__ = ("status", "code", "detail", "wait_ms")
 
-    def __init__(self, status: str, code: str = "", detail: str = "") -> None:
+    def __init__(self, status: str, code: str = "", detail: str = "", wait_ms: float = 0.0) -> None:
         self.status = status
         self.code = code
         self.detail = detail
+        # Episode 3: how long this transaction was alive before the engine
+        # noticed the cycle. Postgres runs its detector only after a backend has
+        # waited deadlock_timeout; InnoDB checks on every lock wait. That
+        # difference is a measured number here rather than a quoted one.
+        self.wait_ms = wait_ms
 
 
 class Cx(Protocol):
@@ -61,11 +67,19 @@ class Cx(Protocol):
     async def fetchrow(self, sql: str, *args: Any) -> dict | None: ...
     async def fetchall(self, sql: str, *args: Any) -> list[dict]: ...
     async def execute(self, sql: str, *args: Any) -> int: ...
+    async def insert_returning_id(self, sql: str, *args: Any) -> int: ...
 
 
 class PgCx:
     def __init__(self, con: asyncpg.Connection) -> None:
         self._con = con
+
+    async def insert_returning_id(self, sql: str, *args) -> int:
+        """The one place the two dialects need different SQL rather than a
+        different placeholder. Postgres returns the id from the statement;
+        MySQL reports it on the cursor afterwards. Both are wrapped here so the
+        scenarios in main.py still never branch on the engine."""
+        return await self._con.fetchval(sql_for("postgres", sql) + " RETURNING id", *args)
 
     async def fetchrow(self, sql: str, *args):
         row = await self._con.fetchrow(sql_for("postgres", sql), *args)
@@ -87,6 +101,10 @@ class MyCx:
     def __init__(self, cur: aiomysql.DictCursor) -> None:
         self._cur = cur
 
+    async def insert_returning_id(self, sql: str, *args) -> int:
+        await self._cur.execute(sql_for("mysql", sql), args)
+        return int(self._cur.lastrowid)
+
     async def fetchrow(self, sql: str, *args):
         await self._cur.execute(sql_for("mysql", sql), args)
         return await self._cur.fetchone()
@@ -104,6 +122,9 @@ class Postgres:
 
     def __init__(self, pool: asyncpg.Pool) -> None:
         self._pool = pool
+        # Set per cell by the capture. 0 leaves Postgres on its default, which
+        # is to wait forever and let the deadlock detector decide.
+        self.lock_timeout_ms = 0
 
     async def version(self) -> str:
         async with self._pool.acquire() as con:
@@ -111,11 +132,14 @@ class Postgres:
 
     async def run(self, scenario, req, isolation: str) -> Outcome:
         level = ISOLATION[isolation]
+        began = time.perf_counter()
         try:
             async with self._pool.acquire() as con:
                 tx = con.transaction(isolation=isolation.replace("-", "_"))
                 await tx.start()
                 try:
+                    if self.lock_timeout_ms:
+                        await con.execute(f"SET LOCAL lock_timeout = '{self.lock_timeout_ms}ms'")
                     out = await scenario(PgCx(con), req)
                     await tx.commit()
                     return out
@@ -123,9 +147,17 @@ class Postgres:
                     await tx.rollback()
                     raise
         except asyncpg.SerializationError as e:
-            return Outcome("aborted", e.sqlstate or "40001", "serialization failure")
+            return Outcome("aborted", e.sqlstate or "40001", "serialization failure",
+                           (time.perf_counter() - began) * 1000)
         except asyncpg.DeadlockDetectedError as e:
-            return Outcome("aborted", e.sqlstate or "40P01", "deadlock detected")
+            return Outcome("deadlocked", e.sqlstate or "40P01", "deadlock detected",
+                           (time.perf_counter() - began) * 1000)
+        except asyncpg.LockNotAvailableError as e:
+            # 55P03. The transaction gave up on its own rather than waiting for
+            # the detector. It is still a failed order, and it is still counted
+            # as one, but it failed in milliseconds instead of seconds.
+            return Outcome("lock_timeout", e.sqlstate or "55P03", "lock timeout",
+                           (time.perf_counter() - began) * 1000)
         except asyncpg.CheckViolationError as e:
             return Outcome("check_violation", e.sqlstate or "23514", str(level))
         except asyncpg.PostgresError as e:
@@ -146,6 +178,7 @@ class MySQL:
 
     async def run(self, scenario, req, isolation: str) -> Outcome:
         level = ISOLATION[isolation]
+        began = time.perf_counter()
         try:
             async with self._pool.acquire() as con:
                 async with con.cursor(aiomysql.DictCursor) as cur:
@@ -174,10 +207,11 @@ class MySQL:
                         raise
         except aiomysql.Error as e:
             errno = e.args[0] if e.args else 0
+            waited = (time.perf_counter() - began) * 1000
             if errno == 1213:
-                return Outcome("aborted", "1213", "deadlock found")
+                return Outcome("deadlocked", "1213", "deadlock found", waited)
             if errno == 1205:
-                return Outcome("aborted", "1205", "lock wait timeout")
+                return Outcome("deadlocked", "1205", "lock wait timeout", waited)
             if errno == 3819:
                 return Outcome("check_violation", "3819", "check constraint violated")
             return Outcome("error", str(errno), type(e).__name__)

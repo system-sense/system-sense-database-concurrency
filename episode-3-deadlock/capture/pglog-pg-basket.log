@@ -1,0 +1,1136 @@
+postgres-1  | 2026-09-06 14:42:51.199 UTC [111] LOG:  process 111 detected deadlock while waiting for ShareLock on transaction 844 after 1007.547 ms
+postgres-1  | 2026-09-06 14:42:51.199 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.199 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 843 after 1007.672 ms
+postgres-1  | 2026-09-06 14:42:51.199 UTC [121] LOG:  process 121 acquired ShareLock on transaction 843 after 1007.812 ms
+postgres-1  | 2026-09-06 14:42:51.212 UTC [84] LOG:  process 84 detected deadlock while waiting for ShareLock on transaction 846 after 1001.336 ms
+postgres-1  | 2026-09-06 14:42:51.212 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.250 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1003.900 ms
+postgres-1  | 2026-09-06 14:42:51.265 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 1006.072 ms
+postgres-1  | 2026-09-06 14:42:51.288 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1003.993 ms
+postgres-1  | 2026-09-06 14:42:51.288 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 1003.804 ms
+postgres-1  | 2026-09-06 14:42:51.295 UTC [115] LOG:  process 115 detected deadlock while waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1000.666 ms
+postgres-1  | 2026-09-06 14:42:51.295 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.296 UTC [126] LOG:  process 126 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1000.900 ms
+postgres-1  | 2026-09-06 14:42:51.310 UTC [124] LOG:  process 124 detected deadlock while waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1001.602 ms
+postgres-1  | 2026-09-06 14:42:51.310 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.355 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 854 after 1001.249 ms
+postgres-1  | 2026-09-06 14:42:51.356 UTC [86] LOG:  process 86 detected deadlock while waiting for ExclusiveLock on tuple (0,44) of relation 16385 of database 16384 after 1000.445 ms
+postgres-1  | 2026-09-06 14:42:51.356 UTC [86] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.369 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1002.069 ms
+postgres-1  | 2026-09-06 14:42:51.393 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.835 ms
+postgres-1  | 2026-09-06 14:42:51.422 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1004.446 ms
+postgres-1  | 2026-09-06 14:42:51.444 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.324 ms
+postgres-1  | 2026-09-06 14:42:51.452 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.153 ms
+postgres-1  | 2026-09-06 14:42:51.512 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1007.781 ms
+postgres-1  | 2026-09-06 14:42:52.201 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 844 after 1001.862 ms
+postgres-1  | 2026-09-06 14:42:52.201 UTC [121] LOG:  process 121 detected deadlock while waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1001.912 ms
+postgres-1  | 2026-09-06 14:42:52.202 UTC [121] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:52.202 UTC [116] LOG:  process 116 acquired ShareLock on transaction 844 after 1003.199 ms
+postgres-1  | 2026-09-06 14:42:52.203 UTC [112] LOG:  process 112 acquired ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1956.596 ms
+postgres-1  | 2026-09-06 14:42:52.213 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 848 after 1001.246 ms
+postgres-1  | 2026-09-06 14:42:52.214 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 846 after 1001.980 ms
+postgres-1  | 2026-09-06 14:42:52.298 UTC [111] LOG:  process 111 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.637 ms
+postgres-1  | 2026-09-06 14:42:52.314 UTC [109] LOG:  process 109 still waiting for ShareLock on transaction 859 after 1003.997 ms
+postgres-1  | 2026-09-06 14:42:52.318 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 1007.330 ms
+postgres-1  | 2026-09-06 14:42:52.342 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1007.118 ms
+postgres-1  | 2026-09-06 14:42:52.458 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.109 ms
+postgres-1  | 2026-09-06 14:42:52.501 UTC [124] LOG:  process 124 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1002.020 ms
+postgres-1  | 2026-09-06 14:42:52.585 UTC [86] LOG:  process 86 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1002.910 ms
+postgres-1  | 2026-09-06 14:42:53.205 UTC [112] LOG:  process 112 detected deadlock while waiting for ShareLock on transaction 846 after 1002.455 ms
+postgres-1  | 2026-09-06 14:42:53.205 UTC [112] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:53.205 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 2921.421 ms
+postgres-1  | 2026-09-06 14:42:53.209 UTC [116] LOG:  process 116 detected deadlock while waiting for ShareLock on transaction 848 after 1001.683 ms
+postgres-1  | 2026-09-06 14:42:53.209 UTC [116] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:53.209 UTC [122] LOG:  process 122 acquired ShareLock on transaction 846 after 1997.190 ms
+postgres-1  | 2026-09-06 14:42:53.209 UTC [83] LOG:  process 83 acquired ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 2791.817 ms
+postgres-1  | 2026-09-06 14:42:53.209 UTC [126] LOG:  process 126 acquired ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 2914.572 ms
+postgres-1  | 2026-09-06 14:42:53.209 UTC [85] LOG:  process 85 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1001.414 ms
+postgres-1  | 2026-09-06 14:42:53.471 UTC [114] LOG:  process 114 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.354 ms
+postgres-1  | 2026-09-06 14:42:53.495 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1002.014 ms
+postgres-1  | 2026-09-06 14:42:54.212 UTC [82] LOG:  process 82 detected deadlock while waiting for ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 1002.925 ms
+postgres-1  | 2026-09-06 14:42:54.213 UTC [82] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:54.213 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 849 after 1003.951 ms
+postgres-1  | 2026-09-06 14:42:54.213 UTC [122] LOG:  process 122 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1003.919 ms
+postgres-1  | 2026-09-06 14:42:54.214 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 3846.766 ms
+postgres-1  | 2026-09-06 14:42:54.289 UTC [116] LOG:  process 116 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1001.862 ms
+postgres-1  | 2026-09-06 14:42:54.316 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 876 after 1004.751 ms
+postgres-1  | 2026-09-06 14:42:55.214 UTC [113] LOG:  process 113 detected deadlock while waiting for ShareLock on transaction 857 after 1000.443 ms
+postgres-1  | 2026-09-06 14:42:55.214 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:55.215 UTC [85] LOG:  process 85 acquired ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 3006.760 ms
+postgres-1  | 2026-09-06 14:42:55.216 UTC [126] LOG:  process 126 detected deadlock while waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1000.652 ms
+postgres-1  | 2026-09-06 14:42:55.216 UTC [126] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:55.216 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 2723.345 ms
+postgres-1  | 2026-09-06 14:42:55.221 UTC [127] LOG:  process 127 acquired ShareLock on transaction 848 after 4008.636 ms
+postgres-1  | 2026-09-06 14:42:55.221 UTC [116] LOG:  process 116 acquired ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1933.591 ms
+postgres-1  | 2026-09-06 14:42:55.221 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 4962.007 ms
+postgres-1  | 2026-09-06 14:42:55.221 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 4936.692 ms
+postgres-1  | 2026-09-06 14:42:55.221 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 3910.409 ms
+postgres-1  | 2026-09-06 14:42:55.359 UTC [82] LOG:  process 82 detected deadlock while waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1003.932 ms
+postgres-1  | 2026-09-06 14:42:55.359 UTC [82] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:56.222 UTC [125] LOG:  process 125 detected deadlock while waiting for ShareLock on transaction 852 after 1000.586 ms
+postgres-1  | 2026-09-06 14:42:56.222 UTC [125] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:56.222 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 875 after 1001.079 ms
+postgres-1  | 2026-09-06 14:42:56.222 UTC [108] LOG:  process 108 still waiting for ShareLock on transaction 852 after 1000.994 ms
+postgres-1  | 2026-09-06 14:42:56.222 UTC [120] LOG:  process 120 acquired ShareLock on transaction 854 after 5868.152 ms
+postgres-1  | 2026-09-06 14:42:56.222 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 852 after 1000.411 ms
+postgres-1  | 2026-09-06 14:42:56.222 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1000.392 ms
+postgres-1  | 2026-09-06 14:42:56.222 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1000.316 ms
+postgres-1  | 2026-09-06 14:42:56.222 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 5831.654 ms
+postgres-1  | 2026-09-06 14:42:56.395 UTC [85] LOG:  process 85 still waiting for ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 1003.147 ms
+postgres-1  | 2026-09-06 14:42:56.431 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 879 after 1010.262 ms
+postgres-1  | 2026-09-06 14:42:56.460 UTC [113] LOG:  process 113 detected deadlock while waiting for ShareLock on transaction 852 after 1006.589 ms
+postgres-1  | 2026-09-06 14:42:56.460 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:56.639 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1010.338 ms
+postgres-1  | 2026-09-06 14:42:57.223 UTC [110] LOG:  process 110 detected deadlock while waiting for ShareLock on transaction 861 after 1000.872 ms
+postgres-1  | 2026-09-06 14:42:57.223 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:57.223 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 6780.538 ms
+postgres-1  | 2026-09-06 14:42:57.462 UTC [120] LOG:  process 120 detected deadlock while waiting for ShareLock on transaction 852 after 1001.223 ms
+postgres-1  | 2026-09-06 14:42:57.462 UTC [120] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:57.463 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 7012.810 ms
+postgres-1  | 2026-09-06 14:42:57.519 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 1001.148 ms
+postgres-1  | 2026-09-06 14:42:57.559 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (0,76) of relation 16385 of database 16384 after 1001.395 ms
+postgres-1  | 2026-09-06 14:42:58.338 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.287 ms
+postgres-1  | 2026-09-06 14:42:58.469 UTC [118] LOG:  process 118 detected deadlock while waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1004.865 ms
+postgres-1  | 2026-09-06 14:42:58.469 UTC [118] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:58.469 UTC [111] LOG:  process 111 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 7173.525 ms
+postgres-1  | 2026-09-06 14:42:58.624 UTC [120] LOG:  process 120 detected deadlock while waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1009.324 ms
+postgres-1  | 2026-09-06 14:42:58.625 UTC [120] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:59.403 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 849 after 6193.598 ms
+postgres-1  | 2026-09-06 14:42:59.470 UTC [111] LOG:  process 111 detected deadlock while waiting for ShareLock on transaction 867 after 1000.798 ms
+postgres-1  | 2026-09-06 14:42:59.470 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:59.471 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1000.501 ms
+postgres-1  | 2026-09-06 14:42:59.471 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 8136.077 ms
+postgres-1  | 2026-09-06 14:42:59.502 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1032.088 ms
+postgres-1  | 2026-09-06 14:42:59.514 UTC [109] LOG:  process 109 still waiting for ShareLock on transaction 859 after 8203.291 ms
+postgres-1  | 2026-09-06 14:42:59.518 UTC [122] LOG:  process 122 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 6309.119 ms
+postgres-1  | 2026-09-06 14:42:59.551 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 852 after 4329.818 ms
+postgres-1  | 2026-09-06 14:42:59.575 UTC [108] LOG:  process 108 still waiting for ShareLock on transaction 852 after 4354.283 ms
+postgres-1  | 2026-09-06 14:42:59.621 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 9116.052 ms
+postgres-1  | 2026-09-06 14:42:59.658 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1010.647 ms
+postgres-1  | 2026-09-06 14:42:59.668 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 4446.770 ms
+postgres-1  | 2026-09-06 14:42:59.846 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 876 after 1009.599 ms
+postgres-1  | 2026-09-06 14:43:00.479 UTC [84] LOG:  process 84 detected deadlock while waiting for ShareLock on transaction 867 after 1007.883 ms
+postgres-1  | 2026-09-06 14:43:00.479 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:00.480 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 9023.639 ms
+postgres-1  | 2026-09-06 14:43:00.719 UTC [111] LOG:  process 111 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1005.791 ms
+postgres-1  | 2026-09-06 14:43:01.483 UTC [115] LOG:  process 115 detected deadlock while waiting for ShareLock on transaction 867 after 1002.599 ms
+postgres-1  | 2026-09-06 14:43:01.483 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:01.483 UTC [114] LOG:  process 114 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 9014.710 ms
+postgres-1  | 2026-09-06 14:43:01.758 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 1003.634 ms
+postgres-1  | 2026-09-06 14:43:02.490 UTC [114] LOG:  process 114 detected deadlock while waiting for ShareLock on transaction 867 after 1006.992 ms
+postgres-1  | 2026-09-06 14:43:02.490 UTC [114] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:02.491 UTC [122] LOG:  process 122 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 9282.045 ms
+postgres-1  | 2026-09-06 14:43:02.790 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 1003.241 ms
+postgres-1  | 2026-09-06 14:43:03.492 UTC [122] LOG:  process 122 detected deadlock while waiting for ShareLock on transaction 867 after 1000.683 ms
+postgres-1  | 2026-09-06 14:43:03.492 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:03.492 UTC [83] LOG:  process 83 acquired ShareLock on transaction 849 after 10283.254 ms
+postgres-1  | 2026-09-06 14:43:03.492 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 7863.850 ms
+postgres-1  | 2026-09-06 14:43:03.493 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 12987.848 ms
+postgres-1  | 2026-09-06 14:43:03.601 UTC [114] LOG:  process 114 still waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1009.140 ms
+postgres-1  | 2026-09-06 14:43:04.498 UTC [117] LOG:  process 117 detected deadlock while waiting for ShareLock on transaction 865 after 1005.001 ms
+postgres-1  | 2026-09-06 14:43:04.498 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:04.499 UTC [86] LOG:  process 86 acquired ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 12916.851 ms
+postgres-1  | 2026-09-06 14:43:04.499 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 867 after 1006.936 ms
+postgres-1  | 2026-09-06 14:43:04.502 UTC [83] LOG:  process 83 detected deadlock while waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1009.230 ms
+postgres-1  | 2026-09-06 14:43:04.502 UTC [83] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:04.503 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 9281.181 ms
+postgres-1  | 2026-09-06 14:43:04.614 UTC [122] LOG:  process 122 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1001.944 ms
+postgres-1  | 2026-09-06 14:43:05.504 UTC [86] LOG:  process 86 detected deadlock while waiting for ExclusiveLock on tuple (0,76) of relation 16385 of database 16384 after 1000.679 ms
+postgres-1  | 2026-09-06 14:43:05.504 UTC [86] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:05.504 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 6856.959 ms
+postgres-1  | 2026-09-06 14:43:05.671 UTC [83] LOG:  process 83 detected deadlock while waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1005.713 ms
+postgres-1  | 2026-09-06 14:43:05.671 UTC [83] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:05.692 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.887 ms
+postgres-1  | 2026-09-06 14:43:06.506 UTC [127] LOG:  process 127 detected deadlock while waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1001.816 ms
+postgres-1  | 2026-09-06 14:43:06.507 UTC [127] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:06.507 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 852 after 1002.651 ms
+postgres-1  | 2026-09-06 14:43:06.507 UTC [118] LOG:  process 118 acquired ShareLock on transaction 852 after 1002.914 ms
+postgres-1  | 2026-09-06 14:43:06.507 UTC [108] LOG:  process 108 acquired ShareLock on transaction 852 after 11286.425 ms
+postgres-1  | 2026-09-06 14:43:06.507 UTC [123] LOG:  process 123 acquired ShareLock on transaction 852 after 11285.877 ms
+postgres-1  | 2026-09-06 14:43:06.508 UTC [111] LOG:  process 111 acquired ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 6794.275 ms
+postgres-1  | 2026-09-06 14:43:06.719 UTC [86] LOG:  process 86 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1000.505 ms
+postgres-1  | 2026-09-06 14:43:06.930 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1001.501 ms
+postgres-1  | 2026-09-06 14:43:07.508 UTC [111] LOG:  process 111 detected deadlock while waiting for ShareLock on transaction 887 after 1000.263 ms
+postgres-1  | 2026-09-06 14:43:07.508 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 853 after 1000.516 ms
+postgres-1  | 2026-09-06 14:43:07.508 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:07.509 UTC [118] LOG:  process 118 detected deadlock while waiting for ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 1000.167 ms
+postgres-1  | 2026-09-06 14:43:07.509 UTC [118] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:07.789 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1000.743 ms
+postgres-1  | 2026-09-06 14:43:08.512 UTC [108] LOG:  process 108 detected deadlock while waiting for ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 1002.143 ms
+postgres-1  | 2026-09-06 14:43:08.512 UTC [108] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:08.512 UTC [123] LOG:  process 123 acquired ShareLock on transaction 853 after 2004.961 ms
+postgres-1  | 2026-09-06 14:43:08.607 UTC [111] LOG:  process 111 detected deadlock while waiting for ExclusiveLock on tuple (0,76) of relation 16385 of database 16384 after 1000.573 ms
+postgres-1  | 2026-09-06 14:43:08.607 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:08.825 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1005.846 ms
+postgres-1  | 2026-09-06 14:43:09.517 UTC [123] LOG:  process 123 detected deadlock while waiting for ExclusiveLock on tuple (0,76) of relation 16385 of database 16384 after 1004.217 ms
+postgres-1  | 2026-09-06 14:43:09.517 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:09.518 UTC [109] LOG:  process 109 acquired ShareLock on transaction 859 after 18207.306 ms
+postgres-1  | 2026-09-06 14:43:09.518 UTC [124] LOG:  process 124 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 18019.108 ms
+postgres-1  | 2026-09-06 14:43:09.642 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (0,53) of relation 16385 of database 16384 after 1003.645 ms
+postgres-1  | 2026-09-06 14:43:09.777 UTC [111] LOG:  process 111 still waiting for ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 1002.705 ms
+postgres-1  | 2026-09-06 14:43:10.519 UTC [124] LOG:  process 124 detected deadlock while waiting for ShareLock on transaction 860 after 1000.969 ms
+postgres-1  | 2026-09-06 14:43:10.519 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:10.520 UTC [109] LOG:  process 109 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1000.400 ms
+postgres-1  | 2026-09-06 14:43:10.520 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 15298.567 ms
+postgres-1  | 2026-09-06 14:43:10.731 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1010.871 ms
+postgres-1  | 2026-09-06 14:43:11.522 UTC [121] LOG:  process 121 detected deadlock while waiting for ShareLock on transaction 860 after 1001.427 ms
+postgres-1  | 2026-09-06 14:43:11.522 UTC [121] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:11.522 UTC [116] LOG:  process 116 acquired ShareLock on transaction 875 after 16301.207 ms
+postgres-1  | 2026-09-06 14:43:11.522 UTC [122] LOG:  process 122 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 7909.770 ms
+postgres-1  | 2026-09-06 14:43:11.522 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (0,76) of relation 16385 of database 16384 after 14964.883 ms
+postgres-1  | 2026-09-06 14:43:11.529 UTC [112] LOG:  process 112 acquired ShareLock on transaction 876 after 18218.343 ms
+postgres-1  | 2026-09-06 14:43:11.529 UTC [120] LOG:  process 120 acquired ShareLock on transaction 876 after 12692.660 ms
+postgres-1  | 2026-09-06 14:43:11.529 UTC [85] LOG:  process 85 acquired ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 16137.616 ms
+postgres-1  | 2026-09-06 14:43:11.529 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (0,53) of relation 16385 of database 16384 after 2890.988 ms
+postgres-1  | 2026-09-06 14:43:11.529 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 15011.892 ms
+postgres-1  | 2026-09-06 14:43:11.529 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 10775.039 ms
+postgres-1  | 2026-09-06 14:43:11.530 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 9742.725 ms
+postgres-1  | 2026-09-06 14:43:11.530 UTC [111] LOG:  process 111 acquired ExclusiveLock on tuple (0,61) of relation 16385 of database 16384 after 2755.504 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [85] LOG:  process 85 detected deadlock while waiting for ShareLock on transaction 877 after 1001.223 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 877 after 1001.096 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [115] LOG:  process 115 still waiting for ShareLock on transaction 877 after 1001.186 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [108] LOG:  process 108 still waiting for ShareLock on transaction 888 after 1001.392 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1001.297 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 884 after 1001.251 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [85] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:12.531 UTC [84] LOG:  process 84 still waiting for ShareLock on transaction 877 after 1001.461 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 860 after 1008.961 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [124] LOG:  process 124 still waiting for ShareLock on transaction 884 after 1002.010 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1001.510 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [126] LOG:  process 126 acquired ShareLock on transaction 879 after 17110.782 ms
+postgres-1  | 2026-09-06 14:43:12.531 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 877 after 1002.032 ms
+postgres-1  | 2026-09-06 14:43:12.532 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 14061.375 ms
+postgres-1  | 2026-09-06 14:43:12.786 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1005.365 ms
+postgres-1  | 2026-09-06 14:43:12.828 UTC [116] LOG:  process 116 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1010.889 ms
+postgres-1  | 2026-09-06 14:43:13.537 UTC [126] LOG:  process 126 detected deadlock while waiting for ShareLock on transaction 860 after 1004.130 ms
+postgres-1  | 2026-09-06 14:43:13.537 UTC [126] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:13.540 UTC [114] LOG:  process 114 acquired ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 10947.879 ms
+postgres-1  | 2026-09-06 14:43:14.546 UTC [114] LOG:  process 114 still waiting for ShareLock on transaction 867 after 1005.572 ms
+postgres-1  | 2026-09-06 14:43:14.548 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 860 after 1007.935 ms
+postgres-1  | 2026-09-06 14:43:14.548 UTC [119] LOG:  process 119 detected deadlock while waiting for ShareLock on transaction 888 after 1006.234 ms
+postgres-1  | 2026-09-06 14:43:14.548 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:14.548 UTC [82] LOG:  process 82 acquired ShareLock on transaction 867 after 11055.820 ms
+postgres-1  | 2026-09-06 14:43:14.548 UTC [114] LOG:  process 114 acquired ShareLock on transaction 867 after 1007.865 ms
+postgres-1  | 2026-09-06 14:43:14.549 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 17211.541 ms
+postgres-1  | 2026-09-06 14:43:14.549 UTC [83] LOG:  process 83 acquired ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 8620.358 ms
+postgres-1  | 2026-09-06 14:43:14.658 UTC [126] LOG:  process 126 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1002.684 ms
+postgres-1  | 2026-09-06 14:43:15.551 UTC [82] LOG:  process 82 detected deadlock while waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1001.863 ms
+postgres-1  | 2026-09-06 14:43:15.552 UTC [82] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:15.552 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 903 after 1003.015 ms
+postgres-1  | 2026-09-06 14:43:15.552 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 10862.663 ms
+postgres-1  | 2026-09-06 14:43:15.554 UTC [114] LOG:  process 114 still waiting for ShareLock on transaction 877 after 1003.715 ms
+postgres-1  | 2026-09-06 14:43:15.698 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (0,73) of relation 16385 of database 16384 after 1004.628 ms
+postgres-1  | 2026-09-06 14:43:16.558 UTC [117] LOG:  process 117 detected deadlock while waiting for ShareLock on transaction 885 after 1005.885 ms
+postgres-1  | 2026-09-06 14:43:16.558 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (0,66) of relation 16385 of database 16384 after 1005.430 ms
+postgres-1  | 2026-09-06 14:43:16.558 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:16.559 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 9770.174 ms
+postgres-1  | 2026-09-06 14:43:16.730 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (0,92) of relation 16385 of database 16384 after 1002.221 ms
+postgres-1  | 2026-09-06 14:43:17.562 UTC [127] LOG:  process 127 detected deadlock while waiting for ShareLock on transaction 885 after 1002.967 ms
+postgres-1  | 2026-09-06 14:43:17.562 UTC [127] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:17.562 UTC [109] LOG:  process 109 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 8042.606 ms
+postgres-1  | 2026-09-06 14:43:17.762 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 1003.299 ms
+postgres-1  | 2026-09-06 14:43:18.562 UTC [109] LOG:  process 109 detected deadlock while waiting for ShareLock on transaction 885 after 1000.334 ms
+postgres-1  | 2026-09-06 14:43:18.562 UTC [109] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:18.563 UTC [85] LOG:  process 85 acquired ShareLock on transaction 860 after 5023.194 ms
+postgres-1  | 2026-09-06 14:43:18.563 UTC [122] LOG:  process 122 acquired ShareLock on transaction 860 after 7040.795 ms
+postgres-1  | 2026-09-06 14:43:18.563 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 8842.951 ms
+postgres-1  | 2026-09-06 14:43:18.563 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (0,66) of relation 16385 of database 16384 after 3010.254 ms
+postgres-1  | 2026-09-06 14:43:18.563 UTC [86] LOG:  process 86 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 12844.440 ms
+postgres-1  | 2026-09-06 14:43:18.793 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.572 ms
+postgres-1  | 2026-09-06 14:43:19.564 UTC [110] LOG:  process 110 detected deadlock while waiting for ShareLock on transaction 918 after 1001.376 ms
+postgres-1  | 2026-09-06 14:43:19.564 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:19.565 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 917 after 1000.946 ms
+postgres-1  | 2026-09-06 14:43:19.565 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1774.731 ms
+postgres-1  | 2026-09-06 14:43:19.565 UTC [86] LOG:  process 86 detected deadlock while waiting for ShareLock on transaction 904 after 1001.847 ms
+postgres-1  | 2026-09-06 14:43:19.565 UTC [86] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:19.565 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 8035.505 ms
+postgres-1  | 2026-09-06 14:43:19.827 UTC [109] LOG:  process 109 still waiting for ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1000.926 ms
+postgres-1  | 2026-09-06 14:43:20.569 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 914 after 1003.964 ms
+postgres-1  | 2026-09-06 14:43:20.571 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (0,92) of relation 16385 of database 16384 after 1005.251 ms
+postgres-1  | 2026-09-06 14:43:20.571 UTC [122] LOG:  process 122 detected deadlock while waiting for ShareLock on transaction 918 after 1006.111 ms
+postgres-1  | 2026-09-06 14:43:20.571 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 904 after 1005.857 ms
+postgres-1  | 2026-09-06 14:43:20.571 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:20.571 UTC [113] LOG:  process 113 acquired ShareLock on transaction 904 after 1006.164 ms
+postgres-1  | 2026-09-06 14:43:20.571 UTC [112] LOG:  process 112 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 9041.701 ms
+postgres-1  | 2026-09-06 14:43:20.574 UTC [124] LOG:  process 124 acquired ShareLock on transaction 884 after 9044.931 ms
+postgres-1  | 2026-09-06 14:43:20.574 UTC [120] LOG:  process 120 acquired ShareLock on transaction 884 after 9044.561 ms
+postgres-1  | 2026-09-06 14:43:20.574 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (0,92) of relation 16385 of database 16384 after 4846.316 ms
+postgres-1  | 2026-09-06 14:43:20.574 UTC [116] LOG:  process 116 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 8757.281 ms
+postgres-1  | 2026-09-06 14:43:20.574 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (0,92) of relation 16385 of database 16384 after 1008.769 ms
+postgres-1  | 2026-09-06 14:43:20.574 UTC [126] LOG:  process 126 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 6919.603 ms
+postgres-1  | 2026-09-06 14:43:20.575 UTC [109] LOG:  process 109 acquired ExclusiveLock on tuple (0,57) of relation 16385 of database 16384 after 1748.745 ms
+postgres-1  | 2026-09-06 14:43:20.577 UTC [114] LOG:  process 114 acquired ShareLock on transaction 877 after 6026.834 ms
+postgres-1  | 2026-09-06 14:43:20.577 UTC [111] LOG:  process 111 acquired ShareLock on transaction 877 after 9047.161 ms
+postgres-1  | 2026-09-06 14:43:20.577 UTC [125] LOG:  process 125 acquired ShareLock on transaction 877 after 9047.325 ms
+postgres-1  | 2026-09-06 14:43:20.577 UTC [115] LOG:  process 115 acquired ShareLock on transaction 877 after 9047.186 ms
+postgres-1  | 2026-09-06 14:43:20.577 UTC [84] LOG:  process 84 acquired ShareLock on transaction 877 after 9047.238 ms
+postgres-1  | 2026-09-06 14:43:20.577 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (0,73) of relation 16385 of database 16384 after 5883.825 ms
+postgres-1  | 2026-09-06 14:43:20.581 UTC [83] LOG:  process 83 acquired ShareLock on transaction 903 after 6032.472 ms
+postgres-1  | 2026-09-06 14:43:20.581 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 12762.399 ms
+postgres-1  | 2026-09-06 14:43:20.581 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 8800.540 ms
+postgres-1  | 2026-09-06 14:43:20.581 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (0,70) of relation 16385 of database 16384 after 3822.856 ms
+postgres-1  | 2026-09-06 14:43:21.575 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 915 after 1000.217 ms
+postgres-1  | 2026-09-06 14:43:21.575 UTC [123] LOG:  process 123 detected deadlock while waiting for ShareLock on transaction 915 after 1000.291 ms
+postgres-1  | 2026-09-06 14:43:21.575 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:21.575 UTC [127] LOG:  process 127 acquired ShareLock on transaction 914 after 2010.199 ms
+postgres-1  | 2026-09-06 14:43:21.575 UTC [120] LOG:  process 120 still waiting for ExclusiveLock on tuple (0,93) of relation 16385 of database 16384 after 1001.039 ms
+postgres-1  | 2026-09-06 14:43:21.575 UTC [110] LOG:  process 110 still waiting for ShareLock on transaction 915 after 1000.913 ms
+postgres-1  | 2026-09-06 14:43:21.578 UTC [109] LOG:  process 109 still waiting for ShareLock on transaction 917 after 1000.480 ms
+postgres-1  | 2026-09-06 14:43:21.578 UTC [126] LOG:  process 126 detected deadlock while waiting for ShareLock on transaction 917 after 1000.760 ms
+postgres-1  | 2026-09-06 14:43:21.578 UTC [126] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:21.581 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1000.174 ms
+postgres-1  | 2026-09-06 14:43:21.581 UTC [86] LOG:  process 86 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1000.307 ms
+postgres-1  | 2026-09-06 14:43:21.582 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1000.432 ms
+postgres-1  | 2026-09-06 14:43:21.582 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 908 after 1000.376 ms
+postgres-1  | 2026-09-06 14:43:21.582 UTC [111] LOG:  process 111 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1000.508 ms
+postgres-1  | 2026-09-06 14:43:21.582 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 890 after 1000.578 ms
+postgres-1  | 2026-09-06 14:43:21.582 UTC [117] LOG:  process 117 still waiting for ShareLock on transaction 908 after 1000.941 ms
+postgres-1  | 2026-09-06 14:43:21.583 UTC [116] LOG:  process 116 detected deadlock while waiting for ShareLock on transaction 908 after 1000.962 ms
+postgres-1  | 2026-09-06 14:43:21.583 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 908 after 1001.054 ms
+postgres-1  | 2026-09-06 14:43:21.583 UTC [116] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:21.583 UTC [84] LOG:  process 84 still waiting for ShareLock on transaction 918 after 1001.051 ms
+postgres-1  | 2026-09-06 14:43:21.583 UTC [85] LOG:  process 85 acquired ShareLock on transaction 917 after 3019.109 ms
+postgres-1  | 2026-09-06 14:43:21.583 UTC [109] LOG:  process 109 acquired ShareLock on transaction 917 after 1005.675 ms
+postgres-1  | 2026-09-06 14:43:21.587 UTC [84] LOG:  process 84 acquired ShareLock on transaction 918 after 1005.867 ms
+postgres-1  | 2026-09-06 14:43:21.687 UTC [113] LOG:  process 113 detected deadlock while waiting for ShareLock on transaction 908 after 1000.546 ms
+postgres-1  | 2026-09-06 14:43:21.687 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:21.759 UTC [114] LOG:  process 114 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1005.137 ms
+postgres-1  | 2026-09-06 14:43:22.577 UTC [124] LOG:  process 124 detected deadlock while waiting for ShareLock on transaction 923 after 1001.436 ms
+postgres-1  | 2026-09-06 14:43:22.577 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:22.577 UTC [82] LOG:  process 82 acquired ShareLock on transaction 915 after 2003.066 ms
+postgres-1  | 2026-09-06 14:43:22.577 UTC [110] LOG:  process 110 acquired ShareLock on transaction 915 after 2002.971 ms
+postgres-1  | 2026-09-06 14:43:22.578 UTC [114] LOG:  process 114 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1823.204 ms
+postgres-1  | 2026-09-06 14:43:22.578 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 888 after 1001.538 ms
+postgres-1  | 2026-09-06 14:43:22.578 UTC [120] LOG:  process 120 acquired ExclusiveLock on tuple (0,93) of relation 16385 of database 16384 after 2003.304 ms
+postgres-1  | 2026-09-06 14:43:22.585 UTC [109] LOG:  process 109 still waiting for ShareLock on transaction 908 after 1001.786 ms
+postgres-1  | 2026-09-06 14:43:22.589 UTC [84] LOG:  process 84 detected deadlock while waiting for ExclusiveLock on tuple (0,100) of relation 16385 of database 16384 after 1000.844 ms
+postgres-1  | 2026-09-06 14:43:22.589 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:22.589 UTC [119] LOG:  process 119 acquired ShareLock on transaction 890 after 2007.768 ms
+postgres-1  | 2026-09-06 14:43:22.589 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 2007.953 ms
+postgres-1  | 2026-09-06 14:43:22.680 UTC [116] LOG:  process 116 still waiting for ExclusiveLock on tuple (0,100) of relation 16385 of database 16384 after 1002.567 ms
+postgres-1  | 2026-09-06 14:43:22.688 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 908 after 1001.112 ms
+postgres-1  | 2026-09-06 14:43:22.811 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1001.411 ms
+postgres-1  | 2026-09-06 14:43:22.821 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 908 after 1003.234 ms
+postgres-1  | 2026-09-06 14:43:22.848 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1000.896 ms
+postgres-1  | 2026-09-06 14:43:22.892 UTC [85] LOG:  process 85 detected deadlock while waiting for ExclusiveLock on tuple (0,93) of relation 16385 of database 16384 after 1002.130 ms
+postgres-1  | 2026-09-06 14:43:22.893 UTC [85] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:23.579 UTC [120] LOG:  process 120 detected deadlock while waiting for ShareLock on transaction 921 after 1001.233 ms
+postgres-1  | 2026-09-06 14:43:23.579 UTC [120] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:23.580 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1000.801 ms
+postgres-1  | 2026-09-06 14:43:23.580 UTC [114] LOG:  process 114 still waiting for ShareLock on transaction 923 after 1002.190 ms
+postgres-1  | 2026-09-06 14:43:23.580 UTC [108] LOG:  process 108 acquired ShareLock on transaction 888 after 12050.439 ms
+postgres-1  | 2026-09-06 14:43:23.580 UTC [127] LOG:  process 127 acquired ShareLock on transaction 888 after 2003.809 ms
+postgres-1  | 2026-09-06 14:43:23.590 UTC [115] LOG:  process 115 detected deadlock while waiting for ShareLock on transaction 920 after 1000.359 ms
+postgres-1  | 2026-09-06 14:43:23.590 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 928 after 1000.600 ms
+postgres-1  | 2026-09-06 14:43:23.590 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:23.590 UTC [86] LOG:  process 86 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 3008.804 ms
+postgres-1  | 2026-09-06 14:43:23.590 UTC [119] LOG:  process 119 detected deadlock while waiting for ExclusiveLock on tuple (0,93) of relation 16385 of database 16384 after 1000.734 ms
+postgres-1  | 2026-09-06 14:43:23.590 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1000.457 ms
+postgres-1  | 2026-09-06 14:43:23.591 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:23.591 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 3009.610 ms
+postgres-1  | 2026-09-06 14:43:23.736 UTC [124] LOG:  process 124 detected deadlock while waiting for ExclusiveLock on tuple (0,100) of relation 16385 of database 16384 after 1002.071 ms
+postgres-1  | 2026-09-06 14:43:23.737 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:23.775 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1000.737 ms
+postgres-1  | 2026-09-06 14:43:24.111 UTC [85] LOG:  process 85 still waiting for ExclusiveLock on tuple (0,102) of relation 16385 of database 16384 after 1001.805 ms
+postgres-1  | 2026-09-06 14:43:24.585 UTC [110] LOG:  process 110 still waiting for ShareLock on transaction 921 after 1005.466 ms
+postgres-1  | 2026-09-06 14:43:24.586 UTC [127] LOG:  process 127 detected deadlock while waiting for ShareLock on transaction 912 after 1005.900 ms
+postgres-1  | 2026-09-06 14:43:24.586 UTC [127] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:24.586 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1004.975 ms
+postgres-1  | 2026-09-06 14:43:24.587 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 2777.068 ms
+postgres-1  | 2026-09-06 14:43:24.587 UTC [114] LOG:  process 114 acquired ShareLock on transaction 923 after 2009.055 ms
+postgres-1  | 2026-09-06 14:43:24.587 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 2740.056 ms
+postgres-1  | 2026-09-06 14:43:24.592 UTC [86] LOG:  process 86 detected deadlock while waiting for ExclusiveLock on tuple (0,100) of relation 16385 of database 16384 after 1000.085 ms
+postgres-1  | 2026-09-06 14:43:24.592 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 926 after 1000.929 ms
+postgres-1  | 2026-09-06 14:43:24.592 UTC [86] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:24.592 UTC [125] LOG:  process 125 acquired ShareLock on transaction 926 after 1001.223 ms
+postgres-1  | 2026-09-06 14:43:24.592 UTC [111] LOG:  process 111 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 4010.989 ms
+postgres-1  | 2026-09-06 14:43:24.839 UTC [120] LOG:  process 120 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1009.581 ms
+postgres-1  | 2026-09-06 14:43:24.840 UTC [124] LOG:  process 124 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.888 ms
+postgres-1  | 2026-09-06 14:43:24.872 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1002.816 ms
+postgres-1  | 2026-09-06 14:43:24.912 UTC [119] LOG:  process 119 detected deadlock while waiting for ExclusiveLock on tuple (0,106) of relation 16385 of database 16384 after 1010.063 ms
+postgres-1  | 2026-09-06 14:43:24.912 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:25.592 UTC [114] LOG:  process 114 still waiting for ExclusiveLock on tuple (0,93) of relation 16385 of database 16384 after 1003.565 ms
+postgres-1  | 2026-09-06 14:43:25.592 UTC [113] LOG:  process 113 detected deadlock while waiting for ShareLock on transaction 912 after 1004.783 ms
+postgres-1  | 2026-09-06 14:43:25.592 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 929 after 1004.686 ms
+postgres-1  | 2026-09-06 14:43:25.592 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:25.592 UTC [112] LOG:  process 112 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 3002.162 ms
+postgres-1  | 2026-09-06 14:43:25.594 UTC [111] LOG:  process 111 detected deadlock while waiting for ShareLock on transaction 883 after 1001.107 ms
+postgres-1  | 2026-09-06 14:43:25.594 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:25.594 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (0,106) of relation 16385 of database 16384 after 1000.949 ms
+postgres-1  | 2026-09-06 14:43:25.594 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 3015.248 ms
+postgres-1  | 2026-09-06 14:43:25.739 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (0,102) of relation 16385 of database 16384 after 1010.440 ms
+postgres-1  | 2026-09-06 14:43:25.763 UTC [86] LOG:  process 86 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1006.530 ms
+postgres-1  | 2026-09-06 14:43:26.117 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 928 after 1011.067 ms
+postgres-1  | 2026-09-06 14:43:26.596 UTC [112] LOG:  process 112 detected deadlock while waiting for ShareLock on transaction 912 after 1003.389 ms
+postgres-1  | 2026-09-06 14:43:26.596 UTC [112] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:26.597 UTC [83] LOG:  process 83 acquired ShareLock on transaction 928 after 4007.541 ms
+postgres-1  | 2026-09-06 14:43:26.597 UTC [119] LOG:  process 119 acquired ShareLock on transaction 928 after 1490.274 ms
+postgres-1  | 2026-09-06 14:43:26.597 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 883 after 1002.508 ms
+postgres-1  | 2026-09-06 14:43:26.597 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 2727.807 ms
+postgres-1  | 2026-09-06 14:43:26.597 UTC [85] LOG:  process 85 acquired ExclusiveLock on tuple (0,102) of relation 16385 of database 16384 after 3487.828 ms
+postgres-1  | 2026-09-06 14:43:26.606 UTC [126] LOG:  process 126 acquired ShareLock on transaction 908 after 4788.625 ms
+postgres-1  | 2026-09-06 14:43:26.606 UTC [118] LOG:  process 118 acquired ShareLock on transaction 908 after 6024.753 ms
+postgres-1  | 2026-09-06 14:43:26.606 UTC [121] LOG:  process 121 acquired ShareLock on transaction 908 after 6024.681 ms
+postgres-1  | 2026-09-06 14:43:26.606 UTC [117] LOG:  process 117 acquired ShareLock on transaction 908 after 6024.630 ms
+postgres-1  | 2026-09-06 14:43:26.606 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (0,106) of relation 16385 of database 16384 after 2013.499 ms
+postgres-1  | 2026-09-06 14:43:26.607 UTC [122] LOG:  process 122 acquired ShareLock on transaction 908 after 4919.247 ms
+postgres-1  | 2026-09-06 14:43:26.607 UTC [109] LOG:  process 109 acquired ShareLock on transaction 908 after 5023.269 ms
+postgres-1  | 2026-09-06 14:43:26.607 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (0,102) of relation 16385 of database 16384 after 1877.619 ms
+postgres-1  | 2026-09-06 14:43:26.607 UTC [116] LOG:  process 116 acquired ExclusiveLock on tuple (0,100) of relation 16385 of database 16384 after 4929.627 ms
+postgres-1  | 2026-09-06 14:43:27.599 UTC [115] LOG:  process 115 still waiting for ShareLock on transaction 912 after 1001.936 ms
+postgres-1  | 2026-09-06 14:43:27.599 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 948 after 1002.078 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 916 after 1001.682 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [122] LOG:  process 122 detected deadlock while waiting for ShareLock on transaction 916 after 1002.063 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1000.895 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1001.982 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:27.609 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 924 after 1002.143 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 924 after 1001.059 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1002.292 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 924 after 1002.158 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 924 after 1002.102 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 941 after 1002.326 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [109] LOG:  process 109 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1001.237 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 941 after 1002.440 ms
+postgres-1  | 2026-09-06 14:43:27.609 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1002.579 ms
+postgres-1  | 2026-09-06 14:43:27.685 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.679 ms
+postgres-1  | 2026-09-06 14:43:27.887 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (0,117) of relation 16385 of database 16384 after 1004.337 ms
+postgres-1  | 2026-09-06 14:43:28.612 UTC [118] LOG:  process 118 detected deadlock while waiting for ShareLock on transaction 916 after 1002.431 ms
+postgres-1  | 2026-09-06 14:43:28.612 UTC [118] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:28.612 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 2005.452 ms
+postgres-1  | 2026-09-06 14:43:28.727 UTC [122] LOG:  process 122 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1007.219 ms
+postgres-1  | 2026-09-06 14:43:29.619 UTC [117] LOG:  process 117 detected deadlock while waiting for ShareLock on transaction 916 after 1006.193 ms
+postgres-1  | 2026-09-06 14:43:29.619 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:29.619 UTC [109] LOG:  process 109 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 3011.529 ms
+postgres-1  | 2026-09-06 14:43:29.771 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1010.239 ms
+postgres-1  | 2026-09-06 14:43:30.626 UTC [109] LOG:  process 109 detected deadlock while waiting for ShareLock on transaction 916 after 1006.003 ms
+postgres-1  | 2026-09-06 14:43:30.626 UTC [109] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:30.626 UTC [126] LOG:  process 126 acquired ShareLock on transaction 924 after 4019.131 ms
+postgres-1  | 2026-09-06 14:43:30.626 UTC [125] LOG:  process 125 acquired ShareLock on transaction 924 after 4019.049 ms
+postgres-1  | 2026-09-06 14:43:30.626 UTC [111] LOG:  process 111 acquired ShareLock on transaction 924 after 4018.980 ms
+postgres-1  | 2026-09-06 14:43:30.626 UTC [85] LOG:  process 85 acquired ShareLock on transaction 924 after 4018.071 ms
+postgres-1  | 2026-09-06 14:43:30.632 UTC [82] LOG:  process 82 acquired ShareLock on transaction 883 after 5038.180 ms
+postgres-1  | 2026-09-06 14:43:30.632 UTC [112] LOG:  process 112 acquired ExclusiveLock on tuple (0,117) of relation 16385 of database 16384 after 3749.575 ms
+postgres-1  | 2026-09-06 14:43:30.632 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 7051.083 ms
+postgres-1  | 2026-09-06 14:43:30.633 UTC [120] LOG:  process 120 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 6803.067 ms
+postgres-1  | 2026-09-06 14:43:30.633 UTC [86] LOG:  process 86 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 5876.499 ms
+postgres-1  | 2026-09-06 14:43:30.633 UTC [122] LOG:  process 122 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 2913.107 ms
+postgres-1  | 2026-09-06 14:43:30.633 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (0,113) of relation 16385 of database 16384 after 1871.720 ms
+postgres-1  | 2026-09-06 14:43:30.636 UTC [127] LOG:  process 127 acquired ShareLock on transaction 941 after 4029.472 ms
+postgres-1  | 2026-09-06 14:43:30.636 UTC [119] LOG:  process 119 acquired ShareLock on transaction 941 after 4029.505 ms
+postgres-1  | 2026-09-06 14:43:30.802 UTC [117] LOG:  process 117 detected deadlock while waiting for ExclusiveLock on tuple (0,118) of relation 16385 of database 16384 after 1010.735 ms
+postgres-1  | 2026-09-06 14:43:30.802 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:31.635 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 921 after 1001.719 ms
+postgres-1  | 2026-09-06 14:43:31.635 UTC [108] LOG:  process 108 still waiting for ShareLock on transaction 921 after 1002.215 ms
+postgres-1  | 2026-09-06 14:43:31.635 UTC [86] LOG:  process 86 still waiting for ShareLock on transaction 921 after 1001.992 ms
+postgres-1  | 2026-09-06 14:43:31.635 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 921 after 1001.913 ms
+postgres-1  | 2026-09-06 14:43:31.635 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 921 after 1002.138 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [82] LOG:  process 82 detected deadlock while waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.233 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [82] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:31.636 UTC [108] LOG:  process 108 acquired ShareLock on transaction 921 after 1003.133 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [110] LOG:  process 110 acquired ShareLock on transaction 921 after 8055.710 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [86] LOG:  process 86 acquired ShareLock on transaction 921 after 1002.896 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [122] LOG:  process 122 acquired ShareLock on transaction 921 after 1002.794 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [118] LOG:  process 118 acquired ShareLock on transaction 921 after 1002.712 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [120] LOG:  process 120 acquired ShareLock on transaction 921 after 1003.000 ms
+postgres-1  | 2026-09-06 14:43:31.636 UTC [114] LOG:  process 114 acquired ExclusiveLock on tuple (0,93) of relation 16385 of database 16384 after 7047.917 ms
+postgres-1  | 2026-09-06 14:43:31.638 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1000.436 ms
+postgres-1  | 2026-09-06 14:43:31.638 UTC [119] LOG:  process 119 detected deadlock while waiting for ShareLock on transaction 946 after 1001.149 ms
+postgres-1  | 2026-09-06 14:43:31.638 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (0,118) of relation 16385 of database 16384 after 1000.557 ms
+postgres-1  | 2026-09-06 14:43:31.638 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:31.638 UTC [111] LOG:  process 111 still waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1001.214 ms
+postgres-1  | 2026-09-06 14:43:31.638 UTC [113] LOG:  process 113 acquired ShareLock on transaction 948 after 5040.699 ms
+postgres-1  | 2026-09-06 14:43:31.638 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (0,118) of relation 16385 of database 16384 after 1000.701 ms
+postgres-1  | 2026-09-06 14:43:31.638 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 952 after 1001.704 ms
+postgres-1  | 2026-09-06 14:43:31.880 UTC [85] LOG:  process 85 still waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1004.542 ms
+postgres-1  | 2026-09-06 14:43:32.114 UTC [117] LOG:  process 117 detected deadlock while waiting for ExclusiveLock on tuple (0,135) of relation 16385 of database 16384 after 1009.431 ms
+postgres-1  | 2026-09-06 14:43:32.114 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:32.637 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (0,118) of relation 16385 of database 16384 after 1001.138 ms
+postgres-1  | 2026-09-06 14:43:32.637 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.236 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [125] LOG:  process 125 detected deadlock while waiting for ShareLock on transaction 946 after 1001.120 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [125] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:32.639 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 950 after 1001.173 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 912 after 1003.114 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 912 after 1003.193 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [109] LOG:  process 109 still waiting for ShareLock on transaction 912 after 1003.399 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [86] LOG:  process 86 still waiting for ShareLock on transaction 912 after 1003.106 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (0,135) of relation 16385 of database 16384 after 1001.208 ms
+postgres-1  | 2026-09-06 14:43:32.639 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (0,135) of relation 16385 of database 16384 after 1001.681 ms
+postgres-1  | 2026-09-06 14:43:32.640 UTC [120] LOG:  process 120 still waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1004.487 ms
+postgres-1  | 2026-09-06 14:43:32.641 UTC [114] LOG:  process 114 still waiting for ShareLock on transaction 925 after 1005.362 ms
+postgres-1  | 2026-09-06 14:43:32.717 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1005.699 ms
+postgres-1  | 2026-09-06 14:43:32.757 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.902 ms
+postgres-1  | 2026-09-06 14:43:33.271 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1011.183 ms
+postgres-1  | 2026-09-06 14:43:33.641 UTC [113] LOG:  process 113 detected deadlock while waiting for ShareLock on transaction 946 after 1001.134 ms
+postgres-1  | 2026-09-06 14:43:33.641 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:33.642 UTC [127] LOG:  process 127 acquired ShareLock on transaction 950 after 2004.415 ms
+postgres-1  | 2026-09-06 14:43:33.642 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (0,118) of relation 16385 of database 16384 after 2006.354 ms
+postgres-1  | 2026-09-06 14:43:33.820 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.205 ms
+postgres-1  | 2026-09-06 14:43:34.643 UTC [110] LOG:  process 110 detected deadlock while waiting for ShareLock on transaction 946 after 1000.872 ms
+postgres-1  | 2026-09-06 14:43:34.644 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:34.644 UTC [114] LOG:  process 114 acquired ShareLock on transaction 925 after 3008.097 ms
+postgres-1  | 2026-09-06 14:43:34.645 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1001.292 ms
+postgres-1  | 2026-09-06 14:43:34.650 UTC [123] LOG:  process 123 acquired ShareLock on transaction 929 after 10063.206 ms
+postgres-1  | 2026-09-06 14:43:34.650 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 11876.356 ms
+postgres-1  | 2026-09-06 14:43:34.650 UTC [124] LOG:  process 124 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 10812.855 ms
+postgres-1  | 2026-09-06 14:43:34.651 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 8042.670 ms
+postgres-1  | 2026-09-06 14:43:34.651 UTC [83] LOG:  process 83 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 7967.092 ms
+postgres-1  | 2026-09-06 14:43:34.651 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 3014.917 ms
+postgres-1  | 2026-09-06 14:43:34.651 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 2896.500 ms
+postgres-1  | 2026-09-06 14:43:34.651 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1832.597 ms
+postgres-1  | 2026-09-06 14:43:34.863 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 946 after 1001.954 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 937 after 1001.047 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [108] LOG:  process 108 detected deadlock while waiting for ShareLock on transaction 937 after 1000.792 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [108] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:35.652 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1001.349 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [115] LOG:  process 115 acquired ShareLock on transaction 912 after 9055.529 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [122] LOG:  process 122 acquired ShareLock on transaction 912 after 4016.450 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [84] LOG:  process 84 still waiting for ShareLock on transaction 937 after 1002.036 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [109] LOG:  process 109 acquired ShareLock on transaction 912 after 4016.691 ms
+postgres-1  | 2026-09-06 14:43:35.652 UTC [86] LOG:  process 86 acquired ShareLock on transaction 912 after 4016.686 ms
+postgres-1  | 2026-09-06 14:43:35.653 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 937 after 1001.159 ms
+postgres-1  | 2026-09-06 14:43:35.653 UTC [118] LOG:  process 118 acquired ShareLock on transaction 912 after 4016.733 ms
+postgres-1  | 2026-09-06 14:43:35.653 UTC [124] LOG:  process 124 still waiting for ShareLock on transaction 937 after 1002.140 ms
+postgres-1  | 2026-09-06 14:43:35.653 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 937 after 1001.853 ms
+postgres-1  | 2026-09-06 14:43:35.653 UTC [112] LOG:  process 112 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 5015.706 ms
+postgres-1  | 2026-09-06 14:43:35.653 UTC [120] LOG:  process 120 acquired ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 4017.063 ms
+postgres-1  | 2026-09-06 14:43:35.653 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 937 after 1001.725 ms
+postgres-1  | 2026-09-06 14:43:35.899 UTC [114] LOG:  process 114 still waiting for ShareLock on transaction 916 after 1003.397 ms
+postgres-1  | 2026-09-06 14:43:35.924 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1006.646 ms
+postgres-1  | 2026-09-06 14:43:36.654 UTC [112] LOG:  process 112 detected deadlock while waiting for ShareLock on transaction 944 after 1001.215 ms
+postgres-1  | 2026-09-06 14:43:36.654 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 956 after 1001.452 ms
+postgres-1  | 2026-09-06 14:43:36.654 UTC [112] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:36.654 UTC [109] LOG:  process 109 still waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1000.996 ms
+postgres-1  | 2026-09-06 14:43:36.654 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1001.026 ms
+postgres-1  | 2026-09-06 14:43:36.655 UTC [126] LOG:  process 126 acquired ShareLock on transaction 952 after 6018.294 ms
+postgres-1  | 2026-09-06 14:43:36.655 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 4942.891 ms
+postgres-1  | 2026-09-06 14:43:36.655 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 956 after 1001.879 ms
+postgres-1  | 2026-09-06 14:43:36.655 UTC [111] LOG:  process 111 acquired ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 6018.522 ms
+postgres-1  | 2026-09-06 14:43:36.655 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 956 after 1002.169 ms
+postgres-1  | 2026-09-06 14:43:36.657 UTC [86] LOG:  process 86 still waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1004.290 ms
+postgres-1  | 2026-09-06 14:43:36.964 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1000.592 ms
+postgres-1  | 2026-09-06 14:43:37.658 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 944 after 1003.264 ms
+postgres-1  | 2026-09-06 14:43:37.659 UTC [126] LOG:  process 126 detected deadlock while waiting for ShareLock on transaction 937 after 1002.734 ms
+postgres-1  | 2026-09-06 14:43:37.659 UTC [126] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:37.659 UTC [85] LOG:  process 85 acquired ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 6783.828 ms
+postgres-1  | 2026-09-06 14:43:37.759 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1007.938 ms
+postgres-1  | 2026-09-06 14:43:38.662 UTC [85] LOG:  process 85 detected deadlock while waiting for ShareLock on transaction 949 after 1002.759 ms
+postgres-1  | 2026-09-06 14:43:38.662 UTC [85] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:38.663 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 937 after 1002.895 ms
+postgres-1  | 2026-09-06 14:43:38.663 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 3009.827 ms
+postgres-1  | 2026-09-06 14:43:38.786 UTC [126] LOG:  process 126 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1002.804 ms
+postgres-1  | 2026-09-06 14:43:39.671 UTC [115] LOG:  process 115 detected deadlock while waiting for ShareLock on transaction 949 after 1007.440 ms
+postgres-1  | 2026-09-06 14:43:39.671 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:39.671 UTC [119] LOG:  process 119 acquired ShareLock on transaction 944 after 3016.387 ms
+postgres-1  | 2026-09-06 14:43:39.671 UTC [109] LOG:  process 109 acquired ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 4017.773 ms
+postgres-1  | 2026-09-06 14:43:39.671 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 7412.144 ms
+postgres-1  | 2026-09-06 14:43:39.832 UTC [85] LOG:  process 85 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1008.356 ms
+postgres-1  | 2026-09-06 14:43:40.674 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1001.770 ms
+postgres-1  | 2026-09-06 14:43:40.674 UTC [109] LOG:  process 109 detected deadlock while waiting for ShareLock on transaction 949 after 1002.903 ms
+postgres-1  | 2026-09-06 14:43:40.674 UTC [109] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:40.674 UTC [117] LOG:  process 117 still waiting for ShareLock on transaction 960 after 1002.929 ms
+postgres-1  | 2026-09-06 14:43:40.675 UTC [122] LOG:  process 122 acquired ShareLock on transaction 956 after 5021.792 ms
+postgres-1  | 2026-09-06 14:43:40.675 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1002.477 ms
+postgres-1  | 2026-09-06 14:43:40.675 UTC [118] LOG:  process 118 acquired ShareLock on transaction 956 after 5022.062 ms
+postgres-1  | 2026-09-06 14:43:40.675 UTC [120] LOG:  process 120 acquired ShareLock on transaction 956 after 5021.791 ms
+postgres-1  | 2026-09-06 14:43:40.872 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (0,131) of relation 16385 of database 16384 after 1005.214 ms
+postgres-1  | 2026-09-06 14:43:41.678 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1003.548 ms
+postgres-1  | 2026-09-06 14:43:41.678 UTC [122] LOG:  process 122 detected deadlock while waiting for ExclusiveLock on tuple (0,135) of relation 16385 of database 16384 after 1002.938 ms
+postgres-1  | 2026-09-06 14:43:41.678 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 949 after 1003.814 ms
+postgres-1  | 2026-09-06 14:43:41.678 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:41.679 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 953 after 1003.750 ms
+postgres-1  | 2026-09-06 14:43:41.679 UTC [120] LOG:  process 120 acquired ShareLock on transaction 953 after 1003.854 ms
+postgres-1  | 2026-09-06 14:43:41.679 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 7028.006 ms
+postgres-1  | 2026-09-06 14:43:41.897 UTC [109] LOG:  process 109 detected deadlock while waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1001.452 ms
+postgres-1  | 2026-09-06 14:43:41.897 UTC [109] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:42.681 UTC [123] LOG:  process 123 detected deadlock while waiting for ShareLock on transaction 942 after 1002.068 ms
+postgres-1  | 2026-09-06 14:43:42.681 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:42.682 UTC [84] LOG:  process 84 acquired ShareLock on transaction 937 after 8031.142 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [124] LOG:  process 124 acquired ShareLock on transaction 937 after 8030.967 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [121] LOG:  process 121 acquired ShareLock on transaction 937 after 8030.885 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [125] LOG:  process 125 acquired ShareLock on transaction 937 after 8030.305 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [120] LOG:  process 120 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1002.073 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 7763.948 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [82] LOG:  process 82 acquired ShareLock on transaction 937 after 8030.463 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [83] LOG:  process 83 acquired ShareLock on transaction 937 after 8030.789 ms
+postgres-1  | 2026-09-06 14:43:42.682 UTC [111] LOG:  process 111 acquired ShareLock on transaction 937 after 5021.276 ms
+postgres-1  | 2026-09-06 14:43:42.688 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (0,131) of relation 16385 of database 16384 after 2821.159 ms
+postgres-1  | 2026-09-06 14:43:42.927 UTC [122] LOG:  process 122 still waiting for ExclusiveLock on tuple (0,135) of relation 16385 of database 16384 after 1002.142 ms
+postgres-1  | 2026-09-06 14:43:43.187 UTC [109] LOG:  process 109 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1002.369 ms
+postgres-1  | 2026-09-06 14:43:43.683 UTC [110] LOG:  process 110 still waiting for ShareLock on transaction 942 after 1001.089 ms
+postgres-1  | 2026-09-06 14:43:43.690 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 940 after 1001.720 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 1002.340 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [115] LOG:  process 115 still waiting for ShareLock on transaction 940 after 1002.289 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [84] LOG:  process 84 detected deadlock while waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1002.003 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:43.691 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 1002.562 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 940 after 1002.172 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 940 after 1002.634 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [115] LOG:  process 115 acquired ShareLock on transaction 940 after 1002.920 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [111] LOG:  process 111 acquired ShareLock on transaction 940 after 1003.043 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [121] LOG:  process 121 acquired ShareLock on transaction 940 after 1002.809 ms
+postgres-1  | 2026-09-06 14:43:43.691 UTC [125] LOG:  process 125 acquired ShareLock on transaction 940 after 1002.754 ms
+postgres-1  | 2026-09-06 14:43:43.795 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1004.274 ms
+postgres-1  | 2026-09-06 14:43:44.005 UTC [124] LOG:  process 124 detected deadlock while waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1001.873 ms
+postgres-1  | 2026-09-06 14:43:44.005 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:44.692 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 1000.951 ms
+postgres-1  | 2026-09-06 14:43:44.693 UTC [111] LOG:  process 111 detected deadlock while waiting for ShareLock on transaction 971 after 1001.184 ms
+postgres-1  | 2026-09-06 14:43:44.693 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 1001.336 ms
+postgres-1  | 2026-09-06 14:43:44.693 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:44.693 UTC [119] LOG:  process 119 acquired ShareLock on transaction 949 after 4018.565 ms
+postgres-1  | 2026-09-06 14:43:44.693 UTC [83] LOG:  process 83 acquired ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 2005.071 ms
+postgres-1  | 2026-09-06 14:43:44.693 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1902.355 ms
+postgres-1  | 2026-09-06 14:43:44.836 UTC [84] LOG:  process 84 detected deadlock while waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1004.210 ms
+postgres-1  | 2026-09-06 14:43:44.836 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:45.017 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1010.748 ms
+postgres-1  | 2026-09-06 14:43:45.181 UTC [124] LOG:  process 124 still waiting for ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 1003.000 ms
+postgres-1  | 2026-09-06 14:43:45.697 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 971 after 1003.694 ms
+postgres-1  | 2026-09-06 14:43:45.697 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 960 after 1003.871 ms
+postgres-1  | 2026-09-06 14:43:45.705 UTC [119] LOG:  process 119 detected deadlock while waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1010.909 ms
+postgres-1  | 2026-09-06 14:43:45.705 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:45.706 UTC [123] LOG:  process 123 acquired ShareLock on transaction 960 after 1012.354 ms
+postgres-1  | 2026-09-06 14:43:45.706 UTC [117] LOG:  process 117 acquired ShareLock on transaction 960 after 6034.298 ms
+postgres-1  | 2026-09-06 14:43:45.706 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (0,139) of relation 16385 of database 16384 after 1699.697 ms
+postgres-1  | 2026-09-06 14:43:45.706 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 12063.003 ms
+postgres-1  | 2026-09-06 14:43:45.893 UTC [111] LOG:  process 111 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1003.039 ms
+postgres-1  | 2026-09-06 14:43:46.068 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1001.331 ms
+postgres-1  | 2026-09-06 14:43:46.709 UTC [115] LOG:  process 115 still waiting for ShareLock on transaction 975 after 1002.222 ms
+postgres-1  | 2026-09-06 14:43:46.709 UTC [117] LOG:  process 117 detected deadlock while waiting for ExclusiveLock on tuple (0,135) of relation 16385 of database 16384 after 1001.707 ms
+postgres-1  | 2026-09-06 14:43:46.709 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:46.709 UTC [120] LOG:  process 120 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 5029.424 ms
+postgres-1  | 2026-09-06 14:43:46.709 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1002.183 ms
+postgres-1  | 2026-09-06 14:43:46.713 UTC [113] LOG:  process 113 acquired ShareLock on transaction 946 after 12852.167 ms
+postgres-1  | 2026-09-06 14:43:46.713 UTC [124] LOG:  process 124 acquired ExclusiveLock on tuple (0,74) of relation 16385 of database 16384 after 2535.279 ms
+postgres-1  | 2026-09-06 14:43:46.713 UTC [122] LOG:  process 122 acquired ExclusiveLock on tuple (0,135) of relation 16385 of database 16384 after 4788.192 ms
+postgres-1  | 2026-09-06 14:43:46.717 UTC [110] LOG:  process 110 acquired ShareLock on transaction 942 after 4035.674 ms
+postgres-1  | 2026-09-06 14:43:46.718 UTC [86] LOG:  process 86 acquired ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 11064.574 ms
+postgres-1  | 2026-09-06 14:43:46.718 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 6042.847 ms
+postgres-1  | 2026-09-06 14:43:46.718 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1651.422 ms
+postgres-1  | 2026-09-06 14:43:46.718 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (0,132) of relation 16385 of database 16384 after 1010.751 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [123] LOG:  process 123 detected deadlock while waiting for ShareLock on transaction 966 after 1000.767 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 966 after 1000.686 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 966 after 1001.024 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1000.774 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 978 after 1001.299 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [84] LOG:  process 84 still waiting for ShareLock on transaction 966 after 1001.032 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:47.719 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 964 after 1005.550 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [86] LOG:  process 86 still waiting for ShareLock on transaction 966 after 1001.349 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [124] LOG:  process 124 still waiting for ShareLock on transaction 971 after 1001.045 ms
+postgres-1  | 2026-09-06 14:43:47.719 UTC [115] LOG:  process 115 acquired ShareLock on transaction 975 after 2012.716 ms
+postgres-1  | 2026-09-06 14:43:47.725 UTC [124] LOG:  process 124 acquired ShareLock on transaction 971 after 1006.986 ms
+postgres-1  | 2026-09-06 14:43:47.725 UTC [83] LOG:  process 83 acquired ShareLock on transaction 971 after 3031.473 ms
+postgres-1  | 2026-09-06 14:43:47.725 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 5036.665 ms
+postgres-1  | 2026-09-06 14:43:47.725 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 4033.645 ms
+postgres-1  | 2026-09-06 14:43:47.725 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (2,14) of relation 16385 of database 16384 after 4033.780 ms
+postgres-1  | 2026-09-06 14:43:47.730 UTC [113] LOG:  process 113 acquired ShareLock on transaction 978 after 1012.257 ms
+postgres-1  | 2026-09-06 14:43:47.735 UTC [122] LOG:  process 122 acquired ShareLock on transaction 964 after 1021.986 ms
+postgres-1  | 2026-09-06 14:43:47.834 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 966 after 1003.178 ms
+postgres-1  | 2026-09-06 14:43:48.005 UTC [117] LOG:  process 117 detected deadlock while waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1005.261 ms
+postgres-1  | 2026-09-06 14:43:48.005 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:48.736 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 961 after 1002.949 ms
+postgres-1  | 2026-09-06 14:43:48.736 UTC [121] LOG:  process 121 detected deadlock while waiting for ShareLock on transaction 961 after 1002.988 ms
+postgres-1  | 2026-09-06 14:43:48.736 UTC [121] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:48.736 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1002.438 ms
+postgres-1  | 2026-09-06 14:43:48.737 UTC [116] LOG:  process 116 acquired ShareLock on transaction 916 after 22129.541 ms
+postgres-1  | 2026-09-06 14:43:48.737 UTC [114] LOG:  process 114 acquired ShareLock on transaction 916 after 13840.457 ms
+postgres-1  | 2026-09-06 14:43:48.740 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 12777.219 ms
+postgres-1  | 2026-09-06 14:43:48.740 UTC [112] LOG:  process 112 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 11989.166 ms
+postgres-1  | 2026-09-06 14:43:48.740 UTC [126] LOG:  process 126 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 10956.604 ms
+postgres-1  | 2026-09-06 14:43:48.740 UTC [85] LOG:  process 85 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 9917.211 ms
+postgres-1  | 2026-09-06 14:43:48.740 UTC [109] LOG:  process 109 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 6555.592 ms
+postgres-1  | 2026-09-06 14:43:48.740 UTC [111] LOG:  process 111 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 3850.806 ms
+postgres-1  | 2026-09-06 14:43:48.741 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 2022.564 ms
+postgres-1  | 2026-09-06 14:43:48.741 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (0,115) of relation 16385 of database 16384 after 1006.622 ms
+postgres-1  | 2026-09-06 14:43:48.944 UTC [115] LOG:  process 115 detected deadlock while waiting for ShareLock on transaction 986 after 1007.673 ms
+postgres-1  | 2026-09-06 14:43:48.944 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:48.979 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 985 after 1006.153 ms
+postgres-1  | 2026-09-06 14:43:49.006 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 985 after 1000.374 ms
+postgres-1  | 2026-09-06 14:43:49.040 UTC [120] LOG:  process 120 still waiting for ExclusiveLock on tuple (2,26) of relation 16385 of database 16384 after 1006.732 ms
+postgres-1  | 2026-09-06 14:43:49.134 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (2,26) of relation 16385 of database 16384 after 1002.267 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 965 after 1001.031 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [110] LOG:  process 110 still waiting for ShareLock on transaction 965 after 1001.107 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 965 after 1001.347 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [109] LOG:  process 109 still waiting for ShareLock on transaction 965 after 1001.254 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [124] LOG:  process 124 still waiting for ShareLock on transaction 965 after 1001.084 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [123] LOG:  process 123 detected deadlock while waiting for ShareLock on transaction 965 after 1001.148 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:49.742 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 961 after 1005.872 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [108] LOG:  process 108 still waiting for ShareLock on transaction 965 after 1002.250 ms
+postgres-1  | 2026-09-06 14:43:49.742 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 965 after 1002.188 ms
+postgres-1  | 2026-09-06 14:43:49.743 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 965 after 1002.127 ms
+postgres-1  | 2026-09-06 14:43:49.743 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 965 after 1002.288 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [109] LOG:  process 109 acquired ShareLock on transaction 965 after 1006.112 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [85] LOG:  process 85 acquired ShareLock on transaction 965 after 1006.177 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [111] LOG:  process 111 acquired ShareLock on transaction 965 after 1006.086 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [110] LOG:  process 110 acquired ShareLock on transaction 965 after 1006.094 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [82] LOG:  process 82 acquired ShareLock on transaction 965 after 1006.049 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [124] LOG:  process 124 acquired ShareLock on transaction 965 after 1005.983 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [108] LOG:  process 108 acquired ShareLock on transaction 965 after 1006.286 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [126] LOG:  process 126 acquired ShareLock on transaction 965 after 1006.164 ms
+postgres-1  | 2026-09-06 14:43:49.747 UTC [112] LOG:  process 112 acquired ShareLock on transaction 965 after 1006.245 ms
+postgres-1  | 2026-09-06 14:43:49.895 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (2,26) of relation 16385 of database 16384 after 1011.033 ms
+postgres-1  | 2026-09-06 14:43:49.918 UTC [116] LOG:  process 116 detected deadlock while waiting for ShareLock on transaction 991 after 1002.150 ms
+postgres-1  | 2026-09-06 14:43:49.918 UTC [116] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:50.163 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (2,30) of relation 16385 of database 16384 after 1004.112 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [108] LOG:  process 108 still waiting for ShareLock on transaction 974 after 1000.823 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [110] LOG:  process 110 still waiting for ShareLock on transaction 974 after 1000.678 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 974 after 1000.802 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 974 after 1000.742 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [82] LOG:  process 82 detected deadlock while waiting for ShareLock on transaction 974 after 1000.941 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [82] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:50.748 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 974 after 1000.830 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [124] LOG:  process 124 still waiting for ShareLock on transaction 974 after 1000.911 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 974 after 1000.962 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [122] LOG:  process 122 acquired ShareLock on transaction 961 after 2011.288 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [125] LOG:  process 125 acquired ShareLock on transaction 961 after 3014.564 ms
+postgres-1  | 2026-09-06 14:43:50.748 UTC [120] LOG:  process 120 acquired ExclusiveLock on tuple (2,26) of relation 16385 of database 16384 after 2714.384 ms
+postgres-1  | 2026-09-06 14:43:50.750 UTC [113] LOG:  process 113 acquired ShareLock on transaction 985 after 2777.520 ms
+postgres-1  | 2026-09-06 14:43:50.750 UTC [83] LOG:  process 83 acquired ShareLock on transaction 985 after 2743.904 ms
+postgres-1  | 2026-09-06 14:43:50.750 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (2,30) of relation 16385 of database 16384 after 1591.491 ms
+postgres-1  | 2026-09-06 14:43:50.750 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (2,26) of relation 16385 of database 16384 after 2618.053 ms
+postgres-1  | 2026-09-06 14:43:50.750 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (2,26) of relation 16385 of database 16384 after 1865.914 ms
+postgres-1  | 2026-09-06 14:43:50.922 UTC [109] LOG:  process 109 detected deadlock while waiting for ShareLock on transaction 991 after 1003.631 ms
+postgres-1  | 2026-09-06 14:43:50.922 UTC [109] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:50.923 UTC [85] LOG:  process 85 acquired ShareLock on transaction 974 after 1175.882 ms
+postgres-1  | 2026-09-06 14:43:50.923 UTC [110] LOG:  process 110 acquired ShareLock on transaction 974 after 1175.854 ms
+postgres-1  | 2026-09-06 14:43:50.923 UTC [126] LOG:  process 126 acquired ShareLock on transaction 974 after 1175.871 ms
+postgres-1  | 2026-09-06 14:43:50.923 UTC [124] LOG:  process 124 acquired ShareLock on transaction 974 after 1175.913 ms
+postgres-1  | 2026-09-06 14:43:50.923 UTC [112] LOG:  process 112 acquired ShareLock on transaction 974 after 1175.861 ms
+postgres-1  | 2026-09-06 14:43:50.923 UTC [111] LOG:  process 111 acquired ShareLock on transaction 974 after 1175.859 ms
+postgres-1  | 2026-09-06 14:43:50.923 UTC [108] LOG:  process 108 acquired ShareLock on transaction 974 after 1175.919 ms
+postgres-1  | 2026-09-06 14:43:51.023 UTC [123] LOG:  process 123 detected deadlock while waiting for ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 1002.881 ms
+postgres-1  | 2026-09-06 14:43:51.023 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:51.751 UTC [115] LOG:  process 115 still waiting for ShareLock on transaction 989 after 1000.503 ms
+postgres-1  | 2026-09-06 14:43:51.751 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 963 after 1001.123 ms
+postgres-1  | 2026-09-06 14:43:51.752 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 963 after 1001.312 ms
+postgres-1  | 2026-09-06 14:43:51.752 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 963 after 1001.585 ms
+postgres-1  | 2026-09-06 14:43:51.752 UTC [117] LOG:  process 117 still waiting for ShareLock on transaction 963 after 1001.530 ms
+postgres-1  | 2026-09-06 14:43:51.752 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 995 after 1001.264 ms
+postgres-1  | 2026-09-06 14:43:51.753 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 989 after 1002.102 ms
+postgres-1  | 2026-09-06 14:43:51.842 UTC [122] LOG:  process 122 detected deadlock while waiting for ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 1002.689 ms
+postgres-1  | 2026-09-06 14:43:51.842 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:51.879 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 990 after 1007.075 ms
+postgres-1  | 2026-09-06 14:43:51.924 UTC [110] LOG:  process 110 detected deadlock while waiting for ShareLock on transaction 996 after 1000.928 ms
+postgres-1  | 2026-09-06 14:43:51.924 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:51.924 UTC [108] LOG:  process 108 still waiting for ShareLock on transaction 996 after 1001.122 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [119] LOG:  process 119 acquired ShareLock on transaction 966 after 5206.842 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [118] LOG:  process 118 acquired ShareLock on transaction 966 after 5206.804 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [127] LOG:  process 127 acquired ShareLock on transaction 966 after 5093.797 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [86] LOG:  process 86 acquired ShareLock on transaction 966 after 5206.945 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [84] LOG:  process 84 acquired ShareLock on transaction 966 after 5206.894 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [124] LOG:  process 124 still waiting for ShareLock on transaction 996 after 1002.024 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 996 after 1002.307 ms
+postgres-1  | 2026-09-06 14:43:51.925 UTC [114] LOG:  process 114 still waiting for ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 1001.257 ms
+postgres-1  | 2026-09-06 14:43:51.926 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 996 after 1002.534 ms
+postgres-1  | 2026-09-06 14:43:51.926 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 996 after 1002.501 ms
+postgres-1  | 2026-09-06 14:43:51.926 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 996 after 1002.416 ms
+postgres-1  | 2026-09-06 14:43:51.926 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 996 after 1002.484 ms
+postgres-1  | 2026-09-06 14:43:52.085 UTC [109] LOG:  process 109 still waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1005.819 ms
+postgres-1  | 2026-09-06 14:43:52.218 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 991 after 1010.758 ms
+postgres-1  | 2026-09-06 14:43:52.926 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 1000.476 ms
+postgres-1  | 2026-09-06 14:43:52.926 UTC [127] LOG:  process 127 detected deadlock while waiting for ShareLock on transaction 954 after 1000.582 ms
+postgres-1  | 2026-09-06 14:43:52.926 UTC [127] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:52.926 UTC [114] LOG:  process 114 acquired ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 2001.930 ms
+postgres-1  | 2026-09-06 14:43:52.926 UTC [86] LOG:  process 86 still waiting for ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 1001.025 ms
+postgres-1  | 2026-09-06 14:43:52.926 UTC [84] LOG:  process 84 still waiting for ShareLock on transaction 954 after 1001.193 ms
+postgres-1  | 2026-09-06 14:43:52.928 UTC [118] LOG:  process 118 detected deadlock while waiting for ExclusiveLock on tuple (1,12) of relation 16385 of database 16384 after 1001.232 ms
+postgres-1  | 2026-09-06 14:43:52.928 UTC [118] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:52.928 UTC [84] LOG:  process 84 acquired ShareLock on transaction 954 after 1002.796 ms
+postgres-1  | 2026-09-06 14:43:52.928 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 1002.863 ms
+postgres-1  | 2026-09-06 14:43:52.931 UTC [111] LOG:  process 111 acquired ShareLock on transaction 996 after 2008.065 ms
+postgres-1  | 2026-09-06 14:43:52.931 UTC [124] LOG:  process 124 acquired ShareLock on transaction 996 after 2008.009 ms
+postgres-1  | 2026-09-06 14:43:52.931 UTC [126] LOG:  process 126 acquired ShareLock on transaction 996 after 2008.071 ms
+postgres-1  | 2026-09-06 14:43:52.931 UTC [108] LOG:  process 108 acquired ShareLock on transaction 996 after 2008.046 ms
+postgres-1  | 2026-09-06 14:43:52.931 UTC [85] LOG:  process 85 acquired ShareLock on transaction 996 after 2007.924 ms
+postgres-1  | 2026-09-06 14:43:52.931 UTC [113] LOG:  process 113 acquired ShareLock on transaction 996 after 2008.008 ms
+postgres-1  | 2026-09-06 14:43:52.931 UTC [112] LOG:  process 112 acquired ShareLock on transaction 996 after 2008.062 ms
+postgres-1  | 2026-09-06 14:43:52.932 UTC [86] LOG:  process 86 acquired ExclusiveLock on tuple (2,13) of relation 16385 of database 16384 after 1006.346 ms
+postgres-1  | 2026-09-06 14:43:53.187 UTC [110] LOG:  process 110 detected deadlock while waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1001.770 ms
+postgres-1  | 2026-09-06 14:43:53.187 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:53.935 UTC [86] LOG:  process 86 still waiting for ShareLock on transaction 980 after 1002.770 ms
+postgres-1  | 2026-09-06 14:43:53.935 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 980 after 1003.085 ms
+postgres-1  | 2026-09-06 14:43:53.936 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1002.677 ms
+postgres-1  | 2026-09-06 14:43:54.048 UTC [114] LOG:  process 114 still waiting for ExclusiveLock on tuple (1,12) of relation 16385 of database 16384 after 1002.819 ms
+postgres-1  | 2026-09-06 14:43:54.192 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 967 after 1001.981 ms
+postgres-1  | 2026-09-06 14:43:54.192 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 967 after 1002.093 ms
+postgres-1  | 2026-09-06 14:43:54.192 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 967 after 1002.689 ms
+postgres-1  | 2026-09-06 14:43:54.192 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 967 after 1002.623 ms
+postgres-1  | 2026-09-06 14:43:54.192 UTC [108] LOG:  process 108 detected deadlock while waiting for ExclusiveLock on tuple (1,10) of relation 16385 of database 16384 after 1002.459 ms
+postgres-1  | 2026-09-06 14:43:54.193 UTC [108] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:54.193 UTC [111] LOG:  process 111 acquired ShareLock on transaction 967 after 1003.267 ms
+postgres-1  | 2026-09-06 14:43:54.193 UTC [85] LOG:  process 85 acquired ShareLock on transaction 967 after 1003.234 ms
+postgres-1  | 2026-09-06 14:43:54.193 UTC [112] LOG:  process 112 acquired ShareLock on transaction 967 after 1003.219 ms
+postgres-1  | 2026-09-06 14:43:54.193 UTC [126] LOG:  process 126 acquired ShareLock on transaction 967 after 1003.306 ms
+postgres-1  | 2026-09-06 14:43:54.196 UTC [113] LOG:  process 113 detected deadlock while waiting for ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1005.914 ms
+postgres-1  | 2026-09-06 14:43:54.196 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:54.196 UTC [115] LOG:  process 115 acquired ShareLock on transaction 989 after 3445.886 ms
+postgres-1  | 2026-09-06 14:43:54.196 UTC [125] LOG:  process 125 acquired ShareLock on transaction 989 after 3445.572 ms
+postgres-1  | 2026-09-06 14:43:54.211 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1001.835 ms
+postgres-1  | 2026-09-06 14:43:54.243 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1000.713 ms
+postgres-1  | 2026-09-06 14:43:54.330 UTC [124] LOG:  process 124 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1010.349 ms
+postgres-1  | 2026-09-06 14:43:54.365 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1010.201 ms
+postgres-1  | 2026-09-06 14:43:55.194 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1001.070 ms
+postgres-1  | 2026-09-06 14:43:55.194 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 1003 after 1001.109 ms
+postgres-1  | 2026-09-06 14:43:55.194 UTC [85] LOG:  process 85 still waiting for ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1001.264 ms
+postgres-1  | 2026-09-06 14:43:55.196 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 1003 after 1002.497 ms
+postgres-1  | 2026-09-06 14:43:55.196 UTC [125] LOG:  process 125 detected deadlock while waiting for ShareLock on transaction 995 after 1000.434 ms
+postgres-1  | 2026-09-06 14:43:55.197 UTC [125] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:55.197 UTC [120] LOG:  process 120 acquired ShareLock on transaction 963 after 4446.786 ms
+postgres-1  | 2026-09-06 14:43:55.197 UTC [117] LOG:  process 117 acquired ShareLock on transaction 963 after 4446.647 ms
+postgres-1  | 2026-09-06 14:43:55.197 UTC [121] LOG:  process 121 acquired ShareLock on transaction 963 after 4446.597 ms
+postgres-1  | 2026-09-06 14:43:55.197 UTC [116] LOG:  process 116 acquired ShareLock on transaction 963 after 4446.554 ms
+postgres-1  | 2026-09-06 14:43:55.197 UTC [109] LOG:  process 109 acquired ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 4117.827 ms
+postgres-1  | 2026-09-06 14:43:55.198 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (1,9) of relation 16385 of database 16384 after 1000.938 ms
+postgres-1  | 2026-09-06 14:43:55.200 UTC [123] LOG:  process 123 acquired ShareLock on transaction 991 after 3992.582 ms
+postgres-1  | 2026-09-06 14:43:55.200 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (1,9) of relation 16385 of database 16384 after 1003.789 ms
+postgres-1  | 2026-09-06 14:43:55.205 UTC [122] LOG:  process 122 detected deadlock while waiting for ExclusiveLock on tuple (1,10) of relation 16385 of database 16384 after 1009.768 ms
+postgres-1  | 2026-09-06 14:43:55.205 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:55.205 UTC [111] LOG:  process 111 acquired ShareLock on transaction 1003 after 1011.717 ms
+postgres-1  | 2026-09-06 14:43:55.205 UTC [126] LOG:  process 126 acquired ShareLock on transaction 1003 after 1011.644 ms
+postgres-1  | 2026-09-06 14:43:55.205 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1995.566 ms
+postgres-1  | 2026-09-06 14:43:56.199 UTC [109] LOG:  process 109 detected deadlock while waiting for ShareLock on transaction 995 after 1002.511 ms
+postgres-1  | 2026-09-06 14:43:56.200 UTC [109] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:56.200 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 3267.289 ms
+postgres-1  | 2026-09-06 14:43:56.201 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 1002 after 1000.275 ms
+postgres-1  | 2026-09-06 14:43:56.201 UTC [117] LOG:  process 117 still waiting for ShareLock on transaction 1010 after 1001.004 ms
+postgres-1  | 2026-09-06 14:43:56.202 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 1010 after 1001.377 ms
+postgres-1  | 2026-09-06 14:43:56.202 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 1010 after 1001.183 ms
+postgres-1  | 2026-09-06 14:43:56.202 UTC [115] LOG:  process 115 detected deadlock while waiting for ShareLock on transaction 1002 after 1001.379 ms
+postgres-1  | 2026-09-06 14:43:56.202 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:56.202 UTC [83] LOG:  process 83 acquired ShareLock on transaction 995 after 5451.597 ms
+postgres-1  | 2026-09-06 14:43:56.202 UTC [114] LOG:  process 114 acquired ExclusiveLock on tuple (1,12) of relation 16385 of database 16384 after 3157.377 ms
+postgres-1  | 2026-09-06 14:43:56.205 UTC [126] LOG:  process 126 still waiting for ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1000.440 ms
+postgres-1  | 2026-09-06 14:43:56.205 UTC [123] LOG:  process 123 detected deadlock while waiting for ShareLock on transaction 1011 after 1000.379 ms
+postgres-1  | 2026-09-06 14:43:56.205 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:56.206 UTC [113] LOG:  process 113 acquired ShareLock on transaction 1002 after 1004.899 ms
+postgres-1  | 2026-09-06 14:43:56.207 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1000.561 ms
+postgres-1  | 2026-09-06 14:43:56.207 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 979 after 1002.171 ms
+postgres-1  | 2026-09-06 14:43:56.208 UTC [82] LOG:  process 82 acquired ShareLock on transaction 990 after 5335.786 ms
+postgres-1  | 2026-09-06 14:43:56.215 UTC [116] LOG:  process 116 acquired ShareLock on transaction 1010 after 1015.010 ms
+postgres-1  | 2026-09-06 14:43:56.215 UTC [117] LOG:  process 117 acquired ShareLock on transaction 1010 after 1014.869 ms
+postgres-1  | 2026-09-06 14:43:56.215 UTC [121] LOG:  process 121 acquired ShareLock on transaction 1010 after 1014.822 ms
+postgres-1  | 2026-09-06 14:43:56.501 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1011.059 ms
+postgres-1  | 2026-09-06 14:43:57.203 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 980 after 1001.025 ms
+postgres-1  | 2026-09-06 14:43:57.207 UTC [111] LOG:  process 111 detected deadlock while waiting for ShareLock on transaction 1011 after 1001.160 ms
+postgres-1  | 2026-09-06 14:43:57.207 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:57.208 UTC [118] LOG:  process 118 acquired ShareLock on transaction 979 after 2002.673 ms
+postgres-1  | 2026-09-06 14:43:57.208 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 3966.035 ms
+postgres-1  | 2026-09-06 14:43:57.216 UTC [116] LOG:  process 116 detected deadlock while waiting for ExclusiveLock on tuple (2,52) of relation 16385 of database 16384 after 1000.697 ms
+postgres-1  | 2026-09-06 14:43:57.216 UTC [116] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:57.217 UTC [84] LOG:  process 84 still waiting for ShareLock on transaction 992 after 1000.964 ms
+postgres-1  | 2026-09-06 14:43:57.217 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 992 after 1001.127 ms
+postgres-1  | 2026-09-06 14:43:57.217 UTC [114] LOG:  process 114 still waiting for ShareLock on transaction 1000 after 1001.347 ms
+postgres-1  | 2026-09-06 14:43:57.217 UTC [121] LOG:  process 121 detected deadlock while waiting for ShareLock on transaction 992 after 1001.423 ms
+postgres-1  | 2026-09-06 14:43:57.217 UTC [121] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:57.217 UTC [117] LOG:  process 117 detected deadlock while waiting for ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 1000.900 ms
+postgres-1  | 2026-09-06 14:43:57.217 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:57.217 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1001.084 ms
+postgres-1  | 2026-09-06 14:43:57.217 UTC [120] LOG:  process 120 acquired ShareLock on transaction 992 after 1001.955 ms
+postgres-1  | 2026-09-06 14:43:57.217 UTC [84] LOG:  process 84 acquired ShareLock on transaction 992 after 1001.857 ms
+postgres-1  | 2026-09-06 14:43:57.356 UTC [83] LOG:  process 83 detected deadlock while waiting for ExclusiveLock on tuple (2,52) of relation 16385 of database 16384 after 1003.934 ms
+postgres-1  | 2026-09-06 14:43:57.356 UTC [83] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:57.363 UTC [85] LOG:  process 85 acquired ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 3170.086 ms
+postgres-1  | 2026-09-06 14:43:57.363 UTC [112] LOG:  process 112 acquired ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 3170.315 ms
+postgres-1  | 2026-09-06 14:43:57.363 UTC [126] LOG:  process 126 acquired ExclusiveLock on tuple (2,44) of relation 16385 of database 16384 after 2158.622 ms
+postgres-1  | 2026-09-06 14:43:57.387 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1003.022 ms
+postgres-1  | 2026-09-06 14:43:57.422 UTC [109] LOG:  process 109 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1008.188 ms
+postgres-1  | 2026-09-06 14:43:57.468 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (1,18) of relation 16385 of database 16384 after 1010.537 ms
+postgres-1  | 2026-09-06 14:43:58.221 UTC [123] LOG:  process 123 detected deadlock while waiting for ShareLock on transaction 1013 after 1003.397 ms
+postgres-1  | 2026-09-06 14:43:58.221 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (2,52) of relation 16385 of database 16384 after 1003.462 ms
+postgres-1  | 2026-09-06 14:43:58.221 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:58.221 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 1000 after 1003.100 ms
+postgres-1  | 2026-09-06 14:43:58.222 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (2,52) of relation 16385 of database 16384 after 1004.035 ms
+postgres-1  | 2026-09-06 14:43:58.343 UTC [116] LOG:  process 116 still waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1005.272 ms
+postgres-1  | 2026-09-06 14:43:58.365 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1000.950 ms
+postgres-1  | 2026-09-06 14:43:58.365 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 1007 after 1002.002 ms
+postgres-1  | 2026-09-06 14:43:58.365 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 1007 after 1001.791 ms
+postgres-1  | 2026-09-06 14:43:58.365 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 1020 after 1001.051 ms
+postgres-1  | 2026-09-06 14:43:58.366 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 1007 after 1002.904 ms
+postgres-1  | 2026-09-06 14:43:58.483 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 1007 after 1006.205 ms
+postgres-1  | 2026-09-06 14:43:58.518 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1003.146 ms
+postgres-1  | 2026-09-06 14:43:58.518 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (1,14) of relation 16385 of database 16384 after 1002.833 ms
+postgres-1  | 2026-09-06 14:43:58.544 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (2,52) of relation 16385 of database 16384 after 1001.862 ms
+postgres-1  | 2026-09-06 14:43:59.230 UTC [84] LOG:  process 84 detected deadlock while waiting for ShareLock on transaction 1013 after 1008.709 ms
+postgres-1  | 2026-09-06 14:43:59.230 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:43:59.231 UTC [119] LOG:  process 119 acquired ShareLock on transaction 980 after 6298.561 ms
+postgres-1  | 2026-09-06 14:43:59.231 UTC [86] LOG:  process 86 acquired ShareLock on transaction 980 after 6298.520 ms
+postgres-1  | 2026-09-06 14:43:59.231 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (2,52) of relation 16385 of database 16384 after 1689.124 ms
+postgres-1  | 2026-09-06 14:43:59.231 UTC [122] LOG:  process 122 acquired ShareLock on transaction 980 after 3028.728 ms
+postgres-1  | 2026-09-06 14:43:59.231 UTC [124] LOG:  process 124 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 5911.079 ms
+postgres-1  | 2026-09-06 14:43:59.231 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 3740.911 ms
+postgres-1  | 2026-09-06 14:43:59.442 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1002.515 ms
+postgres-1  | 2026-09-06 14:44:00.232 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 1013 after 1000.661 ms
+postgres-1  | 2026-09-06 14:44:00.232 UTC [124] LOG:  process 124 detected deadlock while waiting for ShareLock on transaction 981 after 1000.537 ms
+postgres-1  | 2026-09-06 14:44:00.232 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:00.232 UTC [86] LOG:  process 86 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1001.315 ms
+postgres-1  | 2026-09-06 14:44:00.232 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 6877.361 ms
+postgres-1  | 2026-09-06 14:44:00.233 UTC [125] LOG:  process 125 detected deadlock while waiting for ShareLock on transaction 1012 after 1001.437 ms
+postgres-1  | 2026-09-06 14:44:00.233 UTC [125] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:00.233 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 4017.063 ms
+postgres-1  | 2026-09-06 14:44:00.234 UTC [122] LOG:  process 122 detected deadlock while waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1001.253 ms
+postgres-1  | 2026-09-06 14:44:00.234 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:00.235 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (1,14) of relation 16385 of database 16384 after 1002.195 ms
+postgres-1  | 2026-09-06 14:44:00.235 UTC [116] LOG:  process 116 acquired ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 2897.565 ms
+postgres-1  | 2026-09-06 14:44:00.242 UTC [114] LOG:  process 114 acquired ShareLock on transaction 1000 after 4026.353 ms
+postgres-1  | 2026-09-06 14:44:00.242 UTC [120] LOG:  process 120 acquired ShareLock on transaction 1000 after 3024.156 ms
+postgres-1  | 2026-09-06 14:44:00.242 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (1,18) of relation 16385 of database 16384 after 3784.557 ms
+postgres-1  | 2026-09-06 14:44:00.242 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 2878.073 ms
+postgres-1  | 2026-09-06 14:44:00.243 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (2,31) of relation 16385 of database 16384 after 1803.448 ms
+postgres-1  | 2026-09-06 14:44:00.243 UTC [83] LOG:  process 83 acquired ExclusiveLock on tuple (1,14) of relation 16385 of database 16384 after 2727.584 ms
+postgres-1  | 2026-09-06 14:44:00.243 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (1,14) of relation 16385 of database 16384 after 1010.270 ms
+postgres-1  | 2026-09-06 14:44:00.492 UTC [84] LOG:  process 84 detected deadlock while waiting for ShareLock on transaction 1011 after 1009.303 ms
+postgres-1  | 2026-09-06 14:44:00.492 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:01.243 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 1013 after 1000.609 ms
+postgres-1  | 2026-09-06 14:44:01.243 UTC [110] LOG:  process 110 detected deadlock while waiting for ShareLock on transaction 981 after 1010.803 ms
+postgres-1  | 2026-09-06 14:44:01.243 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 1005 after 1000.919 ms
+postgres-1  | 2026-09-06 14:44:01.243 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:01.244 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 1013 after 1000.865 ms
+postgres-1  | 2026-09-06 14:44:01.244 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 1021 after 1001.256 ms
+postgres-1  | 2026-09-06 14:44:01.244 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 6037.860 ms
+postgres-1  | 2026-09-06 14:44:01.244 UTC [120] LOG:  process 120 detected deadlock while waiting for ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1000.505 ms
+postgres-1  | 2026-09-06 14:44:01.244 UTC [116] LOG:  process 116 still waiting for ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1000.682 ms
+postgres-1  | 2026-09-06 14:44:01.245 UTC [120] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:01.245 UTC [118] LOG:  process 118 acquired ShareLock on transaction 1013 after 2013.803 ms
+postgres-1  | 2026-09-06 14:44:01.245 UTC [83] LOG:  process 83 acquired ShareLock on transaction 1013 after 1002.168 ms
+postgres-1  | 2026-09-06 14:44:01.245 UTC [119] LOG:  process 119 acquired ShareLock on transaction 1013 after 1002.088 ms
+postgres-1  | 2026-09-06 14:44:01.248 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 1021 after 1005.469 ms
+postgres-1  | 2026-09-06 14:44:01.340 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 1005 after 1001.054 ms
+postgres-1  | 2026-09-06 14:44:01.386 UTC [124] LOG:  process 124 still waiting for ShareLock on transaction 1021 after 1010.924 ms
+postgres-1  | 2026-09-06 14:44:01.494 UTC [114] LOG:  process 114 detected deadlock while waiting for ShareLock on transaction 1011 after 1001.378 ms
+postgres-1  | 2026-09-06 14:44:01.494 UTC [114] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:01.495 UTC [116] LOG:  process 116 acquired ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1250.800 ms
+postgres-1  | 2026-09-06 14:44:01.495 UTC [113] LOG:  process 113 acquired ShareLock on transaction 1005 after 1252.244 ms
+postgres-1  | 2026-09-06 14:44:01.495 UTC [82] LOG:  process 82 acquired ShareLock on transaction 1005 after 1156.049 ms
+postgres-1  | 2026-09-06 14:44:01.520 UTC [122] LOG:  process 122 detected deadlock while waiting for ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1008.016 ms
+postgres-1  | 2026-09-06 14:44:01.520 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:01.550 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1007.554 ms
+postgres-1  | 2026-09-06 14:44:01.651 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 1002.590 ms
+postgres-1  | 2026-09-06 14:44:02.246 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1000.529 ms
+postgres-1  | 2026-09-06 14:44:02.247 UTC [119] LOG:  process 119 detected deadlock while waiting for ShareLock on transaction 1024 after 1001.810 ms
+postgres-1  | 2026-09-06 14:44:02.247 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:02.247 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1001.011 ms
+postgres-1  | 2026-09-06 14:44:02.247 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 5863.472 ms
+postgres-1  | 2026-09-06 14:44:02.449 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1011.134 ms
+postgres-1  | 2026-09-06 14:44:02.467 UTC [120] LOG:  process 120 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1001.048 ms
+postgres-1  | 2026-09-06 14:44:02.495 UTC [116] LOG:  process 116 detected deadlock while waiting for ShareLock on transaction 1011 after 1000.443 ms
+postgres-1  | 2026-09-06 14:44:02.495 UTC [116] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:02.495 UTC [82] LOG:  process 82 still waiting for ShareLock on transaction 1019 after 1000.403 ms
+postgres-1  | 2026-09-06 14:44:02.496 UTC [121] LOG:  process 121 acquired ShareLock on transaction 1021 after 2253.189 ms
+postgres-1  | 2026-09-06 14:44:02.496 UTC [123] LOG:  process 123 acquired ShareLock on transaction 1021 after 2253.099 ms
+postgres-1  | 2026-09-06 14:44:02.496 UTC [124] LOG:  process 124 acquired ShareLock on transaction 1021 after 2120.244 ms
+postgres-1  | 2026-09-06 14:44:02.496 UTC [83] LOG:  process 83 acquired ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1249.866 ms
+postgres-1  | 2026-09-06 14:44:02.496 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 1000.854 ms
+postgres-1  | 2026-09-06 14:44:02.754 UTC [114] LOG:  process 114 still waiting for ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 1001.641 ms
+postgres-1  | 2026-09-06 14:44:02.812 UTC [122] LOG:  process 122 still waiting for ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 1001.706 ms
+postgres-1  | 2026-09-06 14:44:03.254 UTC [108] LOG:  process 108 detected deadlock while waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1005.586 ms
+postgres-1  | 2026-09-06 14:44:03.254 UTC [108] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:03.254 UTC [109] LOG:  process 109 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 6840.459 ms
+postgres-1  | 2026-09-06 14:44:03.254 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 2008.433 ms
+postgres-1  | 2026-09-06 14:44:03.499 UTC [124] LOG:  process 124 detected deadlock while waiting for ShareLock on transaction 1026 after 1003.399 ms
+postgres-1  | 2026-09-06 14:44:03.499 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1002.349 ms
+postgres-1  | 2026-09-06 14:44:03.499 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:03.500 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 2957.223 ms
+postgres-1  | 2026-09-06 14:44:03.500 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1003.969 ms
+postgres-1  | 2026-09-06 14:44:03.567 UTC [119] LOG:  process 119 detected deadlock while waiting for ShareLock on transaction 1025 after 1001.517 ms
+postgres-1  | 2026-09-06 14:44:03.567 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:03.602 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 1024 after 1001.151 ms
+postgres-1  | 2026-09-06 14:44:04.257 UTC [109] LOG:  process 109 still waiting for ShareLock on transaction 1017 after 1002.338 ms
+postgres-1  | 2026-09-06 14:44:04.257 UTC [118] LOG:  process 118 detected deadlock while waiting for ShareLock on transaction 1024 after 1002.417 ms
+postgres-1  | 2026-09-06 14:44:04.257 UTC [118] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:04.257 UTC [115] LOG:  process 115 still waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1002.049 ms
+postgres-1  | 2026-09-06 14:44:04.257 UTC [114] LOG:  process 114 acquired ExclusiveLock on tuple (2,46) of relation 16385 of database 16384 after 2505.199 ms
+postgres-1  | 2026-09-06 14:44:04.263 UTC [116] LOG:  process 116 acquired ShareLock on transaction 1024 after 1661.883 ms
+postgres-1  | 2026-09-06 14:44:04.390 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1003.832 ms
+postgres-1  | 2026-09-06 14:44:04.501 UTC [125] LOG:  process 125 detected deadlock while waiting for ShareLock on transaction 1026 after 1001.290 ms
+postgres-1  | 2026-09-06 14:44:04.501 UTC [125] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:04.501 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 3063.234 ms
+postgres-1  | 2026-09-06 14:44:04.666 UTC [124] LOG:  process 124 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1001.672 ms
+postgres-1  | 2026-09-06 14:44:05.266 UTC [116] LOG:  process 116 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1001.495 ms
+postgres-1  | 2026-09-06 14:44:05.266 UTC [114] LOG:  process 114 still waiting for ShareLock on transaction 1038 after 1002.104 ms
+postgres-1  | 2026-09-06 14:44:05.266 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 1002.381 ms
+postgres-1  | 2026-09-06 14:44:05.497 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 1041 after 1008.772 ms
+postgres-1  | 2026-09-06 14:44:05.512 UTC [110] LOG:  process 110 detected deadlock while waiting for ShareLock on transaction 1026 after 1010.756 ms
+postgres-1  | 2026-09-06 14:44:05.512 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:05.513 UTC [120] LOG:  process 120 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 4047.246 ms
+postgres-1  | 2026-09-06 14:44:05.520 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 1001.422 ms
+postgres-1  | 2026-09-06 14:44:05.809 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (1,26) of relation 16385 of database 16384 after 1009.870 ms
+postgres-1  | 2026-09-06 14:44:06.523 UTC [120] LOG:  process 120 detected deadlock while waiting for ShareLock on transaction 1026 after 1010.439 ms
+postgres-1  | 2026-09-06 14:44:06.523 UTC [120] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:06.524 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 4027.877 ms
+postgres-1  | 2026-09-06 14:44:06.598 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1003.464 ms
+postgres-1  | 2026-09-06 14:44:07.526 UTC [121] LOG:  process 121 detected deadlock while waiting for ShareLock on transaction 1026 after 1002.101 ms
+postgres-1  | 2026-09-06 14:44:07.526 UTC [121] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:07.527 UTC [116] LOG:  process 116 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 3262.476 ms
+postgres-1  | 2026-09-06 14:44:07.527 UTC [127] LOG:  process 127 acquired ShareLock on transaction 1020 after 10162.236 ms
+postgres-1  | 2026-09-06 14:44:07.527 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 6878.730 ms
+postgres-1  | 2026-09-06 14:44:07.647 UTC [120] LOG:  process 120 still waiting for ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 1008.687 ms
+postgres-1  | 2026-09-06 14:44:08.530 UTC [127] LOG:  process 127 detected deadlock while waiting for ExclusiveLock on tuple (1,26) of relation 16385 of database 16384 after 1001.951 ms
+postgres-1  | 2026-09-06 14:44:08.530 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 1026 after 1003.147 ms
+postgres-1  | 2026-09-06 14:44:08.530 UTC [127] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:08.530 UTC [126] LOG:  process 126 acquired ShareLock on transaction 1007 after 11166.852 ms
+postgres-1  | 2026-09-06 14:44:08.530 UTC [85] LOG:  process 85 acquired ShareLock on transaction 1007 after 11166.991 ms
+postgres-1  | 2026-09-06 14:44:08.530 UTC [111] LOG:  process 111 acquired ShareLock on transaction 1007 after 11054.107 ms
+postgres-1  | 2026-09-06 14:44:08.531 UTC [112] LOG:  process 112 acquired ShareLock on transaction 1007 after 11166.822 ms
+postgres-1  | 2026-09-06 14:44:08.531 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 7035.116 ms
+postgres-1  | 2026-09-06 14:44:08.673 UTC [121] LOG:  process 121 still waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1002.145 ms
+postgres-1  | 2026-09-06 14:44:09.532 UTC [113] LOG:  process 113 detected deadlock while waiting for ShareLock on transaction 1032 after 1000.948 ms
+postgres-1  | 2026-09-06 14:44:09.532 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:09.532 UTC [85] LOG:  process 85 still waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1001.436 ms
+postgres-1  | 2026-09-06 14:44:09.532 UTC [84] LOG:  process 84 still waiting for ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 1000.482 ms
+postgres-1  | 2026-09-06 14:44:09.532 UTC [82] LOG:  process 82 acquired ShareLock on transaction 1019 after 8037.423 ms
+postgres-1  | 2026-09-06 14:44:09.532 UTC [122] LOG:  process 122 acquired ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 7721.835 ms
+postgres-1  | 2026-09-06 14:44:09.532 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 969 after 1001.773 ms
+postgres-1  | 2026-09-06 14:44:09.533 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 5268.595 ms
+postgres-1  | 2026-09-06 14:44:09.533 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 969 after 1002.209 ms
+postgres-1  | 2026-09-06 14:44:09.533 UTC [126] LOG:  process 126 still waiting for ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 1001.051 ms
+postgres-1  | 2026-09-06 14:44:09.709 UTC [127] LOG:  process 127 still waiting for ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 1004.521 ms
+postgres-1  | 2026-09-06 14:44:10.534 UTC [119] LOG:  process 119 detected deadlock while waiting for ShareLock on transaction 1028 after 1000.951 ms
+postgres-1  | 2026-09-06 14:44:10.534 UTC [119] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:10.534 UTC [83] LOG:  process 83 acquired ShareLock on transaction 1041 after 6045.819 ms
+postgres-1  | 2026-09-06 14:44:10.534 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1000.742 ms
+postgres-1  | 2026-09-06 14:44:10.534 UTC [126] LOG:  process 126 acquired ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 2002.643 ms
+postgres-1  | 2026-09-06 14:44:10.535 UTC [118] LOG:  process 118 acquired ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 6015.867 ms
+postgres-1  | 2026-09-06 14:44:10.535 UTC [122] LOG:  process 122 still waiting for ShareLock on transaction 1032 after 1002.302 ms
+postgres-1  | 2026-09-06 14:44:10.756 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 1010.503 ms
+postgres-1  | 2026-09-06 14:44:11.538 UTC [126] LOG:  process 126 detected deadlock while waiting for ShareLock on transaction 1028 after 1003.224 ms
+postgres-1  | 2026-09-06 14:44:11.538 UTC [126] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:11.538 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 1002.076 ms
+postgres-1  | 2026-09-06 14:44:11.538 UTC [111] LOG:  process 111 acquired ShareLock on transaction 969 after 3007.834 ms
+postgres-1  | 2026-09-06 14:44:11.538 UTC [127] LOG:  process 127 acquired ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 2834.100 ms
+postgres-1  | 2026-09-06 14:44:11.539 UTC [112] LOG:  process 112 acquired ShareLock on transaction 969 after 3007.881 ms
+postgres-1  | 2026-09-06 14:44:11.539 UTC [118] LOG:  process 118 still waiting for ShareLock on transaction 1042 after 1003.782 ms
+postgres-1  | 2026-09-06 14:44:11.539 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 14024.171 ms
+postgres-1  | 2026-09-06 14:44:11.785 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1010.105 ms
+postgres-1  | 2026-09-06 14:44:12.542 UTC [111] LOG:  process 111 detected deadlock while waiting for ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 1001.582 ms
+postgres-1  | 2026-09-06 14:44:12.542 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:12.542 UTC [117] LOG:  process 117 still waiting for ShareLock on transaction 1022 after 1003.026 ms
+postgres-1  | 2026-09-06 14:44:12.542 UTC [117] LOG:  process 117 acquired ShareLock on transaction 1022 after 1003.090 ms
+postgres-1  | 2026-09-06 14:44:12.542 UTC [127] LOG:  process 127 still waiting for ShareLock on transaction 1028 after 1003.680 ms
+postgres-1  | 2026-09-06 14:44:12.542 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 10045.400 ms
+postgres-1  | 2026-09-06 14:44:12.809 UTC [126] LOG:  process 126 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1001.746 ms
+postgres-1  | 2026-09-06 14:44:13.544 UTC [123] LOG:  process 123 detected deadlock while waiting for ShareLock on transaction 1023 after 1001.794 ms
+postgres-1  | 2026-09-06 14:44:13.544 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 1023 after 1002.168 ms
+postgres-1  | 2026-09-06 14:44:13.544 UTC [123] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:13.544 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1000.919 ms
+postgres-1  | 2026-09-06 14:44:13.545 UTC [115] LOG:  process 115 acquired ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 10289.925 ms
+postgres-1  | 2026-09-06 14:44:13.545 UTC [116] LOG:  process 116 acquired ShareLock on transaction 1026 after 6018.195 ms
+postgres-1  | 2026-09-06 14:44:13.545 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 7949.969 ms
+postgres-1  | 2026-09-06 14:44:13.550 UTC [114] LOG:  process 114 acquired ShareLock on transaction 1038 after 9285.845 ms
+postgres-1  | 2026-09-06 14:44:13.550 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 2774.481 ms
+postgres-1  | 2026-09-06 14:44:13.550 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (1,26) of relation 16385 of database 16384 after 8750.505 ms
+postgres-1  | 2026-09-06 14:44:13.550 UTC [117] LOG:  process 117 acquired ExclusiveLock on tuple (2,62) of relation 16385 of database 16384 after 1006.524 ms
+postgres-1  | 2026-09-06 14:44:13.844 UTC [111] LOG:  process 111 still waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1001.119 ms
+postgres-1  | 2026-09-06 14:44:14.554 UTC [117] LOG:  process 117 detected deadlock while waiting for ShareLock on transaction 1045 after 1003.779 ms
+postgres-1  | 2026-09-06 14:44:14.554 UTC [115] LOG:  process 115 still waiting for ShareLock on transaction 1023 after 1009.055 ms
+postgres-1  | 2026-09-06 14:44:14.554 UTC [119] LOG:  process 119 still waiting for ShareLock on transaction 1045 after 1003.996 ms
+postgres-1  | 2026-09-06 14:44:14.554 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1003.330 ms
+postgres-1  | 2026-09-06 14:44:14.554 UTC [117] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:14.554 UTC [115] LOG:  process 115 acquired ShareLock on transaction 1023 after 1009.522 ms
+postgres-1  | 2026-09-06 14:44:14.554 UTC [112] LOG:  process 112 acquired ShareLock on transaction 1023 after 2012.211 ms
+postgres-1  | 2026-09-06 14:44:14.555 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 1001.101 ms
+postgres-1  | 2026-09-06 14:44:14.635 UTC [116] LOG:  process 116 still waiting for ShareLock on transaction 1044 after 1002.537 ms
+postgres-1  | 2026-09-06 14:44:14.674 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 1005.965 ms
+postgres-1  | 2026-09-06 14:44:14.711 UTC [114] LOG:  process 114 detected deadlock while waiting for ShareLock on transaction 1045 after 1004.322 ms
+postgres-1  | 2026-09-06 14:44:14.711 UTC [114] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:15.557 UTC [115] LOG:  process 115 detected deadlock while waiting for ShareLock on transaction 968 after 1002.400 ms
+postgres-1  | 2026-09-06 14:44:15.557 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:15.557 UTC [109] LOG:  process 109 acquired ShareLock on transaction 1017 after 12302.999 ms
+postgres-1  | 2026-09-06 14:44:15.557 UTC [121] LOG:  process 121 acquired ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 7886.315 ms
+postgres-1  | 2026-09-06 14:44:15.558 UTC [86] LOG:  process 86 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 16326.647 ms
+postgres-1  | 2026-09-06 14:44:15.712 UTC [112] LOG:  process 112 still waiting for ShareLock on transaction 1045 after 1000.447 ms
+postgres-1  | 2026-09-06 14:44:16.561 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 968 after 1003.235 ms
+postgres-1  | 2026-09-06 14:44:16.564 UTC [109] LOG:  process 109 detected deadlock while waiting for ExclusiveLock on tuple (1,32) of relation 16385 of database 16384 after 1006.008 ms
+postgres-1  | 2026-09-06 14:44:16.564 UTC [86] LOG:  process 86 still waiting for ShareLock on transaction 1018 after 1006.331 ms
+postgres-1  | 2026-09-06 14:44:16.564 UTC [109] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:16.565 UTC [86] LOG:  process 86 acquired ShareLock on transaction 1018 after 1006.855 ms
+postgres-1  | 2026-09-06 14:44:16.565 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 13178.929 ms
+postgres-1  | 2026-09-06 14:44:17.567 UTC [86] LOG:  process 86 detected deadlock while waiting for ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 1000.795 ms
+postgres-1  | 2026-09-06 14:44:17.567 UTC [86] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:17.567 UTC [124] LOG:  process 124 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 13903.100 ms
+postgres-1  | 2026-09-06 14:44:18.569 UTC [124] LOG:  process 124 detected deadlock while waiting for ShareLock on transaction 1039 after 1002.307 ms
+postgres-1  | 2026-09-06 14:44:18.570 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:18.570 UTC [82] LOG:  process 82 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 9036.454 ms
+postgres-1  | 2026-09-06 14:44:18.570 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 1002.736 ms
+postgres-1  | 2026-09-06 14:44:19.574 UTC [82] LOG:  process 82 detected deadlock while waiting for ShareLock on transaction 1039 after 1003.465 ms
+postgres-1  | 2026-09-06 14:44:19.574 UTC [82] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:19.574 UTC [127] LOG:  process 127 acquired ShareLock on transaction 1028 after 8035.422 ms
+postgres-1  | 2026-09-06 14:44:19.574 UTC [126] LOG:  process 126 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 7767.109 ms
+postgres-1  | 2026-09-06 14:44:19.574 UTC [83] LOG:  process 83 acquired ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 9038.161 ms
+postgres-1  | 2026-09-06 14:44:20.578 UTC [126] LOG:  process 126 still waiting for ShareLock on transaction 1039 after 1004.157 ms
+postgres-1  | 2026-09-06 14:44:20.578 UTC [127] LOG:  process 127 detected deadlock while waiting for ShareLock on transaction 1053 after 1003.590 ms
+postgres-1  | 2026-09-06 14:44:20.578 UTC [127] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:20.579 UTC [83] LOG:  process 83 still waiting for ShareLock on transaction 1048 after 1004.317 ms
+postgres-1  | 2026-09-06 14:44:20.579 UTC [83] LOG:  process 83 acquired ShareLock on transaction 1048 after 1004.659 ms
+postgres-1  | 2026-09-06 14:44:20.579 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (1,20) of relation 16385 of database 16384 after 7025.339 ms
+postgres-1  | 2026-09-06 14:44:21.581 UTC [83] LOG:  process 83 detected deadlock while waiting for ExclusiveLock on tuple (1,32) of relation 16385 of database 16384 after 1000.520 ms
+postgres-1  | 2026-09-06 14:44:21.581 UTC [83] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:21.581 UTC [125] LOG:  process 125 still waiting for ShareLock on transaction 1042 after 1001.761 ms
+postgres-1  | 2026-09-06 14:44:21.581 UTC [118] LOG:  process 118 acquired ShareLock on transaction 1042 after 11046.160 ms
+postgres-1  | 2026-09-06 14:44:21.581 UTC [125] LOG:  process 125 acquired ShareLock on transaction 1042 after 1001.943 ms
+postgres-1  | 2026-09-06 14:44:21.581 UTC [120] LOG:  process 120 acquired ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 14943.327 ms
+postgres-1  | 2026-09-06 14:44:22.587 UTC [118] LOG:  process 118 detected deadlock while waiting for ExclusiveLock on tuple (1,32) of relation 16385 of database 16384 after 1004.445 ms
+postgres-1  | 2026-09-06 14:44:22.587 UTC [118] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:22.587 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 1043 after 1005.701 ms
+postgres-1  | 2026-09-06 14:44:22.587 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (2,76) of relation 16385 of database 16384 after 1005.097 ms
+postgres-1  | 2026-09-06 14:44:22.587 UTC [120] LOG:  process 120 acquired ShareLock on transaction 1043 after 1006.111 ms
+postgres-1  | 2026-09-06 14:44:22.588 UTC [84] LOG:  process 84 acquired ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 14055.825 ms
+postgres-1  | 2026-09-06 14:44:23.591 UTC [84] LOG:  process 84 detected deadlock while waiting for ShareLock on transaction 1046 after 1003.103 ms
+postgres-1  | 2026-09-06 14:44:23.591 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 1053 after 1001.163 ms
+postgres-1  | 2026-09-06 14:44:23.591 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:23.591 UTC [122] LOG:  process 122 acquired ShareLock on transaction 1032 after 14058.717 ms
+postgres-1  | 2026-09-06 14:44:23.591 UTC [108] LOG:  process 108 acquired ExclusiveLock on tuple (2,69) of relation 16385 of database 16384 after 6023.679 ms
+postgres-1  | 2026-09-06 14:44:23.591 UTC [113] LOG:  process 113 acquired ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 13845.401 ms
+postgres-1  | 2026-09-06 14:44:24.594 UTC [108] LOG:  process 108 detected deadlock while waiting for ShareLock on transaction 1046 after 1003.270 ms
+postgres-1  | 2026-09-06 14:44:24.595 UTC [108] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:24.595 UTC [126] LOG:  process 126 acquired ShareLock on transaction 1039 after 5020.912 ms
+postgres-1  | 2026-09-06 14:44:24.595 UTC [110] LOG:  process 110 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 11044.604 ms
+postgres-1  | 2026-09-06 14:44:24.595 UTC [122] LOG:  process 122 still waiting for ExclusiveLock on tuple (1,32) of relation 16385 of database 16384 after 1002.944 ms
+postgres-1  | 2026-09-06 14:44:24.596 UTC [113] LOG:  process 113 still waiting for ShareLock on transaction 1036 after 1004.514 ms
+postgres-1  | 2026-09-06 14:44:25.600 UTC [126] LOG:  process 126 detected deadlock while waiting for ExclusiveLock on tuple (1,32) of relation 16385 of database 16384 after 1003.429 ms
+postgres-1  | 2026-09-06 14:44:25.600 UTC [110] LOG:  process 110 still waiting for ShareLock on transaction 1051 after 1004.817 ms
+postgres-1  | 2026-09-06 14:44:25.600 UTC [126] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:25.601 UTC [110] LOG:  process 110 acquired ShareLock on transaction 1051 after 1005.258 ms
+postgres-1  | 2026-09-06 14:44:25.601 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (2,43) of relation 16385 of database 16384 after 11932.346 ms
+postgres-1  | 2026-09-06 14:44:26.602 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 1045 after 1001.186 ms
+postgres-1  | 2026-09-06 14:44:26.603 UTC [110] LOG:  process 110 detected deadlock while waiting for ExclusiveLock on tuple (2,70) of relation 16385 of database 16384 after 1000.513 ms
+postgres-1  | 2026-09-06 14:44:26.603 UTC [110] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:26.603 UTC [119] LOG:  process 119 acquired ShareLock on transaction 1045 after 13053.468 ms
+postgres-1  | 2026-09-06 14:44:26.603 UTC [112] LOG:  process 112 acquired ShareLock on transaction 1045 after 11892.142 ms
+postgres-1  | 2026-09-06 14:44:26.603 UTC [123] LOG:  process 123 acquired ShareLock on transaction 1045 after 1002.570 ms
+postgres-1  | 2026-09-06 14:44:26.604 UTC [125] LOG:  process 125 acquired ExclusiveLock on tuple (2,76) of relation 16385 of database 16384 after 5021.623 ms
+postgres-1  | 2026-09-06 14:44:26.610 UTC [121] LOG:  process 121 acquired ShareLock on transaction 968 after 11052.857 ms
+postgres-1  | 2026-09-06 14:44:26.611 UTC [85] LOG:  process 85 acquired ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 18079.998 ms
+postgres-1  | 2026-09-06 14:44:26.611 UTC [111] LOG:  process 111 acquired ExclusiveLock on tuple (2,57) of relation 16385 of database 16384 after 13767.682 ms
+postgres-1  | 2026-09-06 14:44:27.610 UTC [123] LOG:  process 123 still waiting for ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 1004.427 ms
+postgres-1  | 2026-09-06 14:44:27.611 UTC [125] LOG:  process 125 detected deadlock while waiting for ShareLock on transaction 1050 after 1000.303 ms
+postgres-1  | 2026-09-06 14:44:27.611 UTC [125] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:27.611 UTC [116] LOG:  process 116 acquired ShareLock on transaction 1044 after 13979.057 ms
+postgres-1  | 2026-09-06 14:44:27.611 UTC [122] LOG:  process 122 acquired ExclusiveLock on tuple (1,32) of relation 16385 of database 16384 after 4019.102 ms
+postgres-1  | 2026-09-06 14:44:27.612 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 1047 after 1001.146 ms
+postgres-1  | 2026-09-06 14:44:27.612 UTC [85] LOG:  process 85 still waiting for ShareLock on transaction 1047 after 1001.490 ms
+postgres-1  | 2026-09-06 14:44:28.614 UTC [116] LOG:  process 116 detected deadlock while waiting for ShareLock on transaction 1050 after 1001.220 ms
+postgres-1  | 2026-09-06 14:44:28.614 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 1001.194 ms
+postgres-1  | 2026-09-06 14:44:28.614 UTC [116] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:28.615 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 1050 after 1003.390 ms
+postgres-1  | 2026-09-06 14:44:28.615 UTC [120] LOG:  process 120 acquired ShareLock on transaction 1053 after 6025.100 ms
+postgres-1  | 2026-09-06 14:44:29.625 UTC [122] LOG:  process 122 detected deadlock while waiting for ExclusiveLock on tuple (2,87) of relation 16385 of database 16384 after 1008.156 ms
+postgres-1  | 2026-09-06 14:44:29.625 UTC [122] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:29.625 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 1047 after 1008.638 ms
+postgres-1  | 2026-09-06 14:44:29.626 UTC [113] LOG:  process 113 acquired ShareLock on transaction 1036 after 6034.285 ms
+postgres-1  | 2026-09-06 14:44:29.626 UTC [123] LOG:  process 123 acquired ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 3020.284 ms
+postgres-1  | 2026-09-06 14:44:30.629 UTC [113] LOG:  process 113 detected deadlock while waiting for ShareLock on transaction 1046 after 1001.389 ms
+postgres-1  | 2026-09-06 14:44:30.629 UTC [113] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:30.629 UTC [123] LOG:  process 123 still waiting for ShareLock on transaction 1049 after 1002.985 ms
+postgres-1  | 2026-09-06 14:44:30.629 UTC [123] LOG:  process 123 acquired ShareLock on transaction 1049 after 1003.236 ms
+postgres-1  | 2026-09-06 14:44:30.629 UTC [119] LOG:  process 119 acquired ExclusiveLock on tuple (1,22) of relation 16385 of database 16384 after 3016.520 ms
+postgres-1  | 2026-09-06 14:44:30.639 UTC [121] LOG:  process 121 acquired ShareLock on transaction 1050 after 3028.122 ms
+postgres-1  | 2026-09-06 14:44:30.643 UTC [85] LOG:  process 85 acquired ShareLock on transaction 1047 after 4032.187 ms
+postgres-1  | 2026-09-06 14:44:30.643 UTC [120] LOG:  process 120 acquired ShareLock on transaction 1047 after 2026.056 ms
+postgres-1  | 2026-09-06 14:44:30.643 UTC [111] LOG:  process 111 acquired ShareLock on transaction 1047 after 4032.017 ms
+postgres-1  | 2026-09-06 14:44:31.648 UTC [111] LOG:  process 111 still waiting for ShareLock on transaction 970 after 1005.282 ms
+postgres-1  | 2026-09-06 14:44:31.648 UTC [85] LOG:  process 85 detected deadlock while waiting for ShareLock on transaction 1046 after 1004.757 ms
+postgres-1  | 2026-09-06 14:44:31.648 UTC [85] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:44:31.648 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 970 after 1005.389 ms
+postgres-1  | 2026-09-06 14:44:31.648 UTC [120] LOG:  process 120 acquired ShareLock on transaction 970 after 1005.498 ms
+postgres-1  | 2026-09-06 14:44:31.648 UTC [111] LOG:  process 111 acquired ShareLock on transaction 970 after 1005.500 ms

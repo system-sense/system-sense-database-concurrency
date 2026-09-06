@@ -1,0 +1,6 @@
+CELL pg-sorted-retry engine=postgres lock_order=sorted scenario=basket_checkout retries=3 items=3 lock_timeout_ms=0
+  confirmed        291
+  sold_out         9
+DRIVER label=pg-sorted-retry orders_fired=300 concurrency=25 qty_per_order=1 confirmed=291 sold_out=9 deadlocked=0 conflict=0 check_violation=0 other_errors=0 p50_ms=187 p99_ms=307 p50_confirmed_ms=186 p99_confirmed_ms=307 wall_ms=2438 orders_per_sec=123.0
+STATE pg-sorted-retry {"postgres":{"stock":10,"stock_total":43,"orders":291,"units_sold":743,"items_sold":743,"reservations":0},"mysql":{"stock":100,"stock_total":800,"orders":0,"units_sold":0,"items_sold":0,"reservations":0}}
+STATS pg-sorted-retry {"statuses":{"confirmed":291,"sold_out":9},"codes":{},"window":{"requests":300,"min_ms":62.4,"median_ms":183.2,"max_ms":304.9},"deadlock_wait":{"count":0},"retries_configured":3,"lock_timeout_ms":0,"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"postgres","isolation":"read-committed","scenario":"basket_checkout","lock_order":"sorted"}

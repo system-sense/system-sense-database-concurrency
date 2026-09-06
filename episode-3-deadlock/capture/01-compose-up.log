@@ -1,0 +1,579 @@
+ Image episode-3-deadlock-pricing Building 
+ Image episode-3-deadlock-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 277B done
+#2 DONE 0.0s
+
+#3 [pricing internal] load build definition from Dockerfile
+#3 transferring dockerfile: 273B done
+#3 DONE 0.0s
+
+#4 [pricing internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.2s
+
+#5 [pricing internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [app internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [pricing internal] load build context
+#7 transferring context: 64B done
+#7 DONE 0.0s
+
+#8 [app 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#8 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#8 DONE 0.0s
+
+#9 [app internal] load build context
+#9 transferring context: 191B done
+#9 DONE 0.0s
+
+#10 [pricing 3/5] COPY requirements.txt .
+#10 CACHED
+
+#11 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [pricing 5/5] COPY main.py .
+#12 CACHED
+
+#13 [app 2/5] WORKDIR /srv
+#13 CACHED
+
+#14 [app 3/5] COPY requirements.txt .
+#14 CACHED
+
+#15 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#15 CACHED
+
+#16 [app 5/5] COPY app ./app
+#16 CACHED
+
+#17 [pricing] exporting to image
+#17 exporting layers done
+#17 writing image sha256:ab3c24013e9d7016d85b89033cc8f35141bfd698828880d7fa818ec8acbdfe22 done
+#17 naming to docker.io/library/episode-3-deadlock-pricing done
+#17 DONE 0.0s
+
+#18 [app] exporting to image
+#18 exporting layers done
+#18 writing image sha256:b09a44c595ed7282511da9d410e1e5f2da6abbd6e0d5bd8b5eb91e8c3053b096 done
+#18 naming to docker.io/library/episode-3-deadlock-app done
+#18 DONE 0.0s
+
+#19 [pricing] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#20 [app] resolving provenance for metadata file
+#20 DONE 0.0s
+ Image episode-3-deadlock-pricing Built 
+ Image episode-3-deadlock-app Built 
+ Network episode-3-deadlock_default Creating 
+ Network episode-3-deadlock_default Created 
+ Volume episode-3-deadlock_mysqldata Creating 
+ Volume episode-3-deadlock_mysqldata Created 
+ Volume episode-3-deadlock_pgdata Creating 
+ Volume episode-3-deadlock_pgdata Created 
+ Container episode-3-deadlock-mysql-1 Creating 
+ Container episode-3-deadlock-postgres-1 Creating 
+ Container episode-3-deadlock-mysql-1 Created 
+ Container episode-3-deadlock-postgres-1 Created 
+ Container episode-3-deadlock-pricing-1 Creating 
+ Container episode-3-deadlock-pricing-1 Created 
+ Container episode-3-deadlock-app-1 Creating 
+ Container episode-3-deadlock-app-1 Created 
+ Container episode-3-deadlock-mysql-1 Starting 
+ Container episode-3-deadlock-postgres-1 Starting 
+ Container episode-3-deadlock-mysql-1 Started 
+ Container episode-3-deadlock-postgres-1 Started 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-pricing-1 Starting 
+ Container episode-3-deadlock-pricing-1 Started 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-mysql-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-mysql-1 Healthy 
+ Container episode-3-deadlock-app-1 Starting 
+ Container episode-3-deadlock-app-1 Started 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock=100 basket_items=3
+ Image episode-3-deadlock-pricing Building 
+ Image episode-3-deadlock-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [pricing internal] load build definition from Dockerfile
+#2 transferring dockerfile: 273B done
+#2 DONE 0.0s
+
+#3 [app internal] load build definition from Dockerfile
+#3 transferring dockerfile: 277B done
+#3 DONE 0.0s
+
+#4 [app internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.2s
+
+#5 [app internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [pricing internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [pricing internal] load build context
+#7 transferring context: 64B done
+#7 DONE 0.0s
+
+#8 [app 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#8 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#8 DONE 0.0s
+
+#9 [app internal] load build context
+#9 transferring context: 191B done
+#9 DONE 0.0s
+
+#10 [pricing 3/5] COPY requirements.txt .
+#10 CACHED
+
+#11 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [pricing 5/5] COPY main.py .
+#12 CACHED
+
+#13 [app 3/5] COPY requirements.txt .
+#13 CACHED
+
+#14 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [app 2/5] WORKDIR /srv
+#15 CACHED
+
+#16 [app 5/5] COPY app ./app
+#16 CACHED
+
+#17 [pricing] exporting to image
+#17 exporting layers done
+#17 writing image sha256:ab3c24013e9d7016d85b89033cc8f35141bfd698828880d7fa818ec8acbdfe22 done
+#17 naming to docker.io/library/episode-3-deadlock-pricing done
+#17 DONE 0.0s
+
+#18 [app] exporting to image
+#18 exporting layers done
+#18 writing image sha256:b09a44c595ed7282511da9d410e1e5f2da6abbd6e0d5bd8b5eb91e8c3053b096 done
+#18 naming to docker.io/library/episode-3-deadlock-app done
+#18 DONE 0.0s
+
+#19 [pricing] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#20 [app] resolving provenance for metadata file
+#20 DONE 0.0s
+ Image episode-3-deadlock-app Built 
+ Image episode-3-deadlock-pricing Built 
+ Container episode-3-deadlock-postgres-1 Running 
+ Container episode-3-deadlock-mysql-1 Running 
+ Container episode-3-deadlock-pricing-1 Running 
+ Container episode-3-deadlock-app-1 Running 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-mysql-1 Waiting 
+ Container episode-3-deadlock-mysql-1 Healthy 
+ Container episode-3-deadlock-postgres-1 Healthy 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock=100 basket_items=3
+ Image episode-3-deadlock-pricing Building 
+ Image episode-3-deadlock-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 277B done
+#2 DONE 0.0s
+
+#3 [pricing internal] load build definition from Dockerfile
+#3 transferring dockerfile: 273B done
+#3 DONE 0.0s
+
+#4 [pricing internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.0s
+
+#5 [pricing internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [app internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [app 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#7 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#7 DONE 0.0s
+
+#8 [pricing internal] load build context
+#8 transferring context: 64B done
+#8 DONE 0.0s
+
+#9 [app internal] load build context
+#9 transferring context: 35.91kB done
+#9 DONE 0.0s
+
+#10 [app 3/5] COPY requirements.txt .
+#10 CACHED
+
+#11 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#12 CACHED
+
+#13 [pricing 3/5] COPY requirements.txt .
+#13 CACHED
+
+#14 [app 2/5] WORKDIR /srv
+#14 CACHED
+
+#15 [pricing 5/5] COPY main.py .
+#15 CACHED
+
+#16 [pricing] exporting to image
+#16 exporting layers done
+#16 writing image sha256:ab3c24013e9d7016d85b89033cc8f35141bfd698828880d7fa818ec8acbdfe22 done
+#16 naming to docker.io/library/episode-3-deadlock-pricing done
+#16 DONE 0.0s
+
+#17 [app 5/5] COPY app ./app
+#17 DONE 0.0s
+
+#18 [app] exporting to image
+#18 exporting layers done
+#18 writing image sha256:60ed1f60fb849d7dda66205299f4f13517ca7505c26130958b09a5a15362b5cd done
+#18 naming to docker.io/library/episode-3-deadlock-app done
+#18 DONE 0.0s
+
+#19 [pricing] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#20 [app] resolving provenance for metadata file
+#20 DONE 0.0s
+ Image episode-3-deadlock-pricing Built 
+ Image episode-3-deadlock-app Built 
+ Network episode-3-deadlock_default Creating 
+ Network episode-3-deadlock_default Created 
+ Volume episode-3-deadlock_mysqldata Creating 
+ Volume episode-3-deadlock_mysqldata Created 
+ Volume episode-3-deadlock_pgdata Creating 
+ Volume episode-3-deadlock_pgdata Created 
+ Container episode-3-deadlock-postgres-1 Creating 
+ Container episode-3-deadlock-mysql-1 Creating 
+ Container episode-3-deadlock-postgres-1 Created 
+ Container episode-3-deadlock-pricing-1 Creating 
+ Container episode-3-deadlock-mysql-1 Created 
+ Container episode-3-deadlock-pricing-1 Created 
+ Container episode-3-deadlock-app-1 Creating 
+ Container episode-3-deadlock-app-1 Created 
+ Container episode-3-deadlock-mysql-1 Starting 
+ Container episode-3-deadlock-postgres-1 Starting 
+ Container episode-3-deadlock-postgres-1 Started 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-mysql-1 Started 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-pricing-1 Starting 
+ Container episode-3-deadlock-pricing-1 Started 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-mysql-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-mysql-1 Healthy 
+ Container episode-3-deadlock-app-1 Starting 
+ Container episode-3-deadlock-app-1 Started 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock=100 basket_items=3
+ Image episode-3-deadlock-pricing Building 
+ Image episode-3-deadlock-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [pricing internal] load build definition from Dockerfile
+#2 transferring dockerfile: 273B done
+#2 DONE 0.0s
+
+#3 [app internal] load build definition from Dockerfile
+#3 transferring dockerfile: 277B done
+#3 DONE 0.0s
+
+#4 [pricing internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.2s
+
+#5 [app internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [pricing internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [app internal] load build context
+#7 transferring context: 27.84kB done
+#7 DONE 0.0s
+
+#8 [pricing 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#8 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#8 DONE 0.0s
+
+#9 [pricing internal] load build context
+#9 transferring context: 64B done
+#9 DONE 0.0s
+
+#10 [app 3/5] COPY requirements.txt .
+#10 CACHED
+
+#11 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [pricing 3/5] COPY requirements.txt .
+#12 CACHED
+
+#13 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#13 CACHED
+
+#14 [pricing 2/5] WORKDIR /srv
+#14 CACHED
+
+#15 [pricing 5/5] COPY main.py .
+#15 CACHED
+
+#16 [pricing] exporting to image
+#16 exporting layers done
+#16 writing image sha256:ab3c24013e9d7016d85b89033cc8f35141bfd698828880d7fa818ec8acbdfe22 done
+#16 naming to docker.io/library/episode-3-deadlock-pricing done
+#16 DONE 0.0s
+
+#17 [app 5/5] COPY app ./app
+#17 DONE 0.0s
+
+#18 [pricing] resolving provenance for metadata file
+#18 DONE 0.0s
+
+#19 [app] exporting to image
+#19 exporting layers done
+#19 writing image sha256:b901a3053bc7f8501d1500c9e14da6c71d45fd75a5f42697019d02101f75ad92 done
+#19 naming to docker.io/library/episode-3-deadlock-app done
+#19 DONE 0.0s
+
+#20 [app] resolving provenance for metadata file
+#20 DONE 0.0s
+ Image episode-3-deadlock-pricing Built 
+ Image episode-3-deadlock-app Built 
+ Container episode-3-deadlock-pricing-1 Running 
+ Container episode-3-deadlock-postgres-1 Running 
+ Container episode-3-deadlock-mysql-1 Running 
+ Container episode-3-deadlock-app-1 Recreate 
+ Container episode-3-deadlock-app-1 Recreated 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-mysql-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-mysql-1 Healthy 
+ Container episode-3-deadlock-app-1 Starting 
+ Container episode-3-deadlock-app-1 Started 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock=100 basket_items=3
+ Image episode-3-deadlock-app Building 
+ Image episode-3-deadlock-pricing Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [pricing internal] load build definition from Dockerfile
+#2 DONE 0.0s
+
+#2 [pricing internal] load build definition from Dockerfile
+#2 transferring dockerfile: 273B done
+#2 DONE 0.0s
+
+#3 [app internal] load build definition from Dockerfile
+#3 transferring dockerfile: 277B done
+#3 DONE 0.0s
+
+#4 [pricing internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.6s
+
+#5 [app internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [pricing internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [pricing internal] load build context
+#7 transferring context: 64B done
+#7 DONE 0.0s
+
+#8 [pricing 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#8 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#8 DONE 0.0s
+
+#9 [app internal] load build context
+#9 transferring context: 29.40kB done
+#9 DONE 0.0s
+
+#10 [app 3/5] COPY requirements.txt .
+#10 CACHED
+
+#11 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [pricing 3/5] COPY requirements.txt .
+#12 CACHED
+
+#13 [app 2/5] WORKDIR /srv
+#13 CACHED
+
+#14 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [pricing 5/5] COPY main.py .
+#15 CACHED
+
+#16 [pricing] exporting to image
+#16 exporting layers done
+#16 writing image sha256:ab3c24013e9d7016d85b89033cc8f35141bfd698828880d7fa818ec8acbdfe22 done
+#16 naming to docker.io/library/episode-3-deadlock-pricing done
+#16 DONE 0.0s
+
+#17 [app 5/5] COPY app ./app
+#17 DONE 0.0s
+
+#18 [pricing] resolving provenance for metadata file
+#18 DONE 0.0s
+
+#19 [app] exporting to image
+#19 exporting layers done
+#19 writing image sha256:4e0fcc09e21f0e48e63c274f39d1055555b43f6683ae6acb738504b40bcc39a9 done
+#19 naming to docker.io/library/episode-3-deadlock-app done
+#19 DONE 0.0s
+
+#20 [app] resolving provenance for metadata file
+#20 DONE 0.0s
+ Image episode-3-deadlock-pricing Built 
+ Image episode-3-deadlock-app Built 
+ Container episode-3-deadlock-postgres-1 Running 
+ Container episode-3-deadlock-mysql-1 Running 
+ Container episode-3-deadlock-pricing-1 Running 
+ Container episode-3-deadlock-app-1 Recreate 
+ Container episode-3-deadlock-app-1 Recreated 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-mysql-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-mysql-1 Healthy 
+ Container episode-3-deadlock-app-1 Starting 
+ Container episode-3-deadlock-app-1 Started 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock=100 basket_items=3
+ Image episode-3-deadlock-app Building 
+ Image episode-3-deadlock-pricing Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.17kB done
+#1 DONE 0.0s
+
+#2 [pricing internal] load build definition from Dockerfile
+#2 transferring dockerfile: 273B done
+#2 DONE 0.0s
+
+#3 [app internal] load build definition from Dockerfile
+#3 transferring dockerfile: 277B done
+#3 DONE 0.0s
+
+#4 [app internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 0.3s
+
+#5 [app internal] load .dockerignore
+#5 transferring context: 2B done
+#5 DONE 0.0s
+
+#6 [pricing internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [app internal] load build context
+#7 transferring context: 191B done
+#7 DONE 0.0s
+
+#8 [app 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#8 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#8 DONE 0.0s
+
+#9 [pricing internal] load build context
+#9 transferring context: 64B done
+#9 DONE 0.0s
+
+#10 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [app 3/5] COPY requirements.txt .
+#11 CACHED
+
+#12 [app 5/5] COPY app ./app
+#12 CACHED
+
+#13 [pricing 3/5] COPY requirements.txt .
+#13 CACHED
+
+#14 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [pricing 2/5] WORKDIR /srv
+#15 CACHED
+
+#16 [pricing 5/5] COPY main.py .
+#16 CACHED
+
+#17 [pricing] exporting to image
+#17 exporting layers done
+#17 writing image sha256:ab3c24013e9d7016d85b89033cc8f35141bfd698828880d7fa818ec8acbdfe22 done
+#17 naming to docker.io/library/episode-3-deadlock-pricing done
+#17 DONE 0.0s
+
+#18 [app] exporting to image
+#18 exporting layers done
+#18 writing image sha256:4e0fcc09e21f0e48e63c274f39d1055555b43f6683ae6acb738504b40bcc39a9 done
+#18 naming to docker.io/library/episode-3-deadlock-app done
+#18 DONE 0.0s
+
+#19 [pricing] resolving provenance for metadata file
+#19 DONE 0.0s
+
+#20 [app] resolving provenance for metadata file
+#20 DONE 0.0s
+ Image episode-3-deadlock-app Built 
+ Image episode-3-deadlock-pricing Built 
+ Container episode-3-deadlock-postgres-1 Running 
+ Container episode-3-deadlock-mysql-1 Running 
+ Container episode-3-deadlock-pricing-1 Running 
+ Container episode-3-deadlock-app-1 Running 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-postgres-1 Waiting 
+ Container episode-3-deadlock-mysql-1 Waiting 
+ Container episode-3-deadlock-postgres-1 Healthy 
+ Container episode-3-deadlock-mysql-1 Healthy 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock=100 basket_items=3

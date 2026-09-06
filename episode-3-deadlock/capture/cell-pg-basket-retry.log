@@ -1,0 +1,6 @@
+CELL pg-basket-retry engine=postgres lock_order=basket scenario=basket_checkout retries=3 items=3 lock_timeout_ms=0
+  confirmed        207
+  deadlocked       93
+DRIVER label=pg-basket-retry orders_fired=300 concurrency=25 qty_per_order=1 confirmed=207 sold_out=0 deadlocked=93 conflict=0 check_violation=0 other_errors=0 p50_ms=4538 p99_ms=43449 p50_confirmed_ms=267 p99_confirmed_ms=40383 wall_ms=109174 orders_per_sec=2.7
+STATE pg-basket-retry {"postgres":{"stock":32,"stock_total":278,"orders":207,"units_sold":522,"items_sold":522,"reservations":0},"mysql":{"stock":100,"stock_total":800,"orders":0,"units_sold":0,"items_sold":0,"reservations":0}}
+STATS pg-basket-retry {"statuses":{"confirmed":207,"deadlocked":93},"codes":{"40P01":93},"window":{"requests":383,"min_ms":61.4,"median_ms":190.5,"max_ms":397.0},"deadlock_wait":{"count":93,"min_ms":2946.0,"median_ms":13071.3,"p99_ms":49257.9,"max_ms":49257.9},"retries_configured":3,"lock_timeout_ms":0,"retries":{"total":83,"max_one_order":0,"abandoned":0,"limit":5},"engine":"postgres","isolation":"read-committed","scenario":"basket_checkout","lock_order":"basket"}

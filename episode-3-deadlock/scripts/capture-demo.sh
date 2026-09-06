@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 #
-# Runs the Episode 2 matrix and records what actually happened.
+# Runs the Episode 3 matrix and records what actually happened.
 #
 #   ./scripts/capture-demo.sh
 #
-# The episode's claim is that identical code at an identically named isolation
-# level behaves differently on two engines. So every cell is run against BOTH,
-# back to back, from the same load generator, in the same run. A result from one
-# engine alone proves nothing here.
+# The episode's claim is that a handler with no defect in any line deadlocks
+# because of an order nobody chose, and that one word fixes it. So every cell
+# runs the SAME handler and the same load; only LOCK_ORDER moves.
+#
+# Both engines run every cell, because the second measured number is how long
+# each one takes to NOTICE the cycle: Postgres runs its detector only after a
+# backend has waited deadlock_timeout, InnoDB checks on every lock wait.
 #
 # Writes:  capture/*.log  and  capture/metrics.json
 set -euo pipefail
@@ -16,15 +19,12 @@ cd "$(dirname "$0")/.."
 OUT=capture
 mkdir -p "$OUT"
 
-# RESUME=1 keeps the stack and any cells already measured, and re-runs only what
-# is missing. The matrix is ten cells across two engines and a kill partway
-# through used to cost all of them; each cell resets its own state before it
-# runs, so skipping finished ones is safe.
 RESUME=${RESUME:-0}
 
 ORDERS=${ORDERS:-300}
 CONCURRENCY=${CONCURRENCY:-25}
 STOCK=${STOCK:-100}
+BASKET=${BASKET:-3}
 
 log()  { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 dc()   { docker compose "$@"; }
@@ -41,37 +41,45 @@ wait_healthy() {
   echo ' TIMED OUT'; dc logs app mysql | tail -40; return 1
 }
 
-# One cell of the matrix: engine x isolation x scenario.
+# One cell: engine x lock order x scenario x retries.
 #
-# The config is asserted rather than assumed. Attributing MySQL's numbers to
-# Postgres because a POST silently failed would be a very quiet way to publish
-# a wrong episode, and this episode is entirely a claim about which engine did
-# what.
+# The config is asserted rather than assumed. Attributing a sorted run's zero to
+# the basket order because a POST silently failed would be a very quiet way to
+# publish a wrong episode.
 cell() {
-  local engine=$1 isolation=$2 scenario=$3 tag=$4
+  local engine=$1 order=$2 scenario=$3 retries=$4 items=$5 lockto=$6 tag=$7
   local got
 
-  # A cell is finished when its log carries the STATS line, which is written
-  # last. A half-written log from a killed run is re-run rather than trusted.
   if [ "$RESUME" = "1" ] && grep -q "^STATS $tag " "$OUT/cell-$tag.log" 2>/dev/null; then
     log "$tag  -- already measured, skipping"
     return 0
   fi
+
   got=$(curl -fsS -X POST localhost:8000/admin/config -H 'content-type: application/json' \
-        -d "{\"engine\":\"$engine\",\"isolation\":\"$isolation\",\"scenario\":\"$scenario\"}" \
+        -d "{\"engine\":\"$engine\",\"lock_order\":\"$order\",\"scenario\":\"$scenario\",\"retries\":$retries,\"lock_timeout_ms\":$lockto}" \
         | python3 -c 'import json,sys
 d = json.load(sys.stdin)
-print(d["engine"] + "/" + d["isolation"] + "/" + d["scenario"])')
-  [ "$got" = "$engine/$isolation/$scenario" ] || { echo "config did not take: wanted $engine/$isolation/$scenario, got $got"; exit 1; }
+print(d["engine"] + "/" + d["lock_order"] + "/" + d["scenario"] + "/" + str(d["retries"]))')
+  [ "$got" = "$engine/$order/$scenario/$retries" ] || { echo "config did not take: wanted $engine/$order/$scenario/$retries, got $got"; exit 1; }
 
   curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=$STOCK" >/dev/null
 
+  # Postgres's own lock log, for THIS cell only. Truncating the container log is
+  # not possible, so the read position is marked before the load and everything
+  # after it is what this cell produced.
+  local pg_mark
+  pg_mark=$(dc logs postgres 2>/dev/null | wc -l | tr -d ' ')
+
   {
-    echo "CELL $tag engine=$engine isolation=$isolation scenario=$scenario"
-    python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" --label "$tag"
+    echo "CELL $tag engine=$engine lock_order=$order scenario=$scenario retries=$retries items=$items lock_timeout_ms=$lockto"
+    python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" \
+      --max-basket-items "$items" --label "$tag"
     echo "STATE $tag $(curl -fsS localhost:8000/api/state)"
     echo "STATS $tag $(curl -fsS localhost:8000/admin/stats)"
   } 2>&1 | tee "$OUT/cell-$tag.log"
+
+  dc logs postgres 2>/dev/null | tail -n +"$((pg_mark + 1))" | grep -E "deadlock|still waiting|acquired" \
+    > "$OUT/pglog-$tag.log" 2>/dev/null || true
 }
 
 if [ "$RESUME" = "1" ]; then
@@ -87,83 +95,66 @@ wait_healthy
 {
   curl -fsS localhost:8000/api/versions
   echo
-  echo "orders=$ORDERS concurrency=$CONCURRENCY stock=$STOCK"
+  echo "orders=$ORDERS concurrency=$CONCURRENCY stock=$STOCK basket_items=$BASKET"
 } >> "$OUT/01-compose-up.log"
 
-log "3/6  The same statements, as each engine receives them"
-curl -fsS localhost:8000/admin/sql | python3 -m json.tool | tee "$OUT/02-statements.log"
+log "3/6  The settings this episode measures, read off the engines"
+{
+  echo "-- postgres: the detector does not run until a backend has waited this long"
+  psql -c "SHOW deadlock_timeout;"
+  psql -c "SHOW log_lock_waits;"
+  echo
+  echo "-- mysql: InnoDB checks for a cycle on every lock wait"
+  mysql_ -e "SELECT @@innodb_deadlock_detect, @@innodb_lock_wait_timeout, @@innodb_print_all_deadlocks;"
+} 2>&1 | tee "$OUT/02-settings.log"
 
 log "4/6  The matrix"
-#      engine    isolation        scenario           tag
-cell postgres read-committed  read_modify_write  pg-rc-rmw
-cell mysql    read-committed  read_modify_write  my-rc-rmw
-cell postgres repeatable-read read_modify_write  pg-rr-rmw
-cell mysql    repeatable-read read_modify_write  my-rr-rmw
-cell postgres repeatable-read count_then_insert  pg-rr-cti
-cell mysql    repeatable-read count_then_insert  my-rr-cti
-cell postgres serializable    read_modify_write  pg-ser-rmw
-cell mysql    serializable    read_modify_write  my-ser-rmw
-cell postgres read-committed  where_guard        pg-rc-guard
-cell mysql    read-committed  where_guard        my-rc-guard
+#      engine   order   scenario        retries items lockto tag
+#
+# The bug, on both engines. Same handler, same load; the only thing that differs
+# is which engine is being asked to notice the cycle.
+cell postgres basket  basket_checkout  0 "$BASKET"   0 pg-basket
+cell mysql    basket  basket_checkout  0 "$BASKET"   0 my-basket
+# The one-word fix, on both.
+cell postgres sorted  basket_checkout  0 "$BASKET"   0 pg-sorted
+cell mysql    sorted  basket_checkout  0 "$BASKET"   0 my-sorted
+# Retrying WITHOUT fixing the order. Three attempts with exponential backoff,
+# which is what an application that has read the manual actually does.
+cell postgres basket  basket_checkout  3 "$BASKET"   0 pg-basket-retry
+# Failing fast instead of stalling: give up after 50ms rather than waiting a
+# full second for the detector to run and then being chosen as the victim.
+cell postgres basket  basket_checkout  0 "$BASKET"  50 pg-basket-locktimeout
+# What you would actually ship: the order fixed, and a retry for the residue.
+cell postgres sorted  basket_checkout  3 "$BASKET"   0 pg-sorted-retry
+# The trap fix: one statement is not the same claim as one lock order.
+cell postgres basket  basket_one_stmt  0 "$BASKET"   0 pg-one-stmt
+# The same "one statement" claim, written the other common way. A VALUES join
+# hands the planner the rows in the order they were written, which is the
+# basket's order.
+cell postgres basket  basket_values_join 0 "$BASKET" 0 pg-values-join
+# The hide-the-bug exercise: one item per order cannot be half of a cycle.
+cell postgres basket  basket_checkout  0 1           0 pg-basket-single
 
-log "5/6  What the engines say about their own locks"
+log "4b/6  What the planner actually does with a multi-row UPDATE"
 {
-  echo "-- mysql: the index the next-key locks are taken on."
-  echo "-- Non_unique=1 is the load-bearing fact: read off the engine, not assumed."
-  mysql_ -e "SHOW INDEX FROM reservations;" || true
+  echo "-- IN-list form: the order the rows come back in is the planner's choice"
+  psql -c "EXPLAIN UPDATE inventory SET stock = stock - 1 WHERE sku_id IN (8,3,4) AND stock >= 1;"
   echo
-  echo "-- mysql: deadlocks recorded during this run"
-  dc logs mysql 2>&1 | grep -c "TRANSACTION" || true
-} 2>&1 | tee "$OUT/03-locks.log"
+  echo "-- VALUES-join form: the rows arrive in the order they were written"
+  psql -c "EXPLAIN UPDATE inventory SET stock = inventory.stock - v.qty FROM (VALUES (8,1),(3,1),(4,1)) AS v(sku_id, qty) WHERE inventory.sku_id = v.sku_id AND inventory.stock >= v.qty;"
+  echo
+  echo "-- neither statement contains an ORDER BY, because an UPDATE cannot take one"
+} 2>&1 | tee "$OUT/04-plans.log"
 
-# The locks themselves have to be caught WHILE the load is on: once the last
-# transaction commits there is nothing left in either view to look at.
-#
-# This is a SEPARATE pass, and deliberately so. Polling two engines over
-# `docker compose exec` costs a few hundred milliseconds a sample, and the
-# matrix above is measuring latency to the millisecond -- sampling inside those
-# cells would mean publishing numbers taken from a system that was being probed
-# while it was timed. So the matrix runs clean, and the lock evidence is
-# gathered afterwards on its own load.
-#
-# THESE RUNS PRODUCE NO NUMBERS THE EPISODE QUOTES. Only lock modes, which are
-# qualitative: whether InnoDB takes a gap lock where Postgres takes none, and
-# whether the WHERE-guard queues or spins. Both are claims the episode makes
-# about somebody else's database, so neither may come from documentation.
-lock_evidence() {
-  local engine=$1 isolation=$2 scenario=$3 tag=$4
-  curl -fsS -X POST localhost:8000/admin/config -H 'content-type: application/json' \
-    -d "{\"engine\":\"$engine\",\"isolation\":\"$isolation\",\"scenario\":\"$scenario\"}" >/dev/null
-  curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=$STOCK" >/dev/null
-
-  {
-    echo "LOCKS $tag engine=$engine isolation=$isolation scenario=$scenario"
-    echo "-- evidence only: the counts from this load are NOT the episode's numbers"
-    for i in $(seq 1 60); do
-      echo "-- sample $i --"
-      if [ "$engine" = "postgres" ]; then
-        psql -c "SELECT locktype, mode, granted, count(*) FROM pg_locks GROUP BY 1,2,3 ORDER BY 4 DESC LIMIT 6;" || true
-        psql -c "SELECT count(*) FROM pg_locks WHERE NOT granted;" || true
-      else
-        mysql_ -e "SELECT OBJECT_NAME, INDEX_NAME, LOCK_TYPE, LOCK_MODE, LOCK_STATUS, count(*) FROM performance_schema.data_locks GROUP BY 1,2,3,4,5 ORDER BY 6 DESC LIMIT 8;" || true
-        mysql_ -e "SELECT count(*) FROM performance_schema.data_lock_waits;" || true
-      fi
-      sleep 0.4
-    done
-  } > "$OUT/locks-$tag.log" 2>&1 &
-  local sampler=$!
-
-  python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" --label "locks-$tag" >/dev/null 2>&1 || true
-  kill "$sampler" 2>/dev/null || true
-  wait "$sampler" 2>/dev/null || true
-  echo "  locks-$tag.log  $(grep -c '^-- sample' "$OUT/locks-$tag.log") samples"
-}
-
-log "5b/6  Lock evidence, on its own load"
-lock_evidence postgres repeatable-read count_then_insert pg-rr-cti
-lock_evidence mysql    repeatable-read count_then_insert my-rr-cti
-lock_evidence postgres read-committed  where_guard       pg-rc-guard
-lock_evidence mysql    read-committed  where_guard       my-rc-guard
+log "5/6  What the engines logged about the cycle"
+{
+  echo "-- postgres, from the basket-order run. Unsummarised."
+  head -24 "$OUT/pglog-pg-basket.log" 2>/dev/null || echo "(none)"
+  echo
+  echo "-- mysql: the latest deadlock, as InnoDB describes it"
+  mysql_ -e "SHOW ENGINE INNODB STATUS\\G" 2>/dev/null \
+    | sed -n '/LATEST DETECTED DEADLOCK/,/^---/p' | head -40 || true
+} 2>&1 | tee "$OUT/03-deadlocks.log"
 
 log "6/6  Summarising"
 python3 scripts/summarise.py

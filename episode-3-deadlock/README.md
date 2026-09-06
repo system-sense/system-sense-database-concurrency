@@ -1,184 +1,139 @@
-# Episode 2 — Transaction Isolation Is a Lie
+# Episode 3 — The Deadlock
 
-**System Sense — Database Concurrency**, episode 2 of 4.
-*One level name. Two databases. They swap which one is safe.*
+**System Sense — Database Concurrency**, episode 3 of 4.
+*A full shelf, and the customer was turned away by your own database.*
 
-Episode 1 ended on a setting: raise the isolation level, because that is what it
-is for. This folder turns it on, runs the same statements against **PostgreSQL 16
-and MySQL 8**, and lets them disagree.
+The handler in this folder is **Episode 1's fix**. One atomic statement per
+line, stock validated by the database, all inside one transaction. There is no
+defect in any line of it. It still loses a third of the orders.
 
 ```bash
 docker compose up --build          # in one terminal
-./scripts/capture-demo.sh          # in another — runs all ten cells, writes capture/metrics.json
+./scripts/capture-demo.sh          # in another — runs all ten cells
 ```
 
-## The matrix
+## The one table to remember
 
-One hundred units of one SKU. Three hundred customers, twenty-five in flight,
-one seat each. The same load ten times. **The application code never branches on
-the engine** — the only difference is `$1` against `%s`, and `/admin/sql` prints
-both renderings so you can check that rather than believe it.
+Eight SKUs, a hundred units each. Three hundred customers, twenty-five in
+flight, baskets of two or three **in the order the customer built them**.
 
-| Cell | Booked | Oversold | Aborted | Driver code |
+| Cell | Confirmed | Deadlocked | Stock left | Orders/sec |
 | --- | --- | --- | --- | --- |
-| `READ COMMITTED` · read-modify-write · pg | 300 | **200** | 0 | — |
-| `READ COMMITTED` · read-modify-write · my | 300 | **200** | 0 | — |
-| **`REPEATABLE READ` · read-modify-write · pg** | 20 | **0** | **280** | `40001` |
-| **`REPEATABLE READ` · read-modify-write · my** | 300 | **200** | **0** | none raised |
-| **`REPEATABLE READ` · count-then-insert · pg** | 124 | **24** | **0** | none raised |
-| **`REPEATABLE READ` · count-then-insert · my** | 5 | **0** | **295** | `1213` |
-| `SERIALIZABLE` · read-modify-write · pg | 21 | 0 | 279 | `40001` |
-| `SERIALIZABLE` · read-modify-write · my | 12 | 0 | 288 | `1213` |
-| `READ COMMITTED` · WHERE-guard · pg | 86 | **0** | 0 | — |
-| `READ COMMITTED` · WHERE-guard · my | 100 | **0** | 0 | — |
+| **basket order · postgres** | **141** | **159** | **446** | **2.9** |
+| **basket order · mysql** | **290** | **6** | 55 | **123.2** |
+| **sorted order · postgres** | **291** | **0** | 43 | **123.1** |
+| **sorted order · mysql** | **291** | **0** | 43 | 123.1 |
+| basket + 3 retries · postgres | 207 | 93 | 278 | 2.7 |
+| basket + 50ms lock_timeout · postgres | 274 | 0 | 99 | 118.9 |
+| one item per order · postgres | 300 | 0 | 500 | 122.5 |
 
-Read the four bold rows as two pairs, because that is the whole episode.
+Read the first row on its own. **159 customers were turned away while 446 units
+were still on the shelves.** Nothing oversold — a deadlock victim is rolled
+back, so the stock is perfectly correct. The orders are simply gone, and most
+applications have no `40P01` handler to notice.
 
-**At `REPEATABLE READ`, on the lost update, Postgres is safe.** It refuses 280
-writes with SQLSTATE `40001` and oversells nothing. MySQL, the same level, the
-same code, confirms all three hundred orders, oversells two hundred seats, and
-**raises no error at all**.
+Every figure comes from `capture/metrics.json`. Nothing is estimated.
 
-**At `REPEATABLE READ`, on the phantom insert, they trade places.** Postgres
-commits everything and oversells 24 — `FOR SHARE` locks the rows that exist, and
-Postgres has no gap locks. MySQL's next-key locking turns identical code into
-295 deadlocks, errno `1213`, and oversells nothing.
+## The bug is not in the code
 
-Neither vendor's `REPEATABLE READ` is the other's. The level name is not a
-guarantee; it is a label on a table of anomalies the standard defines by what
-they forbid, not by how they work.
+Customer A's basket is `[7, 12]`. Customer B's is `[12, 7]`.
 
-Every figure here comes from `capture/metrics.json`. Nothing is estimated.
+A takes 7 and waits for 12. B takes 12 and waits for 7. Neither will ever let
+go, so the database kills one of them. **The iteration order came from the
+customer**, and no code review catches it because there is nothing on the screen
+to catch.
 
-## The three scenarios
+## The fix is one word
 
-All three are in [`app/main.py`](app/main.py), written **once**, against the seam
-in [`app/engines.py`](app/engines.py). None of them mentions Postgres or MySQL.
-
-- **`read_modify_write`** — Episode 1's bug. `SELECT` the stock, subtract in
-  Python, `UPDATE` the literal back.
-- **`count_then_insert`** — count the reservations, decide there is room, insert
-  one. Nothing is updated, so nothing conflicts: every write is kept and the
-  *invariant* is what breaks. The `FOR SHARE` is deliberate — it is the
-  strongest lock you can take on rows you are only reading, and on Postgres it
-  still locks nothing but the rows that are already there.
-- **`where_guard`** — the portable fix: put the value you read into the `WHERE`
-  clause, and retry when zero rows come back.
-
-## The landing, and what it costs on each engine
-
-The fix that works is not a level. `WHERE stock = <the value I read>` is a
-current read on both engines, needs no setting, and is Episode 1's optimistic
-mode. Both engines oversell **nothing**. But they charge for it differently:
-
-| | Postgres | MySQL |
-| --- | --- | --- |
-| Booked, of 100 | 86 | **100** |
-| Oversold | 0 | 0 |
-| Customers refused after 5 attempts | **214** | 0 |
-| Retries | **1,186** | 133 |
-| Time to make one sale, p50 | 219 ms | **4,785 ms** |
-
-Postgres pays in **customers turned away**. MySQL pays in **waiting** — and
-4,785 ms is Episode 1's `pessimistic` mode (4,688 ms) reappearing without anyone
-choosing it. `capture/locks-my-rc-guard.log` says why, sampled while the load was
-running:
-
-```
-inventory  NULL     TABLE   IX             GRANTED  24
-inventory  PRIMARY  RECORD  X,REC_NOT_GAP  WAITING  23
-inventory  PRIMARY  RECORD  X,REC_NOT_GAP  GRANTED   1
+```python
+for sku in sorted(lines):      # <- that is the entire fix
 ```
 
-One holder, twenty-three queued behind it. The matching Postgres sample has
-**zero** ungranted locks: nobody waits, so the losers spin and retry instead.
+Deadlocks go from **159 to 0** and throughput from **2.9 to 123.1 orders a
+second**. No new lock, no new table, no new service.
 
-That Postgres column is also Episode 1's `optimistic` mode, reproduced by a
-different statement in a different episode: Episode 1 measured 86 booked, 1,161
-retries and 214 customers abandoned; this measured 86, 1,186 and 214.
+## The two engines do not notice at the same speed
 
-## Looking at the locks yourself
+How long a doomed order stayed alive — transaction open to driver raise, so it
+includes the pricing call and any time queued behind other blocked transactions.
+It is not "detection latency" and is not called that:
 
-They only exist while a load is running — once the last transaction commits,
-both views are empty. That is the whole difficulty of showing anyone a lock. So
-start a load in one terminal and look in another:
+| | minimum | median | p99 |
+| --- | --- | --- | --- |
+| Postgres | **1,092 ms** | **9,054 ms** | **52,969 ms** |
+| MySQL | 112 ms | **216 ms** | 293 ms |
+
+That Postgres minimum is `deadlock_timeout` being **measured**: Postgres keeps
+no wait-for graph, so nothing even looks for a cycle until a backend has waited
+a full second, and the backend that runs the check is the one that dies. InnoDB
+checks on every lock wait.
 
 ```bash
-python3 scripts/order.py --orders 300 --concurrency 25
+docker compose exec postgres psql -U sysense -d sysense -c "SHOW deadlock_timeout;"
 ```
 
-```bash
-# MySQL — the gap locks, named by the engine
-docker compose exec mysql mysql -usysense -psysense sysense -e \
-  "SELECT OBJECT_NAME, INDEX_NAME, LOCK_TYPE, LOCK_MODE, LOCK_STATUS, count(*)
-     FROM performance_schema.data_locks GROUP BY 1,2,3,4,5;"
+**Failing fast beats waiting to be chosen.** A 50 ms `lock_timeout` gives 274
+confirmed instead of 141, and a p99 of **354 ms instead of 49,954 ms**.
 
-# Postgres — and count what is waiting, which is the interesting column
-docker compose exec postgres psql -U sysense -d sysense -c \
-  "SELECT locktype, mode, granted, count(*) FROM pg_locks GROUP BY 1,2,3 ORDER BY 4 DESC;"
+## The "one statement" idea, and why it is a trap
+
+Both one-statement forms measured **zero deadlocks** here. That is not a
+recommendation, it is the trap:
+
+```
+Update on inventory
+  ->  Seq Scan on inventory
+        Filter: ((stock >= 1) AND (sku_id = ANY ('{8,3,4}'::integer[])))
 ```
 
-On `count_then_insert` at `REPEATABLE READ`, MySQL shows
-`X,INSERT_INTENTION … WAITING` on `reservations_sku_idx`. That is the gap lock.
-Postgres, on identical code, shows nothing waiting at all.
+Eight rows, so the planner reads the table straight through, and a sequential
+scan hands every transaction the same physical order. **It worked because of a
+plan nobody asked for.** Neither statement contains an `ORDER BY` — an `UPDATE`
+cannot take one — so nothing promises this survives an index, a bigger table, or
+a change in the statistics. `capture/04-plans.log` has both plans.
 
-The index it is taken on is **non-unique on purpose**, and the capture reads that
-back off the engine (`SHOW INDEX`, `Non_unique=1`) rather than assuming it,
-because InnoDB's next-key locking is what the whole row turns on.
+The prelude that actually holds a promise is
+`SELECT … WHERE id = ANY($1) ORDER BY id FOR UPDATE`.
 
 ## The knob
 
 ```bash
-ISOLATION=serializable docker compose up --build
+LOCK_ORDER=sorted docker compose up --build
 ```
 
-or switch it live, which is what the capture script does:
+**Try this — hide the bug without fixing it.** `MAX_BASKET_ITEMS=1`:
 
 ```bash
-curl -X POST localhost:8000/admin/config -H 'content-type: application/json' \
-  -d '{"engine":"mysql","isolation":"repeatable-read","scenario":"read_modify_write"}'
-curl -X POST 'localhost:8000/admin/reset?sku_stock=100'
-python3 scripts/order.py --orders 300 --concurrency 25
-curl -s localhost:8000/api/state
+python3 scripts/order.py --orders 300 --concurrency 25 --max-basket-items 1
 ```
 
-**Try this — hide the bug without fixing it.** Set `ISOLATION=serializable`. The
-oversell vanishes on both engines. Now look at what you bought: Postgres aborts
-279 of 300 transactions and MySQL deadlocks 288 of them, and **your application
-has no retry loop to catch either**. Safe and unusable are not the same result,
-and the difference does not show up until the day the traffic does.
+Deadlocks go to zero, on the same eight SKUs, under the same load. A
+transaction holding one lock can never be half of a cycle. **Not one line of the
+bug was fixed** — and every basket in your staging fixtures has one item in it.
 
 ## What is where
 
 ```
-app/main.py         the three scenarios, written once, engine-neutral
-app/engines.py      the seam: `?` rendered as `$1` or `%s`, and nothing else
-app/config.py       the knobs — engine, isolation, scenario
-db/init.sql         Postgres schema
-db/init.mysql.sql   the same schema in MySQL, differences forced by the dialect only
-pricing/main.py     the race window: a real service call, deterministic latency by id
-scripts/order.py    the customers — standard library only, no dependencies
-scripts/capture-demo.sh   the ten cells, then the lock evidence, then metrics.json
+app/main.py         the checkout, and the one line that sorts
+app/config.py       LOCK_ORDER, retries, lock_timeout, MAX_BASKET_ITEMS
+db/init.sql         inventory, orders, and order_items — the basket
+scripts/order.py    the customers, and the baskets they built
+scripts/capture-demo.sh   the ten cells, the plans, and the lock logs
 capture/            the measured output every number above comes from
-capture/locks-*.log lock views sampled DURING the load, on a separate pass
+capture/04-plans.log      why one statement happened to be safe
 ```
 
-The lock evidence is gathered on its own load rather than during the matrix, on
-purpose: polling two engines over `docker compose exec` costs a few hundred
-milliseconds a sample, and the matrix is timing sales to the millisecond.
-
-Counts move by a few between runs — the WHERE-guard cell booked 87, 88, 86 and 86
-on four runs of the same machine, and MySQL booked 100 on all four. No conclusion
-moves.
+Counts move by a few between runs. The split does not: hundreds of deadlocks on
+Postgres in basket order, single digits on MySQL, zero on both when sorted.
 
 ---
 
-Previous: **[Episode 1 — The Phantom Update](../episode-1-lost-update/)**, where
-three hundred people bought one of a hundred seats and the shelf still said 88.
+Previous: **[Episode 2 — Transaction Isolation Is a Lie](../episode-2-isolation/)**,
+where one level name meant two different guarantees.
 
-Next: **Episode 3 — The 2-Second Deadlock**. Every answer here that was actually
-safe worked by making something wait, or by killing it. Next time the thing that
-gets killed is a customer's checkout, and nobody wrote a line of wrong code.
+Next: **Episode 4 — Distributed Locks Without Disaster**. `sorted()` worked
+because one database could see both locks. The moment the critical section
+leaves the database, nothing can.
 
 Part of the **System Sense — Database Concurrency** mini-series ·
 [playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)

@@ -1,6 +1,25 @@
 services:
   postgres:
     image: postgres:16-alpine
+    # ───────────────────────────────────────────────────────────────────────
+    #  EPISODE 3 ADDS THESE TWO SETTINGS, AND THEY ARE BOTH EVIDENCE.
+    #
+    #  deadlock_timeout is stated rather than inherited. Postgres does NOT keep
+    #  a wait-for graph: a backend that has been blocked this long runs the
+    #  detector itself, and whichever backend ran the check is the one that
+    #  dies. The default really is one second, and this episode measures what a
+    #  full second of two sessions doing nothing costs, so the number has to be
+    #  visible in the compose file rather than assumed from documentation.
+    #
+    #  log_lock_waits then prints, for every wait that outlives it, which
+    #  process is waiting on which. That log goes on screen unsummarised.
+    # ───────────────────────────────────────────────────────────────────────
+    command: >
+      postgres
+      -c deadlock_timeout=1s
+      -c log_lock_waits=on
+      -c log_min_duration_statement=0
+      -c log_line_prefix='%m [%p] '
     environment:
       POSTGRES_USER: sysense
       POSTGRES_PASSWORD: sysense
@@ -94,6 +113,14 @@ services:
       ENGINE: "${ENGINE:-postgres}"
       ISOLATION: "${ISOLATION:-read-committed}"
       SCENARIO: "${SCENARIO:-read_modify_write}"
+      # ── Episode 3's knob ────────────────────────────────────────────────
+      #  basket  take the rows in the order the customer's basket happened to
+      #          be in. Nobody chose this order. It is the bug.
+      #  sorted  take them in a total order every transaction agrees on.
+      #          One word, and the cycle cannot form.
+      LOCK_ORDER: "${LOCK_ORDER:-basket}"
+      MAX_BASKET_ITEMS: "${MAX_BASKET_ITEMS:-3}"
+      DEADLOCK_RETRIES: "${DEADLOCK_RETRIES:-0}"
     ports:
       - "8000:8000"
     depends_on:

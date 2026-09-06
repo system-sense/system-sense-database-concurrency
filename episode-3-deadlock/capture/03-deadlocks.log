@@ -1,0 +1,29 @@
+-- postgres, from the basket-order run. Unsummarised.
+postgres-1  | 2026-09-06 14:42:51.199 UTC [111] LOG:  process 111 detected deadlock while waiting for ShareLock on transaction 844 after 1007.547 ms
+postgres-1  | 2026-09-06 14:42:51.199 UTC [111] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.199 UTC [121] LOG:  process 121 still waiting for ShareLock on transaction 843 after 1007.672 ms
+postgres-1  | 2026-09-06 14:42:51.199 UTC [121] LOG:  process 121 acquired ShareLock on transaction 843 after 1007.812 ms
+postgres-1  | 2026-09-06 14:42:51.212 UTC [84] LOG:  process 84 detected deadlock while waiting for ShareLock on transaction 846 after 1001.336 ms
+postgres-1  | 2026-09-06 14:42:51.212 UTC [84] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.250 UTC [112] LOG:  process 112 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1003.900 ms
+postgres-1  | 2026-09-06 14:42:51.265 UTC [108] LOG:  process 108 still waiting for ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 1006.072 ms
+postgres-1  | 2026-09-06 14:42:51.288 UTC [82] LOG:  process 82 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1003.993 ms
+postgres-1  | 2026-09-06 14:42:51.288 UTC [125] LOG:  process 125 still waiting for ExclusiveLock on tuple (0,58) of relation 16385 of database 16384 after 1003.804 ms
+postgres-1  | 2026-09-06 14:42:51.295 UTC [115] LOG:  process 115 detected deadlock while waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1000.666 ms
+postgres-1  | 2026-09-06 14:42:51.295 UTC [115] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.296 UTC [126] LOG:  process 126 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1000.900 ms
+postgres-1  | 2026-09-06 14:42:51.310 UTC [124] LOG:  process 124 detected deadlock while waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1001.602 ms
+postgres-1  | 2026-09-06 14:42:51.310 UTC [124] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.355 UTC [120] LOG:  process 120 still waiting for ShareLock on transaction 854 after 1001.249 ms
+postgres-1  | 2026-09-06 14:42:51.356 UTC [86] LOG:  process 86 detected deadlock while waiting for ExclusiveLock on tuple (0,44) of relation 16385 of database 16384 after 1000.445 ms
+postgres-1  | 2026-09-06 14:42:51.356 UTC [86] ERROR:  deadlock detected
+postgres-1  | 2026-09-06 14:42:51.369 UTC [113] LOG:  process 113 still waiting for ExclusiveLock on tuple (0,50) of relation 16385 of database 16384 after 1002.069 ms
+postgres-1  | 2026-09-06 14:42:51.393 UTC [110] LOG:  process 110 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.835 ms
+postgres-1  | 2026-09-06 14:42:51.422 UTC [83] LOG:  process 83 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1004.446 ms
+postgres-1  | 2026-09-06 14:42:51.444 UTC [118] LOG:  process 118 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1001.324 ms
+postgres-1  | 2026-09-06 14:42:51.452 UTC [119] LOG:  process 119 still waiting for ExclusiveLock on tuple (0,52) of relation 16385 of database 16384 after 1002.153 ms
+postgres-1  | 2026-09-06 14:42:51.512 UTC [117] LOG:  process 117 still waiting for ExclusiveLock on tuple (0,56) of relation 16385 of database 16384 after 1007.781 ms
+
+-- mysql: the latest deadlock, as InnoDB describes it
+LATEST DETECTED DEADLOCK
+------------------------
