@@ -1,0 +1,109 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sysense
+      POSTGRES_PASSWORD: sysense
+      POSTGRES_DB: sysense
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sysense -d sysense"]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+
+  # ─────────────────────────────────────────────────────────────────────────
+  #  THE RACE WINDOW.
+  #
+  #  Every checkout calls something between reading a row and writing it back.
+  #  Here it is a pricing service; in your system it is a fraud check, a tax
+  #  lookup or a loyalty balance. Its latency is
+  #
+  #      PRICING_BASE_MS + (sku_id * 137 + customer_id * 31) % PRICING_SPREAD_MS
+  #
+  #  which spans 60-299 ms with the defaults. That is the window, and it is
+  #  real work rather than a sleep in the handler.
+  #
+  #  Make the call fast and the bug hides:
+  #
+  #      PRICING_BASE_MS=1 PRICING_SPREAD_MS=2 docker compose up
+  #
+  #  Nothing has been fixed. The window is narrower, so fewer requests land
+  #  inside it. That is why this passes on a laptop and fails on a Friday.
+  # ─────────────────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────────────────
+  #  EPISODE 2 ADDS THIS, AND THIS ALONE.
+  #
+  #  The episode's claim is that identical code at an identically named
+  #  isolation level behaves differently here than on Postgres. That claim can
+  #  only be measured with both engines in the same compose file, running the
+  #  same load, in the same run.
+  #
+  #  innodb_print_all_deadlocks puts every deadlock in the error log rather than
+  #  only the latest in SHOW ENGINE INNODB STATUS, because row C is expected to
+  #  produce a lot of them and "the latest one" is not evidence.
+  # ─────────────────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8
+    command: >
+      --innodb-print-all-deadlocks=ON
+      --innodb-deadlock-detect=ON
+      --character-set-server=utf8mb4
+    environment:
+      MYSQL_ROOT_PASSWORD: sysense
+      MYSQL_DATABASE: sysense
+      MYSQL_USER: sysense
+      MYSQL_PASSWORD: sysense
+    volumes:
+      - ./db/init.mysql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -usysense -psysense --silent"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+
+  pricing:
+    build: ./pricing
+    environment:
+      PRICING_BASE_MS: "${PRICING_BASE_MS:-60}"
+      PRICING_SPREAD_MS: "${PRICING_SPREAD_MS:-240}"
+    ports:
+      - "9000:9000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
+      MYSQL_HOST: "mysql"
+      MYSQL_PORT: "3306"
+      MYSQL_USER: "sysense"
+      MYSQL_PASSWORD: "sysense"
+      MYSQL_DB: "sysense"
+      PRICING_URL: "http://pricing:9000"
+      PRICING_TIMEOUT_SECONDS: "30"
+      ENGINE: "${ENGINE:-postgres}"
+      ISOLATION: "${ISOLATION:-read-committed}"
+      SCENARIO: "${SCENARIO:-read_modify_write}"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      pricing:
+        condition: service_started
+
+volumes:
+  pgdata:
+  mysqldata:
