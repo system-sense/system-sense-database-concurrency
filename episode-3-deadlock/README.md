@@ -20,8 +20,9 @@ docker compose up --build          # in one terminal
 
 ## The one table to remember
 
-Eight SKUs, a hundred units each. Three hundred customers, twenty-five in
-flight, baskets of two or three **in the order the customer built them**.
+Eight SKUs of 100 units each, **800 in total**. Three hundred customers,
+twenty-five in flight, baskets of two or three **in the order the customer
+built them**.
 
 | Cell | Confirmed | Deadlocked | Stock left | Orders/sec |
 | --- | --- | --- | --- | --- |

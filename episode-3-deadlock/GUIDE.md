@@ -46,7 +46,7 @@ docker compose up --build
 ./scripts/capture-demo.sh
 ```
 
-Eight SKUs, a hundred units each — eight hundred in total. Three hundred
+Eight SKUs of 100 units each, 800 in total. Three hundred
 customers, twenty-five in flight, baskets of two or three **in the order the
 customer happened to build them**.
 
