@@ -1,0 +1,7 @@
+CELL redlock lock=redlock ttl_ms=1000 stock_per_sku=10
+  confirmed        120
+  lock_unavailable 1
+  sold_out         179
+DRIVER label=redlock orders_fired=300 concurrency=25 qty_per_order=1 confirmed=120 sold_out=179 deadlocked=0 conflict=0 check_violation=0 fenced_out=0 lock_unavailable=1 other_errors=0 p50_ms=801 p99_ms=5778 p50_confirmed_ms=2063 p99_confirmed_ms=5778 wall_ms=17101 orders_per_sec=17.5
+STATE redlock {"postgres":{"stock":0,"stock_total":0,"orders":120,"units_sold":120,"items_sold":0,"reservations":0},"mysql":{"stock":10,"stock_total":80,"orders":0,"units_sold":0,"items_sold":0,"reservations":0}}
+STATS redlock {"statuses":{"confirmed":120,"lock_unavailable":1,"sold_out":179},"codes":{},"window":{"requests":120,"min_ms":425.9,"median_ms":996.1,"max_ms":1565.9},"deadlock_wait":{"count":0},"retries_configured":0,"lock_timeout_ms":0,"lock":{"mode":"redlock","ttl_ms":1000,"dispatched":120,"lease_expired":60,"fenced_out":0,"lock_unavailable":1,"released_not_ours":62,"critical_section":{"count":120,"median_ms":996.1,"p95_ms":1559.2,"p99_ms":1564.2,"max_ms":1565.9},"lease_overrun":{"count":60,"median_ms":283.8,"p95_ms":566.1,"p99_ms":567.4,"max_ms":567.4},"pool_wait":{"count":0},"fenced_examples":[]},"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"postgres","isolation":"read-committed","scenario":"allocate_and_dispatch","lock_order":"basket"}

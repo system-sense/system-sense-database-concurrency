@@ -416,9 +416,16 @@ async def allocate_and_dispatch(pg, req: OrderRequest, lock) -> Outcome:
                     # UPDATE 0. This worker's token is behind the row's, so its
                     # lock was handed to somebody else while it was working.
                     stats["fenced_out"] = stats.get("fenced_out", 0) + 1
+                    # Re-read so the evidence carries the token the row holds
+                    # NOW, not the one it held on the way in. Those are equal
+                    # by construction at read time, and the whole point is that
+                    # somebody else claimed the row in between.
+                    now_tok = await con.fetchval(
+                        "SELECT fence_token FROM inventory WHERE sku_id = $1", req.sku_id
+                    )
                     stats["fenced_tokens"].append(
                         {"worker": owner, "carried": held.token,
-                         "row_had": row["fence_token"], "rows": 0}
+                         "row_has": now_tok, "rows": 0}
                     )
                     return Outcome("fenced_out", "", "stale token refused")
             else:

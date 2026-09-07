@@ -1,0 +1,542 @@
+ Image episode-4-locks-pricing Building 
+ Image episode-4-locks-app Building 
+ Image episode-4-locks-worker-b Building 
+ Image episode-4-locks-fulfilment Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.24kB done
+#1 DONE 0.0s
+
+#2 [fulfilment internal] load build definition from Dockerfile
+#2 transferring dockerfile: 273B done
+#2 DONE 0.0s
+
+#3 [pricing internal] load build definition from Dockerfile
+#3 transferring dockerfile: 273B done
+#3 DONE 0.0s
+
+#4 [app internal] load build definition from Dockerfile
+#4 transferring dockerfile: 277B done
+#4 DONE 0.0s
+
+#5 [worker-b internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 0.8s
+
+#6 [worker-b internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [pricing internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [fulfilment internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [worker-b 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#9 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea 0.0s done
+#9 DONE 0.0s
+
+#10 [worker-b internal] load build context
+#10 transferring context: 489B done
+#10 DONE 0.0s
+
+#11 [fulfilment internal] load build context
+#11 transferring context: 64B done
+#11 DONE 0.0s
+
+#12 [pricing internal] load build context
+#12 transferring context: 64B done
+#12 DONE 0.0s
+
+#13 [fulfilment 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#13 CACHED
+
+#14 [fulfilment 3/5] COPY requirements.txt .
+#14 CACHED
+
+#15 [fulfilment 5/5] COPY main.py .
+#15 CACHED
+
+#16 [pricing 3/5] COPY requirements.txt .
+#16 CACHED
+
+#17 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#17 CACHED
+
+#18 [pricing 5/5] COPY main.py .
+#18 CACHED
+
+#19 [app 3/5] COPY requirements.txt .
+#19 CACHED
+
+#20 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#20 CACHED
+
+#21 [app 2/5] WORKDIR /srv
+#21 CACHED
+
+#22 [app 5/5] COPY app ./app
+#22 CACHED
+
+#23 [fulfilment] exporting to image
+#23 exporting layers done
+#23 writing image sha256:2901eab4f38a6891c12428923f8127dc17ea2b3ba5d8d22f96088a518e9661ad done
+#23 naming to docker.io/library/episode-4-locks-fulfilment done
+#23 DONE 0.0s
+
+#24 [pricing] exporting to image
+#24 exporting layers done
+#24 writing image sha256:5d533ca4d26de3f9d1260caef4f9f61fedbc78cee00be985e53e5fb9e6dc18aa done
+#24 naming to docker.io/library/episode-4-locks-pricing done
+#24 DONE 0.0s
+
+#25 [app] exporting to image
+#25 exporting layers done
+#25 writing image sha256:4d7f7cfa18ee701afaa8868f403aefd0ac3b24ee157fa930cf72e770f34e3953 done
+#25 naming to docker.io/library/episode-4-locks-app done
+#25 DONE 0.0s
+
+#26 [worker-b] exporting to image
+#26 exporting layers done
+#26 writing image sha256:a438d09d599b82c335abcfcd0c566cda799cb12005d24357fa76db49ad26b47f done
+#26 naming to docker.io/library/episode-4-locks-worker-b done
+#26 DONE 0.0s
+
+#27 [pricing] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#28 [fulfilment] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [worker-b] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [app] resolving provenance for metadata file
+#30 DONE 0.0s
+ Image episode-4-locks-fulfilment Built 
+ Image episode-4-locks-worker-b Built 
+ Image episode-4-locks-pricing Built 
+ Image episode-4-locks-app Built 
+ Network episode-4-locks_default Creating 
+ Network episode-4-locks_default Created 
+ Volume episode-4-locks_pgdata Creating 
+ Volume episode-4-locks_pgdata Created 
+ Volume episode-4-locks_mysqldata Creating 
+ Volume episode-4-locks_mysqldata Created 
+ Container episode-4-locks-mysql-1 Creating 
+ Container episode-4-locks-redis-1 Creating 
+ Container episode-4-locks-redis-b-1 Creating 
+ Container episode-4-locks-postgres-1 Creating 
+ Container episode-4-locks-redis-a-1 Creating 
+ Container episode-4-locks-redis-c-1 Creating 
+ Container episode-4-locks-fulfilment-1 Creating 
+ Container episode-4-locks-redis-b-1 Created 
+ Container episode-4-locks-redis-1 Created 
+ Container episode-4-locks-fulfilment-1 Created 
+ Container episode-4-locks-postgres-1 Created 
+ Container episode-4-locks-pricing-1 Creating 
+ Container episode-4-locks-worker-b-1 Creating 
+ Container episode-4-locks-mysql-1 Created 
+ Container episode-4-locks-redis-a-1 Created 
+ Container episode-4-locks-redis-c-1 Created 
+ Container episode-4-locks-pricing-1 Created 
+ Container episode-4-locks-app-1 Creating 
+ Container episode-4-locks-worker-b-1 Created 
+ Container episode-4-locks-app-1 Created 
+ Container episode-4-locks-postgres-1 Starting 
+ Container episode-4-locks-mysql-1 Starting 
+ Container episode-4-locks-redis-a-1 Starting 
+ Container episode-4-locks-redis-c-1 Starting 
+ Container episode-4-locks-redis-b-1 Starting 
+ Container episode-4-locks-redis-1 Starting 
+ Container episode-4-locks-fulfilment-1 Starting 
+ Container episode-4-locks-redis-a-1 Started 
+ Container episode-4-locks-redis-b-1 Started 
+ Container episode-4-locks-redis-1 Started 
+ Container episode-4-locks-fulfilment-1 Started 
+ Container episode-4-locks-redis-c-1 Started 
+ Container episode-4-locks-mysql-1 Started 
+ Container episode-4-locks-postgres-1 Started 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-redis-1 Waiting 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-redis-1 Healthy 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-pricing-1 Starting 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-worker-b-1 Starting 
+ Container episode-4-locks-pricing-1 Started 
+ Container episode-4-locks-redis-b-1 Waiting 
+ Container episode-4-locks-mysql-1 Waiting 
+ Container episode-4-locks-redis-1 Waiting 
+ Container episode-4-locks-redis-a-1 Waiting 
+ Container episode-4-locks-redis-c-1 Waiting 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-worker-b-1 Started 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-redis-b-1 Healthy 
+ Container episode-4-locks-redis-a-1 Healthy 
+ Container episode-4-locks-redis-1 Healthy 
+ Container episode-4-locks-redis-c-1 Healthy 
+ Container episode-4-locks-mysql-1 Healthy 
+ Container episode-4-locks-app-1 Starting 
+ Container episode-4-locks-app-1 Started 
+ Image episode-4-locks-fulfilment Building 
+ Image episode-4-locks-worker-b Building 
+ Image episode-4-locks-pricing Building 
+ Image episode-4-locks-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.24kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 277B done
+#2 DONE 0.0s
+
+#3 [fulfilment internal] load build definition from Dockerfile
+#3 transferring dockerfile: 273B done
+#3 DONE 0.0s
+
+#4 [pricing internal] load build definition from Dockerfile
+#4 transferring dockerfile: 273B done
+#4 DONE 0.0s
+
+#5 [app internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 0.5s
+
+#6 [worker-b internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [pricing internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [fulfilment internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [app 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#9 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#9 DONE 0.0s
+
+#10 [fulfilment internal] load build context
+#10 transferring context: 64B done
+#10 DONE 0.0s
+
+#11 [app internal] load build context
+#11 transferring context: 489B done
+#11 DONE 0.0s
+
+#12 [pricing internal] load build context
+#12 transferring context: 64B done
+#12 DONE 0.0s
+
+#13 [pricing 3/5] COPY requirements.txt .
+#13 CACHED
+
+#14 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [pricing 5/5] COPY main.py .
+#15 CACHED
+
+#16 [app 3/5] COPY requirements.txt .
+#16 CACHED
+
+#17 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#17 CACHED
+
+#18 [app 5/5] COPY app ./app
+#18 CACHED
+
+#19 [fulfilment 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#19 CACHED
+
+#20 [pricing 2/5] WORKDIR /srv
+#20 CACHED
+
+#21 [fulfilment 3/5] COPY requirements.txt .
+#21 CACHED
+
+#22 [fulfilment 5/5] COPY main.py .
+#22 CACHED
+
+#23 [fulfilment] exporting to image
+#23 exporting layers done
+#23 writing image sha256:2901eab4f38a6891c12428923f8127dc17ea2b3ba5d8d22f96088a518e9661ad done
+#23 naming to docker.io/library/episode-4-locks-fulfilment done
+#23 DONE 0.0s
+
+#24 [app] exporting to image
+#24 exporting layers done
+#24 writing image sha256:4d7f7cfa18ee701afaa8868f403aefd0ac3b24ee157fa930cf72e770f34e3953 done
+#24 naming to docker.io/library/episode-4-locks-app done
+#24 DONE 0.0s
+
+#25 [pricing] exporting to image
+#25 exporting layers done
+#25 writing image sha256:5d533ca4d26de3f9d1260caef4f9f61fedbc78cee00be985e53e5fb9e6dc18aa done
+#25 naming to docker.io/library/episode-4-locks-pricing done
+#25 DONE 0.0s
+
+#26 [worker-b] exporting to image
+#26 exporting layers done
+#26 writing image sha256:a438d09d599b82c335abcfcd0c566cda799cb12005d24357fa76db49ad26b47f done
+#26 naming to docker.io/library/episode-4-locks-worker-b done
+#26 DONE 0.0s
+
+#27 [pricing] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#28 [app] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [worker-b] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [fulfilment] resolving provenance for metadata file
+#30 DONE 0.0s
+ Image episode-4-locks-fulfilment Built 
+ Image episode-4-locks-worker-b Built 
+ Image episode-4-locks-pricing Built 
+ Image episode-4-locks-app Built 
+ Network episode-4-locks_default Creating 
+ Network episode-4-locks_default Created 
+ Volume episode-4-locks_mysqldata Creating 
+ Volume episode-4-locks_mysqldata Created 
+ Volume episode-4-locks_pgdata Creating 
+ Volume episode-4-locks_pgdata Created 
+ Container episode-4-locks-redis-a-1 Creating 
+ Container episode-4-locks-postgres-1 Creating 
+ Container episode-4-locks-redis-1 Creating 
+ Container episode-4-locks-mysql-1 Creating 
+ Container episode-4-locks-redis-b-1 Creating 
+ Container episode-4-locks-redis-c-1 Creating 
+ Container episode-4-locks-fulfilment-1 Creating 
+ Container episode-4-locks-redis-1 Created 
+ Container episode-4-locks-postgres-1 Created 
+ Container episode-4-locks-pricing-1 Creating 
+ Container episode-4-locks-fulfilment-1 Created 
+ Container episode-4-locks-redis-c-1 Created 
+ Container episode-4-locks-mysql-1 Created 
+ Container episode-4-locks-redis-b-1 Created 
+ Container episode-4-locks-redis-a-1 Created 
+ Container episode-4-locks-worker-b-1 Creating 
+ Container episode-4-locks-pricing-1 Created 
+ Container episode-4-locks-app-1 Creating 
+ Container episode-4-locks-worker-b-1 Created 
+ Container episode-4-locks-app-1 Created 
+ Container episode-4-locks-mysql-1 Starting 
+ Container episode-4-locks-postgres-1 Starting 
+ Container episode-4-locks-redis-1 Starting 
+ Container episode-4-locks-fulfilment-1 Starting 
+ Container episode-4-locks-redis-b-1 Starting 
+ Container episode-4-locks-redis-c-1 Starting 
+ Container episode-4-locks-redis-a-1 Starting 
+ Container episode-4-locks-fulfilment-1 Started 
+ Container episode-4-locks-redis-a-1 Started 
+ Container episode-4-locks-redis-1 Started 
+ Container episode-4-locks-redis-b-1 Started 
+ Container episode-4-locks-redis-c-1 Started 
+ Container episode-4-locks-postgres-1 Started 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-mysql-1 Started 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-mysql-1 Waiting 
+ Container episode-4-locks-redis-1 Waiting 
+ Container episode-4-locks-redis-a-1 Waiting 
+ Container episode-4-locks-redis-b-1 Waiting 
+ Container episode-4-locks-redis-c-1 Waiting 
+ Container episode-4-locks-redis-b-1 Healthy 
+ Container episode-4-locks-redis-c-1 Healthy 
+ Container episode-4-locks-redis-a-1 Healthy 
+ Container episode-4-locks-redis-1 Healthy 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-pricing-1 Starting 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-pricing-1 Started 
+ Container episode-4-locks-redis-b-1 Waiting 
+ Container episode-4-locks-mysql-1 Waiting 
+ Container episode-4-locks-redis-1 Waiting 
+ Container episode-4-locks-redis-a-1 Waiting 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-redis-c-1 Waiting 
+ Container episode-4-locks-redis-c-1 Healthy 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-redis-1 Healthy 
+ Container episode-4-locks-redis-a-1 Healthy 
+ Container episode-4-locks-redis-b-1 Healthy 
+ Container episode-4-locks-mysql-1 Healthy 
+ Container episode-4-locks-worker-b-1 Starting 
+ Container episode-4-locks-mysql-1 Healthy 
+ Container episode-4-locks-app-1 Starting 
+ Container episode-4-locks-worker-b-1 Started 
+ Container episode-4-locks-app-1 Started 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock_per_sku=10 lease_ms=1000
+ Image episode-4-locks-fulfilment Building 
+ Image episode-4-locks-pricing Building 
+ Image episode-4-locks-worker-b Building 
+ Image episode-4-locks-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.24kB done
+#1 DONE 0.0s
+
+#2 [fulfilment internal] load build definition from Dockerfile
+#2 transferring dockerfile: 273B done
+#2 DONE 0.0s
+
+#3 [pricing internal] load build definition from Dockerfile
+#3 transferring dockerfile: 273B done
+#3 DONE 0.0s
+
+#4 [worker-b internal] load build definition from Dockerfile
+#4 transferring dockerfile: 277B done
+#4 DONE 0.0s
+
+#5 [worker-b internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 0.7s
+
+#6 [pricing internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [app internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [fulfilment internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [pricing internal] load build context
+#9 transferring context: 64B done
+#9 DONE 0.0s
+
+#10 [worker-b 1/5] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#10 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea done
+#10 DONE 0.0s
+
+#11 [fulfilment internal] load build context
+#11 transferring context: 64B done
+#11 DONE 0.0s
+
+#12 [worker-b internal] load build context
+#12 transferring context: 83.94kB done
+#12 DONE 0.0s
+
+#13 [fulfilment 3/5] COPY requirements.txt .
+#13 CACHED
+
+#14 [fulfilment 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [fulfilment 5/5] COPY main.py .
+#15 CACHED
+
+#16 [pricing 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#16 CACHED
+
+#17 [pricing 3/5] COPY requirements.txt .
+#17 CACHED
+
+#18 [pricing 5/5] COPY main.py .
+#18 CACHED
+
+#19 [worker-b 2/5] WORKDIR /srv
+#19 CACHED
+
+#20 [worker-b 3/5] COPY requirements.txt .
+#20 CACHED
+
+#21 [worker-b 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#21 CACHED
+
+#22 [pricing] exporting to image
+#22 exporting layers done
+#22 writing image sha256:5d533ca4d26de3f9d1260caef4f9f61fedbc78cee00be985e53e5fb9e6dc18aa done
+#22 naming to docker.io/library/episode-4-locks-pricing done
+#22 DONE 0.0s
+
+#23 [fulfilment] exporting to image
+#23 exporting layers done
+#23 writing image sha256:2901eab4f38a6891c12428923f8127dc17ea2b3ba5d8d22f96088a518e9661ad done
+#23 naming to docker.io/library/episode-4-locks-fulfilment done
+#23 DONE 0.0s
+
+#24 [app 5/5] COPY app ./app
+#24 DONE 0.0s
+
+#25 [pricing] resolving provenance for metadata file
+#25 DONE 0.0s
+
+#26 [fulfilment] resolving provenance for metadata file
+#26 DONE 0.0s
+
+#27 [worker-b] exporting to image
+#27 exporting layers done
+#27 writing image sha256:9657d8589a6582df3a11c372c566c4e021b5efcf659123807060e24bf5e27f57 done
+#27 naming to docker.io/library/episode-4-locks-worker-b done
+#27 DONE 0.0s
+
+#28 [app] exporting to image
+#28 exporting layers done
+#28 writing image sha256:1b0ec509af22b4de949bd983dbfeaf2bfdf087635844d0af26942c86af8daca1 done
+#28 naming to docker.io/library/episode-4-locks-app done
+#28 DONE 0.0s
+
+#29 [worker-b] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [app] resolving provenance for metadata file
+#30 DONE 0.0s
+ Image episode-4-locks-fulfilment Built 
+ Image episode-4-locks-pricing Built 
+ Image episode-4-locks-app Built 
+ Image episode-4-locks-worker-b Built 
+ Container episode-4-locks-postgres-1 Running 
+ Container episode-4-locks-pricing-1 Running 
+ Container episode-4-locks-mysql-1 Running 
+ Container episode-4-locks-redis-a-1 Running 
+ Container episode-4-locks-fulfilment-1 Running 
+ Container episode-4-locks-redis-c-1 Running 
+ Container episode-4-locks-redis-b-1 Running 
+ Container episode-4-locks-redis-1 Running 
+ Container episode-4-locks-app-1 Recreate 
+ Container episode-4-locks-worker-b-1 Recreate 
+ Container episode-4-locks-app-1 Recreated 
+ Container episode-4-locks-worker-b-1 Recreated 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-mysql-1 Waiting 
+ Container episode-4-locks-redis-1 Waiting 
+ Container episode-4-locks-redis-a-1 Waiting 
+ Container episode-4-locks-redis-b-1 Waiting 
+ Container episode-4-locks-redis-c-1 Waiting 
+ Container episode-4-locks-redis-1 Healthy 
+ Container episode-4-locks-redis-a-1 Healthy 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-redis-a-1 Waiting 
+ Container episode-4-locks-postgres-1 Waiting 
+ Container episode-4-locks-mysql-1 Waiting 
+ Container episode-4-locks-redis-1 Waiting 
+ Container episode-4-locks-redis-b-1 Waiting 
+ Container episode-4-locks-redis-c-1 Waiting 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-redis-c-1 Healthy 
+ Container episode-4-locks-mysql-1 Healthy 
+ Container episode-4-locks-redis-b-1 Healthy 
+ Container episode-4-locks-worker-b-1 Starting 
+ Container episode-4-locks-worker-b-1 Started 
+ Container episode-4-locks-redis-a-1 Healthy 
+ Container episode-4-locks-redis-c-1 Healthy 
+ Container episode-4-locks-redis-b-1 Healthy 
+ Container episode-4-locks-redis-1 Healthy 
+ Container episode-4-locks-postgres-1 Healthy 
+ Container episode-4-locks-mysql-1 Healthy 
+ Container episode-4-locks-app-1 Starting 
+ Container episode-4-locks-app-1 Started 
+{"postgres":"PostgreSQL 16.15 on aarch64-unknown-linux-musl","mysql":"MySQL 8.4.11"}
+orders=300 concurrency=25 stock_per_sku=10 lease_ms=1000

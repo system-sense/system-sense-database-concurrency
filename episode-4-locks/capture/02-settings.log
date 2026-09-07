@@ -1,0 +1,12 @@
+-- the lease, as the app is running it
+lock_ttl_ms 1000
+
+-- the critical section's configured latency, read off fulfilment
+{"ok":true,"base_ms":400,"spread_ms":1200}
+-- redis persistence: OFF, which is what makes a restart forget
+save
+
+appendonly
+no
+
+-- postgres advisory locks live in the normal lock manager

@@ -249,6 +249,65 @@ services:
       fulfilment:
         condition: service_started
 
+  # ─────────────────────────────────────────────────────────────────────────
+  #  A SECOND WORKER, AND IT EXISTS TO BE FROZEN.
+  #
+  #  The same image and the same environment as `app`; the only thing that
+  #  makes it special is that it is a separate container, so
+  #
+  #      docker compose pause worker-b
+  #
+  #  stops ONE worker mid-critical-section without touching the other. That is
+  #  the cgroup freezer standing in for a stop-the-world GC pause or a
+  #  hypervisor steal: the process cannot run, cannot heartbeat and cannot
+  #  renew its lease, and it has no idea any time passed when it wakes up.
+  #
+  #  This is the FORENSIC demonstration and it is labelled as one everywhere it
+  #  appears. It is the mechanism slowed down until it is visible, single
+  #  stepped, with one request on each worker. It is never the source of a
+  #  number the episode quotes -- those all come from the statistical fleet,
+  #  where the lease expiries are emergent.
+  # ─────────────────────────────────────────────────────────────────────────
+  worker-b:
+    build: .
+    environment:
+      DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
+      MYSQL_HOST: "mysql"
+      MYSQL_PORT: "3306"
+      MYSQL_USER: "sysense"
+      MYSQL_PASSWORD: "sysense"
+      MYSQL_DB: "sysense"
+      PRICING_URL: "http://pricing:9000"
+      PRICING_TIMEOUT_SECONDS: "30"
+      ENGINE: "${ENGINE:-postgres}"
+      SCENARIO: "allocate_and_dispatch"
+      LOCK: "${LOCK:-none}"
+      LOCK_TTL_MS: "${LOCK_TTL_MS:-1000}"
+      REDIS_URL: "redis://redis:6379"
+      REDLOCK_URLS: "redis://redis-a:6379,redis://redis-b:6379,redis://redis-c:6379"
+      FULFILMENT_URL: "http://fulfilment:9100"
+      FULFILMENT_TIMEOUT_SECONDS: "30"
+    ports:
+      - "8001:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      # The app opens a MySQL pool at startup whether or not the episode uses
+      # it -- Episodes 2 and 3 still run in this folder. Without this, worker-b
+      # raced mysql and died in its lifespan.
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      redis-a:
+        condition: service_healthy
+      redis-b:
+        condition: service_healthy
+      redis-c:
+        condition: service_healthy
+      fulfilment:
+        condition: service_started
+
 volumes:
   pgdata:
   mysqldata:

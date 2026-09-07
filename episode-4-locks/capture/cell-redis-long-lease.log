@@ -1,0 +1,7 @@
+CELL redis-long-lease lock=redis ttl_ms=2600 stock_per_sku=10
+  confirmed        80
+  lock_unavailable 3
+  sold_out         217
+DRIVER label=redis-long-lease orders_fired=300 concurrency=25 qty_per_order=1 confirmed=80 sold_out=217 deadlocked=0 conflict=0 check_violation=0 fenced_out=0 lock_unavailable=3 other_errors=0 p50_ms=5 p99_ms=8009 p50_confirmed_ms=1832 p99_confirmed_ms=7015 wall_ms=11490 orders_per_sec=26.1
+STATE redis-long-lease {"postgres":{"stock":0,"stock_total":0,"orders":80,"units_sold":80,"items_sold":0,"reservations":0},"mysql":{"stock":10,"stock_total":80,"orders":0,"units_sold":0,"items_sold":0,"reservations":0}}
+STATS redis-long-lease {"statuses":{"confirmed":80,"lock_unavailable":3,"sold_out":217},"codes":{},"window":{"requests":80,"min_ms":424.2,"median_ms":1031.1,"max_ms":1566.6},"deadlock_wait":{"count":0},"retries_configured":0,"lock_timeout_ms":0,"lock":{"mode":"redis","ttl_ms":2600,"dispatched":80,"lease_expired":0,"fenced_out":0,"lock_unavailable":3,"released_not_ours":0,"critical_section":{"count":80,"median_ms":1031.1,"p95_ms":1557.6,"p99_ms":1566.6,"max_ms":1566.6},"lease_overrun":{"count":0},"pool_wait":{"count":0},"fenced_examples":[]},"retries":{"total":0,"max_one_order":0,"abandoned":0,"limit":5},"engine":"postgres","isolation":"read-committed","scenario":"allocate_and_dispatch","lock_order":"basket"}

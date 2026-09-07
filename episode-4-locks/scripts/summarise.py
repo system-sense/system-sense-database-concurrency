@@ -1,13 +1,21 @@
 """Turns the raw capture logs into capture/metrics.json.
 
-One row per cell. The engines' error codes are kept as the driver reported them
--- SQLSTATE on Postgres, errno on MySQL -- and deliberately never normalised,
-because how each engine reports a cycle is part of what is being measured.
+One row per cell. Every figure the episode quotes comes from the FLEET cells;
+the forensic pause and the Redlock restart write their own logs and appear here
+only as evidence that they ran.
 
-The number this episode turns on is NOT an oversell. A deadlock victim is rolled
-back, so the stock is exactly right; what is wrong is that the order is gone.
-So `lost_orders` and `stock_left` are read together: a full shelf and a turned
-away customer.
+The number this episode turns on is a PARCEL, not a row. A worker whose lease
+expired mid-dispatch has already handed a consignment to fulfilment, and no
+amount of rolling back reaches it. So the arithmetic that matters is:
+
+    parcels_without_sale = parcels_dispatched - units_the_shelf_gave_up
+
+Under `none` and `redis` that gap is a genuine oversell: two parcels went out
+and the shelf was decremented once. Under `fenced` the gap is the episode's
+closing line instead -- the storage layer REFUSED the stale write, which is why
+the shelf is right, and the parcel had already gone anyway. The arithmetic is
+identical and the meaning is not, so `fenced_out` is carried beside it rather
+than folded into it.
 """
 import json
 import pathlib
@@ -15,18 +23,14 @@ import re
 
 OUT = pathlib.Path("capture")
 
+#  tag                mode        ttl_ms
 CELLS = [
-    #  tag                  engine      order     scenario           retries items lock_to
-    ("pg-basket",           "postgres", "basket", "basket_checkout", 0, 3, 0),
-    ("my-basket",           "mysql",    "basket", "basket_checkout", 0, 3, 0),
-    ("pg-sorted",           "postgres", "sorted", "basket_checkout", 0, 3, 0),
-    ("my-sorted",           "mysql",    "sorted", "basket_checkout", 0, 3, 0),
-    ("pg-basket-retry",     "postgres", "basket", "basket_checkout", 3, 3, 0),
-    ("pg-basket-locktimeout", "postgres", "basket", "basket_checkout", 0, 3, 50),
-    ("pg-sorted-retry",     "postgres", "sorted", "basket_checkout", 3, 3, 0),
-    ("pg-one-stmt",         "postgres", "basket", "basket_one_stmt", 0, 3, 0),
-    ("pg-values-join",      "postgres", "basket", "basket_values_join", 0, 3, 0),
-    ("pg-basket-single",    "postgres", "basket", "basket_checkout", 0, 1, 0),
+    ("none",             "none",     1000),
+    ("redis",            "redis",    1000),
+    ("redlock",          "redlock",  1000),
+    ("advisory",         "advisory", 1000),
+    ("fenced",           "fenced",   1000),
+    ("redis-long-lease", "redis",    2600),
 ]
 
 
@@ -55,48 +59,58 @@ def blob(prefix: str, body: str) -> dict:
     return {}
 
 
-def cell(tag, engine, order, scenario, retries, items, lock_to) -> dict:
+def cell(tag: str, mode: str, ttl: int, stock_per_sku: int, skus: int) -> dict:
     body = text(f"cell-{tag}.log")
     driver = kv("DRIVER", body)
-    state = blob(f"STATE {tag}", body).get(engine, {})
+    header = kv(f"CELL {tag}", body)
+    state = blob(f"STATE {tag}", body).get("postgres", {})
     st = blob(f"STATS {tag}", body)
+    lock = st.get("lock", {})
     statuses = st.get("statuses", {})
 
-    confirmed = statuses.get("confirmed", 0)
-    deadlocked = statuses.get("deadlocked", 0)
-    timed_out = statuses.get("lock_timeout", 0)
+    started_total = (header.get("stock_per_sku", stock_per_sku)) * skus
+    stock_left = state.get("stock_total", 0)
+    units_sold = started_total - stock_left
+    parcels = lock.get("dispatched", 0)
 
     return {
         "tag": tag,
-        "engine": engine,
-        "lock_order": order,
-        "scenario": scenario,
-        "retries_configured": retries,
-        "basket_items": items,
-        "lock_timeout_ms": lock_to,
-        "confirmed": confirmed,
+        "lock": mode,
+        "lease_ms": lock.get("ttl_ms", ttl),
+        "stock_total": started_total,
+        "stock_left": stock_left,
+        # What the shelf says left the shelf.
+        "units_sold": units_sold,
+        # What fulfilment actually put on a van. Counted when the call returns,
+        # not when the write succeeds, because that is when it stopped being
+        # reversible.
+        "parcels": parcels,
+        # The episode's headline. See the module docstring: same arithmetic,
+        # two different meanings, and `fenced_out` is what tells them apart.
+        "parcels_without_sale": parcels - units_sold,
+        # The mechanism, counted directly rather than inferred from the gap.
+        "lease_expired": lock.get("lease_expired", 0),
+        # The storage layer refusing a writer whose lock had already gone.
+        "fenced_out": lock.get("fenced_out", 0),
+        "lock_unavailable": lock.get("lock_unavailable", 0),
+        # A release that found the lock was no longer ours. The hygienic Lua
+        # release is what makes this visible; a bare DEL would have deleted
+        # somebody else's lock and said nothing.
+        "released_not_ours": lock.get("released_not_ours", 0),
+        "confirmed": statuses.get("confirmed", 0),
         "sold_out": statuses.get("sold_out", 0),
-        "deadlocked": deadlocked,
-        "lock_timeouts": timed_out,
-        "errors": statuses.get("error", 0),
-        # The order was never placed and nobody handled the exception. Same unit
-        # as the rest of the series, opposite sign to Episode 1's oversell.
-        "lost_orders": deadlocked + timed_out,
-        # SQLSTATE on Postgres, errno on MySQL. Never normalised.
-        "codes": st.get("codes", {}),
-        "stock_left": state.get("stock_total", 0),
         "orders": state.get("orders", 0),
-        "items_sold": state.get("items_sold", 0),
-        "retries_used": st.get("retries", {}).get("total", 0) if isinstance(st.get("retries"), dict) else 0,
-        # How long a doomed order was ALIVE before the database gave up on it:
-        # transaction open to driver raise, so it includes the pricing call and
-        # any time spent queued behind other blocked transactions. It is not
-        # "detection latency" and is deliberately not called that.
-        "doomed_lifetime": st.get("deadlock_wait", {}),
+        # How long the critical section actually took. The lease is set against
+        # THIS distribution, which is why the expiries are emergent.
+        "critical_section": lock.get("critical_section", {}),
+        # By how much the workers that overran their lease overran it.
+        "lease_overrun": lock.get("lease_overrun", {}),
+        # advisory only: what holding a transaction open across an external
+        # call costs at the pool.
+        "pool_wait": lock.get("pool_wait", {}),
+        "fenced_examples": lock.get("fenced_examples", []),
         "p50_ms": driver.get("p50_ms", 0),
         "p99_ms": driver.get("p99_ms", 0),
-        "p50_confirmed_ms": driver.get("p50_confirmed_ms", 0),
-        "p99_confirmed_ms": driver.get("p99_confirmed_ms", 0),
         "orders_per_sec": driver.get("orders_per_sec", 0),
     }
 
@@ -110,57 +124,77 @@ def main() -> None:
             versions = json.loads(m.group(0))
         except json.JSONDecodeError:
             versions = {}
+    run = kv("orders=", up)
+    stock_per_sku = run.get("stock_per_sku", 5)
+    skus = 8
 
-    settings = text("02-settings.log")
+    fulfil = {}
+    mf = re.search(r'\{"ok":true,"base_ms":(\d+),"spread_ms":(\d+)\}', text("02-settings.log"))
+    if mf:
+        fulfil = {"base_ms": int(mf.group(1)), "spread_ms": int(mf.group(2))}
 
-    cells = [cell(*c) for c in CELLS]
+    cells = [cell(t, m_, ttl, stock_per_sku, skus) for t, m_, ttl in CELLS]
     by = {c["tag"]: c for c in cells}
 
     metrics = {
         "scenario": {
-            "skus": 8,
-            "stock_per_sku": 100,
-            "stock_total": 800,
-            "orders_fired": 300,
-            "concurrency": 25,
-            "basket_items_max": 3,
+            "skus": skus,
+            "stock_per_sku": stock_per_sku,
+            "stock_total": stock_per_sku * skus,
+            "orders_fired": run.get("orders", 300),
+            "concurrency": run.get("concurrency", 25),
+            "lease_ms": run.get("lease_ms", 1000),
             "postgres_version": versions.get("postgres", ""),
-            "mysql_version": versions.get("mysql", ""),
-            # Read off the engine, not off the documentation.
-            "deadlock_timeout": next((l.strip() for l in settings.splitlines()
-                                      if re.fullmatch(r"\s*\d+\w*s?\s*", l)), ""),
+            "fulfilment_latency": fulfil,
         },
         "cells": cells,
+        # Named so nobody can quote them by accident. Both are mechanism.
+        "evidence_only": {
+            "forensic_pause": "capture/06-forensic-pause.log",
+            "redlock_restart": "capture/07-redlock-restart.log",
+        },
     }
     (OUT / "metrics.json").write_text(json.dumps(metrics, indent=2) + "\n")
 
-    hdr = (f"  {'cell':<18}{'engine':<10}{'order':<8}{'confirmed':>10}{'deadlocked':>12}"
-           f"{'stock left':>12}{'alive p50':>12}{'p99 order':>11}  codes")
+    hdr = (f"  {'cell':<18}{'lock':<10}{'lease':>7}{'parcels':>9}{'sold':>7}"
+           f"{'NO SALE':>9}{'expired':>9}{'fenced':>8}{'ord/sec':>9}")
     print(f"\n{hdr}")
     for c in cells:
-        codes = " ".join(f"{k}x{v}" for k, v in sorted(c["codes"].items())) or "-"
-        d = c["doomed_lifetime"].get("median_ms", 0)
-        print(f"  {c['tag']:<18}{c['engine']:<10}{c['lock_order']:<8}"
-              f"{c['confirmed']:>10}{c['deadlocked']:>12}{c['stock_left']:>12}"
-              f"{d:>11.0f}m{c['p99_ms']:>10}  {codes}")
+        print(f"  {c['tag']:<18}{c['lock']:<10}{c['lease_ms']:>7}{c['parcels']:>9}"
+              f"{c['units_sold']:>7}{c['parcels_without_sale']:>9}{c['lease_expired']:>9}"
+              f"{c['fenced_out']:>8}{c['orders_per_sec']:>9}")
 
-    print("\n  THE NUMBER THAT INVERTS")
-    b = by.get("pg-basket", {})
-    print(f"    {b.get('lost_orders', 0)} customers turned away, and "
-          f"{b.get('stock_left', 0)} units still on the shelves")
+    print("\n  THE LEASE IS SHORTER THAN THE WORK")
+    r = by.get("redis", {})
+    cs = r.get("critical_section", {})
+    print(f"    lease {r.get('lease_ms', 0)} ms against a critical section of "
+          f"median {cs.get('median_ms', 0)} ms, p95 {cs.get('p95_ms', 0)} ms, "
+          f"max {cs.get('max_ms', 0)} ms")
+    ov = r.get("lease_overrun", {})
+    print(f"    {r.get('lease_expired', 0)} leases expired mid-work, overrunning by "
+          f"median {ov.get('median_ms', 0)} ms and up to {ov.get('max_ms', 0)} ms")
 
-    print("\n  HOW LONG A DOOMED ORDER STAYED ALIVE (not detection latency)")
-    for t in ("pg-basket", "my-basket"):
+    print("\n  A GOOD LOCK IS NOT ENOUGH")
+    for t in ("none", "redis", "advisory", "fenced"):
         c = by.get(t, {})
-        w = c.get("doomed_lifetime", {})
-        print(f"    {c.get('engine','?'):<9} median {w.get('median_ms', 0):>8} ms   "
-              f"p99 {w.get('p99_ms', 0):>8} ms   over {w.get('count', 0)} deadlocks")
+        print(f"    {c.get('lock', '?'):<9} {c.get('parcels', 0):>3} parcels, "
+              f"{c.get('units_sold', 0):>3} sold, "
+              f"{c.get('parcels_without_sale', 0):>3} without a sale, "
+              f"{c.get('fenced_out', 0):>3} refused by the row")
 
-    print("\n  THE ONE-WORD FIX")
-    for t in ("pg-basket", "pg-sorted"):
+    print("\n  THE HIDE-THE-BUG EXERCISE")
+    for t in ("redis", "redis-long-lease"):
         c = by.get(t, {})
-        print(f"    {c.get('lock_order','?'):<7} deadlocks {c.get('deadlocked',0):>4}   "
-              f"confirmed {c.get('confirmed',0):>4}   {c.get('orders_per_sec',0):>7} orders/sec")
+        print(f"    lease {c.get('lease_ms', 0):>5} ms -> "
+              f"{c.get('lease_expired', 0):>3} expiries, "
+              f"{c.get('parcels_without_sale', 0):>3} parcels without a sale")
+    print("    Nothing was fixed. The window is narrower.")
+
+    a = by.get("advisory", {})
+    pw = a.get("pool_wait", {})
+    print("\n  WHAT ADVISORY LOCKS COST")
+    print(f"    pool wait median {pw.get('median_ms', 0)} ms, p99 {pw.get('p99_ms', 0)} ms, "
+          f"over {pw.get('count', 0)} acquisitions")
 
 
 if __name__ == "__main__":

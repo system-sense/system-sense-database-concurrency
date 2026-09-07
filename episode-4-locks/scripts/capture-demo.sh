@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
 #
-# Runs the Episode 3 matrix and records what actually happened.
+# Runs the Episode 4 matrix and records what actually happened.
 #
 #   ./scripts/capture-demo.sh
 #
-# The episode's claim is that a handler with no defect in any line deadlocks
-# because of an order nobody chose, and that one word fixes it. So every cell
-# runs the SAME handler and the same load; only LOCK_ORDER moves.
+# The episode's claim is that a lock with a timeout is a lease, that nothing
+# tells the holder when the lease ran out, and that no amount of lock hygiene
+# fixes it -- only the storage layer can. So every cell runs the SAME handler
+# and the same load, and only LOCK moves.
 #
-# Both engines run every cell, because the second measured number is how long
-# each one takes to NOTICE the cycle: Postgres runs its detector only after a
-# backend has waited deadlock_timeout, InnoDB checks on every lock wait.
+# Two kinds of run, and the difference is stated everywhere it appears:
+#
+#   THE FLEET      unattended, 300 workers, and the source of every number the
+#                  episode quotes. Whether a worker outlives its lease is a
+#                  function of the ids, so the expiries are emergent.
+#   THE FORENSICS  one request on each of two workers, with one of them frozen
+#                  by `docker compose pause`. It shows the MECHANISM and it
+#                  produces no figure the narration quotes.
 #
 # Writes:  capture/*.log  and  capture/metrics.json
 set -euo pipefail
@@ -23,31 +29,35 @@ RESUME=${RESUME:-0}
 
 ORDERS=${ORDERS:-300}
 CONCURRENCY=${CONCURRENCY:-25}
-STOCK=${STOCK:-100}
-BASKET=${BASKET:-3}
+# Eight shelves and a small number of units on each. The stock has to be SMALL
+# relative to the fleet or nothing contends: 300 workers against 800 units, as
+# in Episode 3, would have every worker find stock and no two of them ever race
+# for the last one.
+STOCK=${STOCK:-10}
+TTL=${TTL:-1000}
 
 log()  { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 dc()   { docker compose "$@"; }
 psql() { dc exec -T postgres psql -U sysense -d sysense -At -F' ' "$@"; }
-mysql_() { dc exec -T mysql mysql -usysense -psysense sysense -N -B "$@" 2>/dev/null; }
 
 wait_healthy() {
   printf 'waiting for the stack '
-  for _ in $(seq 1 120); do
-    if curl -fsS localhost:8000/health >/dev/null 2>&1 &&
-       curl -fsS localhost:9000/health >/dev/null 2>&1; then echo ' ready'; return 0; fi
+  for _ in $(seq 1 150); do
+    if curl -fsS localhost:8000/health  >/dev/null 2>&1 &&
+       curl -fsS localhost:8001/health  >/dev/null 2>&1 &&
+       curl -fsS localhost:9100/health  >/dev/null 2>&1; then echo ' ready'; return 0; fi
     printf '.'; sleep 1
   done
-  echo ' TIMED OUT'; dc logs app mysql | tail -40; return 1
+  echo ' TIMED OUT'; dc logs app worker-b | tail -40; return 1
 }
 
-# One cell: engine x lock order x scenario x retries.
+# One cell: lock mode x lease.
 #
-# The config is asserted rather than assumed. Attributing a sorted run's zero to
-# the basket order because a POST silently failed would be a very quiet way to
+# The config is asserted rather than assumed. Attributing an advisory run's zero
+# to the lock when a POST had silently failed would be a very quiet way to
 # publish a wrong episode.
 cell() {
-  local engine=$1 order=$2 scenario=$3 retries=$4 items=$5 lockto=$6 tag=$7
+  local mode=$1 ttl=$2 tag=$3
   local got
 
   if [ "$RESUME" = "1" ] && grep -q "^STATS $tag " "$OUT/cell-$tag.log" 2>/dev/null; then
@@ -55,144 +65,159 @@ cell() {
     return 0
   fi
 
-  got=$(curl -fsS -X POST localhost:8000/admin/config -H 'content-type: application/json' \
-        -d "{\"engine\":\"$engine\",\"lock_order\":\"$order\",\"scenario\":\"$scenario\",\"retries\":$retries,\"lock_timeout_ms\":$lockto}" \
-        | python3 -c 'import json,sys
-d = json.load(sys.stdin)
-print(d["engine"] + "/" + d["lock_order"] + "/" + d["scenario"] + "/" + str(d["retries"]))')
-  [ "$got" = "$engine/$order/$scenario/$retries" ] || { echo "config did not take: wanted $engine/$order/$scenario/$retries, got $got"; exit 1; }
+  for port in 8000 8001; do
+    got=$(curl -fsS -X POST "localhost:$port/admin/config" -H 'content-type: application/json' \
+          -d "{\"engine\":\"postgres\",\"scenario\":\"allocate_and_dispatch\",\"lock\":\"$mode\",\"lock_ttl_ms\":$ttl}" \
+          | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d["lock"] + "/" + str(d["lock_ttl_ms"]) + "/" + d["scenario"])')
+    [ "$got" = "$mode/$ttl/allocate_and_dispatch" ] || {
+      echo "config did not take on :$port -- wanted $mode/$ttl/allocate_and_dispatch, got $got"; exit 1; }
+  done
 
   curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=$STOCK" >/dev/null
 
-  # Postgres's own lock log, for THIS cell only. Truncating the container log is
-  # not possible, so the read position is marked before the load and everything
-  # after it is what this cell produced.
-  local pg_mark
-  pg_mark=$(dc logs postgres 2>/dev/null | wc -l | tr -d ' ')
-
   {
-    echo "CELL $tag engine=$engine lock_order=$order scenario=$scenario retries=$retries items=$items lock_timeout_ms=$lockto"
+    echo "CELL $tag lock=$mode ttl_ms=$ttl stock_per_sku=$STOCK"
     python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" \
-      --max-basket-items "$items" --label "$tag"
+      --spread-skus --max-basket-items 1 --label "$tag"
     echo "STATE $tag $(curl -fsS localhost:8000/api/state)"
     echo "STATS $tag $(curl -fsS localhost:8000/admin/stats)"
   } 2>&1 | tee "$OUT/cell-$tag.log"
-
-  # DETAIL and CONTEXT are the point, and the first version of this grep dropped
-  # both: a DETAIL line reads "Process 1234 waits for ShareLock on transaction
-  # 5678; blocked by process 1235" and contains none of the words that were
-  # being matched. The cycle itself was being filtered out of the evidence.
-  dc logs postgres 2>/dev/null | tail -n +"$((pg_mark + 1))" \
-    | grep -E "deadlock|still waiting|acquired|DETAIL|CONTEXT|HINT" \
-    > "$OUT/pglog-$tag.log" 2>/dev/null || true
 }
 
 if [ "$RESUME" = "1" ]; then
-  log "1/6  Resuming -- keeping the stack and any cells already measured"
+  log "1/7  Resuming -- keeping the stack and any cells already measured"
 else
-  log "1/6  Tearing down any previous run"
+  log "1/7  Tearing down any previous run"
   dc down -v --remove-orphans >/dev/null 2>&1 || true
 fi
 
-log "2/6  Starting the stack (postgres + mysql + pricing + app)"
+log "2/7  Starting the stack"
 dc up --build -d 2>&1 | tee -a "$OUT/01-compose-up.log"
 wait_healthy
 {
   curl -fsS localhost:8000/api/versions
   echo
-  echo "orders=$ORDERS concurrency=$CONCURRENCY stock=$STOCK basket_items=$BASKET"
+  echo "orders=$ORDERS concurrency=$CONCURRENCY stock_per_sku=$STOCK lease_ms=$TTL"
 } >> "$OUT/01-compose-up.log"
 
-log "3/6  The settings this episode measures, read off the engines"
+log "3/7  The settings this episode measures, read off the services"
 {
-  echo "-- postgres: the detector does not run until a backend has waited this long"
-  psql -c "SHOW deadlock_timeout;"
-  psql -c "SHOW log_lock_waits;"
+  echo "-- the lease, as the app is running it"
+  curl -fsS localhost:8000/admin/stats | python3 -c 'import json,sys; d=json.load(sys.stdin); print("lock_ttl_ms", d["lock"]["ttl_ms"])'
   echo
-  echo "-- mysql: InnoDB checks for a cycle on every lock wait"
-  mysql_ -e "SELECT @@innodb_deadlock_detect, @@innodb_lock_wait_timeout, @@innodb_print_all_deadlocks;"
+  echo "-- the critical section's configured latency, read off fulfilment"
+  curl -fsS localhost:9100/health
+  echo
+  echo "-- redis persistence: OFF, which is what makes a restart forget"
+  dc exec -T redis-a redis-cli CONFIG GET save
+  dc exec -T redis-a redis-cli CONFIG GET appendonly
+  echo
+  echo "-- postgres advisory locks live in the normal lock manager"
+  psql -c "SELECT locktype, mode FROM pg_locks WHERE locktype = 'advisory' LIMIT 5;"
 } 2>&1 | tee "$OUT/02-settings.log"
 
-log "4/6  The matrix"
-#      engine   order   scenario        retries items lockto tag
-#
-# The bug, on both engines. Same handler, same load; the only thing that differs
-# is which engine is being asked to notice the cycle.
-cell postgres basket  basket_checkout  0 "$BASKET"   0 pg-basket
-cell mysql    basket  basket_checkout  0 "$BASKET"   0 my-basket
-# The one-word fix, on both.
-cell postgres sorted  basket_checkout  0 "$BASKET"   0 pg-sorted
-cell mysql    sorted  basket_checkout  0 "$BASKET"   0 my-sorted
-# Retrying WITHOUT fixing the order. Three attempts with exponential backoff,
-# which is what an application that has read the manual actually does.
-cell postgres basket  basket_checkout  3 "$BASKET"   0 pg-basket-retry
-# Failing fast instead of stalling: give up after 50ms rather than waiting a
-# full second for the detector to run and then being chosen as the victim.
-cell postgres basket  basket_checkout  0 "$BASKET"  50 pg-basket-locktimeout
-# What you would actually ship: the order fixed, and a retry for the residue.
-cell postgres sorted  basket_checkout  3 "$BASKET"   0 pg-sorted-retry
-# The trap fix: one statement is not the same claim as one lock order.
-cell postgres basket  basket_one_stmt  0 "$BASKET"   0 pg-one-stmt
-# The same "one statement" claim, written the other common way. A VALUES join
-# hands the planner the rows in the order they were written, which is the
-# basket's order.
-cell postgres basket  basket_values_join 0 "$BASKET" 0 pg-values-join
-# The hide-the-bug exercise: one item per order cannot be half of a cycle.
-cell postgres basket  basket_checkout  0 1           0 pg-basket-single
+log "4/7  The fleet -- every number the episode quotes comes from here"
+#    mode      ttl    tag
+# The control. No lock at all, so the episode can show the critical section
+# genuinely needs protecting before arguing about which protection to use.
+cell none      "$TTL" none
+# A textbook single-node lock, written hygienically. It still oversells.
+cell redis     "$TTL" redis
+# The quorum. Its own cell, before the node restart below breaks it.
+cell redlock   "$TTL" redlock
+# No TTL to expire, and a pool connection pinned across the external call.
+cell advisory  "$TTL" advisory
+# The lock is still lost; the storage layer refuses the stale write anyway.
+cell fenced    "$TTL" fenced
+# The hide-the-bug exercise: raise the lease above the p99 critical section.
+# The oversell vanishes and not one line of the application changed.
+cell redis     2600   redis-long-lease
 
-log "4b/6  What the planner actually does with a multi-row UPDATE"
-{
-  echo "-- IN-list form: the order the rows come back in is the planner's choice"
-  psql -c "EXPLAIN UPDATE inventory SET stock = stock - 1 WHERE sku_id IN (8,3,4) AND stock >= 1;"
-  echo
-  echo "-- VALUES-join form: the rows arrive in the order they were written"
-  psql -c "EXPLAIN UPDATE inventory SET stock = inventory.stock - v.qty FROM (VALUES (8,1),(3,1),(4,1)) AS v(sku_id, qty) WHERE inventory.sku_id = v.sku_id AND inventory.stock >= v.qty;"
-  echo
-  echo "-- neither statement contains an ORDER BY, because an UPDATE cannot take one"
-} 2>&1 | tee "$OUT/04-plans.log"
+log "5/7  The forensic pause -- mechanism only, quoted by nothing"
+# Two workers, one unit, single stepped. worker-b takes the lock and is FROZEN
+# mid-dispatch by the cgroup freezer, which is what a stop-the-world GC pause
+# looks like from outside the process. It cannot renew. Its lease expires. The
+# other worker takes the lock it still believes it holds.
+forensics() {
+  local mode=$1
+  for port in 8000 8001; do
+    curl -fsS -X POST "localhost:$port/admin/config" -H 'content-type: application/json' \
+      -d "{\"engine\":\"postgres\",\"scenario\":\"allocate_and_dispatch\",\"lock\":\"$mode\",\"lock_ttl_ms\":$TTL}" >/dev/null
+  done
+  curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=1" >/dev/null
 
-# Postgres's own deadlock report, on its own load.
-#
-# A SEPARATE pass, and deliberately so. The measured cells above are what the
-# voiceover quotes, and re-running one to improve its logging would change the
-# numbers the narration was written against -- which PRODUCTION.md forbids for
-# exactly this reason. So this fires its own load and captures the whole report,
-# and produces NO figure the episode quotes.
-deadlock_evidence() {
-  curl -fsS -X POST localhost:8000/admin/config -H 'content-type: application/json' \
-    -d '{"engine":"postgres","lock_order":"basket","scenario":"basket_checkout","retries":0,"lock_timeout_ms":0}' >/dev/null
-  curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=$STOCK" >/dev/null
-  local mark
-  mark=$(dc logs postgres 2>/dev/null | wc -l | tr -d ' ')
-  python3 scripts/order.py --orders "$ORDERS" --concurrency "$CONCURRENCY" \
-    --max-basket-items "$BASKET" --label evidence >/dev/null 2>&1 || true
-  # Anchored on "deadlock detected" and the lines that follow it. A bare DETAIL
-  # grep does not work here: log_min_duration_statement=0 makes Postgres emit a
-  # DETAIL line carrying the bound parameters for EVERY statement, and forty of
-  # those arrive before the first deadlock report does.
-  {
-    echo "-- evidence only: the counts from this load are NOT the episode's numbers"
-    dc logs postgres 2>/dev/null | tail -n +"$((mark + 1))" \
-      | sed 's/^postgres-1  | //' \
-      | grep -A5 "deadlock detected" | head -30
-  } > "$OUT/05-deadlock-report.log" 2>&1
-  echo "  05-deadlock-report.log  $(grep -c 'deadlock detected' "$OUT/05-deadlock-report.log" || echo 0) reports"
+  echo "-- LOCK=$mode, lease ${TTL}ms, one unit of stock on sku 1"
+  echo "-- worker-b acquires, then is frozen mid-dispatch"
+  curl -fsS -X POST localhost:8001/api/orders -H 'content-type: application/json' \
+    -d '{"sku_id":1,"customer_id":901,"qty":1}' > "$OUT/.forensic-b.json" 2>&1 &
+  local bpid=$!
+  sleep 0.35
+  dc pause worker-b >/dev/null
+  echo "-- frozen. waiting out the lease."
+  sleep $(python3 -c "print($TTL/1000 + 1.2)")
+  echo "-- the lock it thinks it holds, as redis sees it now:"
+  dc exec -T redis redis-cli GET lock:sku:1 || true
+  echo "-- worker A now takes that lock and sells the same unit:"
+  curl -fsS -X POST localhost:8000/api/orders -H 'content-type: application/json' \
+    -d '{"sku_id":1,"customer_id":902,"qty":1}' || true
+  echo
+  echo "-- unfreezing worker-b. It has no idea any time passed."
+  dc unpause worker-b >/dev/null
+  wait $bpid || true
+  echo "-- worker-b's own result: $(cat "$OUT/.forensic-b.json")"
+  echo "-- the shelf, and the row's fence token:"
+  psql -c "SELECT sku_id, stock, fence_token FROM inventory WHERE sku_id = 1;"
+  echo "-- parcels dispatched across both workers:"
+  for port in 8000 8001; do
+    curl -fsS "localhost:$port/admin/stats" | python3 -c 'import json, sys
+d = json.load(sys.stdin)["lock"]
+print("   :%s dispatched=%s lease_expired=%s fenced_out=%s"
+      % (sys.argv[1], d["dispatched"], d["lease_expired"], d["fenced_out"]))' "$port"
+  done
+  rm -f "$OUT/.forensic-b.json"
 }
-
-log "4c/6  Postgres's deadlock report, on its own load"
-deadlock_evidence
-
-log "5/6  What the engines logged about the cycle"
 {
-  echo "-- postgres, from the basket-order run. Unsummarised."
-  head -24 "$OUT/pglog-pg-basket.log" 2>/dev/null || echo "(none)"
+  echo "== FORENSIC ONLY. These counts are NOT the episode's numbers. =="
   echo
-  echo "-- mysql: the latest deadlock, as InnoDB describes it"
-  mysql_ -e "SHOW ENGINE INNODB STATUS\\G" 2>/dev/null \
-    | sed -n '/LATEST DETECTED DEADLOCK/,/^---/p' | head -40 || true
-} 2>&1 | tee "$OUT/03-deadlocks.log"
+  forensics redis
+  echo
+  echo "== the same freeze, with fencing on =="
+  forensics fenced
+} 2>&1 | tee "$OUT/06-forensic-pause.log"
 
-log "6/6  Summarising"
+log "6/7  Redlock, and the node that forgets"
+# Measured rather than argued. Persistence is off on all three nodes, so a
+# restart genuinely loses what that node granted -- and a quorum built on a
+# node that has forgotten can hand out a lock somebody already holds.
+{
+  echo "== Redlock's crash-restart, single stepped =="
+  for port in 8000 8001; do
+    curl -fsS -X POST "localhost:$port/admin/config" -H 'content-type: application/json' \
+      -d "{\"engine\":\"postgres\",\"scenario\":\"allocate_and_dispatch\",\"lock\":\"redlock\",\"lock_ttl_ms\":20000}" >/dev/null
+  done
+  curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=1" >/dev/null
+
+  echo "-- worker-b takes the lock across all three nodes"
+  curl -fsS -X POST localhost:8001/api/orders -H 'content-type: application/json' \
+    -d '{"sku_id":1,"customer_id":911,"qty":1}' > /dev/null 2>&1 &
+  sleep 0.3
+  for n in redis-a redis-b redis-c; do
+    printf '   %s holds: ' "$n"; dc exec -T "$n" redis-cli GET lock:sku:1 || true
+  done
+  echo "-- restarting redis-a. No persistence, so it comes back empty."
+  dc restart redis-a >/dev/null
+  sleep 2
+  for n in redis-a redis-b redis-c; do
+    printf '   %s holds: ' "$n"; dc exec -T "$n" redis-cli GET lock:sku:1 || true
+  done
+  echo "-- a majority is now reachable that has NOT got the lock recorded."
+  echo "-- antirez's rebuttal is fair and the episode gives it: delayed restarts"
+  echo "-- fix this, and Redlock never claimed to survive a node lying about its"
+  echo "-- state. The point is that three Redises is not a free upgrade."
+  wait || true
+} 2>&1 | tee "$OUT/07-redlock-restart.log"
+
+log "7/7  Summarising"
 python3 scripts/summarise.py
 
 echo

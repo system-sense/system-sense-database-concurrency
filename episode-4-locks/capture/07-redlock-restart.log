@@ -1,0 +1,15 @@
+== Redlock's crash-restart, single stepped ==
+-- worker-b takes the lock across all three nodes
+   redis-a holds: w911
+   redis-b holds: w911
+   redis-c holds: w911
+-- restarting redis-a. No persistence, so it comes back empty.
+ Container episode-4-locks-redis-a-1 Restarting 
+ Container episode-4-locks-redis-a-1 Started 
+   redis-a holds: 
+   redis-b holds: 
+   redis-c holds: 
+-- a majority is now reachable that has NOT got the lock recorded.
+-- antirez's rebuttal is fair and the episode gives it: delayed restarts
+-- fix this, and Redlock never claimed to survive a node lying about its
+-- state. The point is that three Redises is not a free upgrade.

@@ -76,14 +76,24 @@ def main() -> None:
     # lock is never half of a cycle. That is the hide-the-bug exercise.
     ap.add_argument("--max-basket-items", type=int, default=1)
     ap.add_argument("--skus", type=int, default=8)
+    # Episode 4. Every customer goes to ONE sku by default, which is right for
+    # episodes 1 to 3 -- they are about one contended row. Episode 4 needs the
+    # load spread across the shelf instead: the critical section's duration is a
+    # function of the sku AND the worker, so sending everybody to sku 1 samples
+    # one narrow band of that function and the leases either all survive or all
+    # expire. Spreading them is what makes the overrun distribution real.
+    ap.add_argument("--spread-skus", action="store_true")
     args = ap.parse_args()
+
+    def sku_for(cid: int) -> int:
+        return (cid % args.skus) + 1 if args.spread_skus else args.sku
 
     started = time.perf_counter()
     with ThreadPoolExecutor(max_workers=args.concurrency) as pool:
         results = list(
             pool.map(
                 lambda cid: place(
-                    cid, args.sku, args.qty,
+                    cid, sku_for(cid), args.qty,
                     basket_for(cid, args.skus, args.max_basket_items),
                 ),
                 range(1, args.orders + 1),
@@ -116,6 +126,11 @@ def main() -> None:
         f"deadlocked={counts.get('deadlocked', 0)} "
         f"conflict={counts.get('conflict', 0)} "
         f"check_violation={counts.get('check_violation', 0)} "
+        # Episode 4's two. `fenced_out` is the storage layer refusing a writer
+        # whose lock had already gone; `lock_unavailable` is a worker that gave
+        # up waiting for the lock rather than one that lost it.
+        f"fenced_out={counts.get('fenced_out', 0)} "
+        f"lock_unavailable={counts.get('lock_unavailable', 0)} "
         f"other_errors={sum(n for s, n in counts.items() if s.startswith(('error_', 'http_')))} "
         f"p50_ms={int(statistics.median(lat))} p99_ms={int(pct(lat, 0.99))} "
         f"p50_confirmed_ms={int(pct(sold, 0.5))} p99_confirmed_ms={int(pct(sold, 0.99))} "
