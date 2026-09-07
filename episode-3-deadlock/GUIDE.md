@@ -2,7 +2,7 @@
 
 **A written companion to Episode 3 of System Sense — [Your Database Is Not Protecting You](../).**
 
-**Watch it instead:** The Deadlock · [full playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)
+**Watch it instead:** [The Deadlock](https://youtu.be/_Xikd8fBb8g) · [full playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)
 
 The video is about thirteen minutes. This covers the same ground more slowly,
 with the handler in full, and then goes on into what would not fit: how to read

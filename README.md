@@ -15,7 +15,7 @@ and the videos read it.
 | --- | --- | --- | --- |
 | 1 — The Phantom Update | [`episode-1-lost-update/`](episode-1-lost-update/) | Read-then-write. 100 in stock, 300 sold, 88 still on the shelf. | [**watch**](https://youtu.be/IU96-QIg7no) · [guide](episode-1-lost-update/GUIDE.md) |
 | 2 — Transaction Isolation Is a Lie | [`episode-2-isolation/`](episode-2-isolation/) | The same statements at `REPEATABLE READ` on Postgres and MySQL, and they swap which one is safe. | [**watch**](https://youtu.be/ZAnJ6O1rVDk) · [guide](episode-2-isolation/GUIDE.md) |
-| 3 — The Deadlock | [`episode-3-deadlock/`](episode-3-deadlock/) | Correct locks taken in the order the customer's basket happened to be in. 159 turned away, 446 units on the shelf. | [guide](episode-3-deadlock/GUIDE.md) |
+| 3 — The Deadlock | [`episode-3-deadlock/`](episode-3-deadlock/) | Correct locks taken in the order the customer's basket happened to be in. 159 turned away, 446 units on the shelf. | [**watch**](https://youtu.be/_Xikd8fBb8g) · [guide](episode-3-deadlock/GUIDE.md) |
 | 4 — Distributed Locks Without Disaster | `episode-4-locks/` | Not started. | |
 
 ```bash

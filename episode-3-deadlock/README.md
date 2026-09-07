@@ -3,6 +3,8 @@
 **System Sense — Database Concurrency**, episode 3 of 4.
 *A full shelf, and the customer was turned away by your own database.*
 
+**▶ Watch the episode:** https://youtu.be/_Xikd8fBb8g · [full playlist](https://www.youtube.com/playlist?list=PLQlsUWTGdchk)
+
 The handler in this folder is **Episode 1's fix**. One atomic statement per
 line, stock validated by the database, all inside one transaction. There is no
 defect in any line of it. It still loses a third of the orders.
