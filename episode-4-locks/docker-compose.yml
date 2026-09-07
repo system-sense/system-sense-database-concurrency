@@ -1,0 +1,254 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    # ───────────────────────────────────────────────────────────────────────
+    #  EPISODE 3 ADDS THESE TWO SETTINGS, AND THEY ARE BOTH EVIDENCE.
+    #
+    #  deadlock_timeout is stated rather than inherited. Postgres does NOT keep
+    #  a wait-for graph: a backend that has been blocked this long runs the
+    #  detector itself, and whichever backend ran the check is the one that
+    #  dies. The default really is one second, and this episode measures what a
+    #  full second of two sessions doing nothing costs, so the number has to be
+    #  visible in the compose file rather than assumed from documentation.
+    #
+    #  log_lock_waits then prints, for every wait that outlives it, which
+    #  process is waiting on which. That log goes on screen unsummarised.
+    # ───────────────────────────────────────────────────────────────────────
+    command: >
+      postgres
+      -c deadlock_timeout=1s
+      -c log_lock_waits=on
+      -c log_min_duration_statement=0
+      -c log_line_prefix='%m [%p] '
+    environment:
+      POSTGRES_USER: sysense
+      POSTGRES_PASSWORD: sysense
+      POSTGRES_DB: sysense
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sysense -d sysense"]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+
+  # ─────────────────────────────────────────────────────────────────────────
+  #  THE RACE WINDOW.
+  #
+  #  Every checkout calls something between reading a row and writing it back.
+  #  Here it is a pricing service; in your system it is a fraud check, a tax
+  #  lookup or a loyalty balance. Its latency is
+  #
+  #      PRICING_BASE_MS + (sku_id * 137 + customer_id * 31) % PRICING_SPREAD_MS
+  #
+  #  which spans 60-299 ms with the defaults. That is the window, and it is
+  #  real work rather than a sleep in the handler.
+  #
+  #  Make the call fast and the bug hides:
+  #
+  #      PRICING_BASE_MS=1 PRICING_SPREAD_MS=2 docker compose up
+  #
+  #  Nothing has been fixed. The window is narrower, so fewer requests land
+  #  inside it. That is why this passes on a laptop and fails on a Friday.
+  # ─────────────────────────────────────────────────────────────────────────
+  # ─────────────────────────────────────────────────────────────────────────
+  #  EPISODE 2 ADDS THIS, AND THIS ALONE.
+  #
+  #  The episode's claim is that identical code at an identically named
+  #  isolation level behaves differently here than on Postgres. That claim can
+  #  only be measured with both engines in the same compose file, running the
+  #  same load, in the same run.
+  #
+  #  innodb_print_all_deadlocks puts every deadlock in the error log rather than
+  #  only the latest in SHOW ENGINE INNODB STATUS, because row C is expected to
+  #  produce a lot of them and "the latest one" is not evidence.
+  # ─────────────────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8
+    command: >
+      --innodb-print-all-deadlocks=ON
+      --innodb-deadlock-detect=ON
+      --character-set-server=utf8mb4
+    environment:
+      MYSQL_ROOT_PASSWORD: sysense
+      MYSQL_DATABASE: sysense
+      MYSQL_USER: sysense
+      MYSQL_PASSWORD: sysense
+    volumes:
+      - ./db/init.mysql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -usysense -psysense --silent"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+
+  pricing:
+    build: ./pricing
+    environment:
+      PRICING_BASE_MS: "${PRICING_BASE_MS:-60}"
+      PRICING_SPREAD_MS: "${PRICING_SPREAD_MS:-240}"
+    ports:
+      - "9000:9000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ─────────────────────────────────────────────────────────────────────────
+  #  EPISODE 4 BRINGS REDIS BACK, AND ADDS TWO MORE OF IT.
+  #
+  #  `redis` alone is the textbook single-node lock: SET key token NX PX ttl,
+  #  released with the Lua compare-and-delete. The Caching series already
+  #  shipped that and this episode does not re-teach it -- it GRANTS the viewer
+  #  a hygienic lock and then shows it failing anyway.
+  #
+  #  redis-a/b/c are the Redlock quorum, and the important line in all three is
+  #  the LAST one:
+  #
+  #      --save "" --appendonly no
+  #
+  #  Persistence is OFF on purpose. Redlock's safety argument is that a
+  #  majority of nodes agree, and a node that restarts having forgotten what it
+  #  granted breaks that argument without anybody doing anything exotic: kill
+  #  one, bring it back, and the quorum can hand out a lock somebody already
+  #  holds. That is the part of Kleppmann's objection this episode can MEASURE
+  #  rather than argue, so the compose file has to make it reproducible.
+  # ─────────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis-a:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6381:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis-b:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6382:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis-c:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6383:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  # ─────────────────────────────────────────────────────────────────────────
+  #  THE CRITICAL SECTION'S REAL WORK.
+  #
+  #  Episode 3's `pricing` call sat between a read and a write and made the
+  #  race window. This one is different in the way that matters: fulfilment is
+  #  an EXTERNAL SIDE EFFECT. Once it returns, a parcel is on a van, and no
+  #  amount of rolling back the transaction recalls it.
+  #
+  #  That is why a row lock is not the answer here and why the episode has to
+  #  reach for a distributed one: the critical section is a decision spanning a
+  #  call to somebody else's system.
+  #
+  #  Latency is deterministic by id, as everywhere else in this series, so the
+  #  set of workers that outlive their lease is a property of the run rather
+  #  than of the weather:
+  #
+  #      FULFILMENT_BASE_MS + (sku_id * 89 + worker_id * 53) % FULFILMENT_SPREAD_MS
+  # ─────────────────────────────────────────────────────────────────────────
+  fulfilment:
+    build: ./fulfilment
+    environment:
+      FULFILMENT_BASE_MS: "${FULFILMENT_BASE_MS:-400}"
+      FULFILMENT_SPREAD_MS: "${FULFILMENT_SPREAD_MS:-1200}"
+    ports:
+      - "9100:9100"
+
+  app:
+    build: .
+    environment:
+      DATABASE_URL: "postgres://sysense:sysense@postgres:5432/sysense"
+      MYSQL_HOST: "mysql"
+      MYSQL_PORT: "3306"
+      MYSQL_USER: "sysense"
+      MYSQL_PASSWORD: "sysense"
+      MYSQL_DB: "sysense"
+      PRICING_URL: "http://pricing:9000"
+      PRICING_TIMEOUT_SECONDS: "30"
+      ENGINE: "${ENGINE:-postgres}"
+      ISOLATION: "${ISOLATION:-read-committed}"
+      SCENARIO: "${SCENARIO:-read_modify_write}"
+      # ── Episode 3's knob ────────────────────────────────────────────────
+      #  basket  take the rows in the order the customer's basket happened to
+      #          be in. Nobody chose this order. It is the bug.
+      #  sorted  take them in a total order every transaction agrees on.
+      #          One word, and the cycle cannot form.
+      LOCK_ORDER: "${LOCK_ORDER:-basket}"
+      MAX_BASKET_ITEMS: "${MAX_BASKET_ITEMS:-3}"
+      DEADLOCK_RETRIES: "${DEADLOCK_RETRIES:-0}"
+      # ── Episode 4's knob ────────────────────────────────────────────────
+      #  none      the control. Two workers, one unit, two parcels.
+      #  redis     a textbook single-node lock, hygienically written. It still
+      #            oversells, because the lease expires mid-work and nothing
+      #            tells the holder.
+      #  redlock   the quorum, and the node restart that forgets.
+      #  advisory  pg_advisory_xact_lock -- no TTL to expire, because it is
+      #            owned by a session and dies with it.
+      #  fenced    the lock is still lost; the storage layer refuses the write.
+      LOCK: "${LOCK:-none}"
+      #  The one knob. Set it above the measured p99 critical section and the
+      #  oversell vanishes without one line of the application changing, which
+      #  is the hide-the-bug exercise.
+      LOCK_TTL_MS: "${LOCK_TTL_MS:-1000}"
+      REDIS_URL: "redis://redis:6379"
+      REDLOCK_URLS: "redis://redis-a:6379,redis://redis-b:6379,redis://redis-c:6379"
+      FULFILMENT_URL: "http://fulfilment:9100"
+      FULFILMENT_TIMEOUT_SECONDS: "30"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      pricing:
+        condition: service_started
+      redis:
+        condition: service_healthy
+      redis-a:
+        condition: service_healthy
+      redis-b:
+        condition: service_healthy
+      redis-c:
+        condition: service_healthy
+      fulfilment:
+        condition: service_started
+
+volumes:
+  pgdata:
+  mysqldata:
