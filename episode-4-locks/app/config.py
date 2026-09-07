@@ -11,6 +11,61 @@ MYSQL_DB = os.getenv("MYSQL_DB", "sysense")
 PRICING_URL = os.getenv("PRICING_URL", "http://localhost:9000")
 PRICING_TIMEOUT_SECONDS = float(os.getenv("PRICING_TIMEOUT_SECONDS", "30"))
 
+# ── Episode 4 ────────────────────────────────────────────────────────────────
+#  Fulfilment is not another pricing call. Pricing is a QUESTION -- ask it
+#  twice and nothing happened. Fulfilment is a DECISION somebody else acts on,
+#  and once it returns, a parcel is on a van. Nothing in this series recalls it.
+FULFILMENT_URL = os.getenv("FULFILMENT_URL", "http://localhost:9100")
+FULFILMENT_TIMEOUT_SECONDS = float(os.getenv("FULFILMENT_TIMEOUT_SECONDS", "30"))
+
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDLOCK_URLS = [u for u in os.getenv(
+    "REDLOCK_URLS",
+    "redis://localhost:6381,redis://localhost:6382,redis://localhost:6383",
+).split(",") if u]
+
+#  How long a worker will keep trying to take the lock before giving up and
+#  reporting a real failure. Bounded on purpose: without it the losers simply
+#  outlive the load generator and every number becomes about patience.
+LOCK_WAIT_SECONDS = float(os.getenv("LOCK_WAIT_SECONDS", "8"))
+LOCK_POLL_SECONDS = float(os.getenv("LOCK_POLL_SECONDS", "0.05"))
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  EPISODE 4's KNOB.
+#
+#  none      no lock at all. The control.
+#  redis     a hygienic single-node lock: SET NX PX, Lua compare-and-delete.
+#            It is written WELL and it still oversells, which is the episode.
+#  redlock   the quorum, and the node restart that forgets what it granted.
+#  advisory  pg_advisory_xact_lock -- no TTL to expire, because it dies with
+#            the session that owns it.
+#  fenced    the same lost lock as `redis`, and a storage layer that refuses
+#            the stale write anyway.
+# ─────────────────────────────────────────────────────────────────────────────
+LOCKS = ("none", "redis", "redlock", "advisory", "fenced")
+
+#  THE ONE KNOB.
+#
+#  The lease. Default 1000 ms against a critical section that spans 400-1599 ms,
+#  so some workers finish inside their lease and some do not -- decided by
+#  arithmetic on the ids, not by a sleep tuned until the demo worked.
+#
+#  The hide-the-bug exercise is to raise this above the measured p99. The
+#  oversell vanishes and NOTHING HAS BEEN FIXED: the window is narrower, a
+#  forty-second GC pause makes it wide again, and not one line of the
+#  application changed.
+_lock_ttl_ms = int(os.getenv("LOCK_TTL_MS", "1000"))
+
+
+def lock_ttl_ms() -> int:
+    return _lock_ttl_ms
+
+
+def set_lock_ttl_ms(n: int) -> None:
+    """Runtime-settable so one run measures every cell against one build."""
+    global _lock_ttl_ms
+    _lock_ttl_ms = max(1, int(n))
+
 # The WHERE-guard is Episode 1's optimistic mode, and Episode 1 gave it five
 # attempts. It keeps that number so the two episodes can be read against each
 # other: without a retry loop a lost race is a refused customer, which measures
@@ -44,6 +99,10 @@ SCENARIOS = (
     "basket_checkout",
     "basket_one_stmt",
     "basket_values_join",
+    #  Episode 4: read the stock, decide to allocate the last unit, DISPATCH A
+    #  PARCEL, then write. The critical section spans an external side effect,
+    #  which is why a row lock is not available here.
+    "allocate_and_dispatch",
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -107,6 +166,7 @@ _current = {
     "isolation": os.getenv("ISOLATION", "read-committed"),
     "scenario": os.getenv("SCENARIO", "read_modify_write"),
     "lock_order": os.getenv("LOCK_ORDER", "basket"),
+    "lock": os.getenv("LOCK", "none"),
 }
 
 
@@ -123,6 +183,7 @@ def set_all(**kw: str) -> None:
             "isolation": ISOLATIONS,
             "scenario": SCENARIOS,
             "lock_order": LOCK_ORDERS,
+            "lock": LOCKS,
         }[k]
         if v not in allowed:
             raise ValueError(f"unknown {k} {v!r}; expected one of {allowed}")

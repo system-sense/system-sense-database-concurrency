@@ -26,6 +26,7 @@ from pydantic import BaseModel
 
 from . import config
 from .engines import MySQL, Outcome, Postgres, sql_for
+from .locks import LockUnavailable, build as build_lock
 
 state: dict = {}
 stats: dict = {}
@@ -37,7 +38,13 @@ def reset_stats() -> None:
                  retries_total=0, max_attempts_one_order=0, abandoned=0,
                  # Episode 3: how long each losing transaction was alive before
                  # its engine noticed the cycle.
-                 deadlock_wait_ms=[])
+                 deadlock_wait_ms=[],
+                 # Episode 4. `dispatched` counts parcels, and it is counted at
+                 # the moment fulfilment returns rather than after the write,
+                 # because that is when the thing became irreversible.
+                 dispatched=0, lease_expired=0, fenced_out=0,
+                 lock_unavailable=0, released_not_ours=0,
+                 lease_overrun_ms=[], fenced_tokens=[], pool_wait_ms=[])
 
 
 def tally(out: Outcome) -> Outcome:
@@ -246,6 +253,187 @@ async def basket_checkout(cx, req: OrderRequest) -> Outcome:
     return Outcome("confirmed")
 
 
+async def allocate_under_advisory(pg, req: OrderRequest) -> Outcome:
+    """pg_advisory_xact_lock, and the whole critical section inside ONE
+    transaction on ONE connection.
+
+    This is not the same shape as the other four and it is not meant to be.
+    There is no TTL, so there is nothing to expire and no lease to believe in:
+    the lock is held by this transaction and it is released when this
+    transaction ends, whether that is a commit, a rollback, or the backend
+    dying. A worker paused for forty seconds still holds it when it wakes up,
+    and nothing can be handed out underneath it. That is a genuinely different
+    safety story from the first three modes, and it is the first honest answer
+    in the episode.
+
+    It is also not free, and the cost is visible right here rather than argued:
+    the transaction is open across `dispatch`, so this pins a pool connection
+    for the entire external call. That is the trade. Measure it before
+    dismissing it -- and note that whenever the work stays inside the database,
+    this is simply the right answer.
+    """
+    waited = time.perf_counter()
+    async with pg.acquire() as con:
+        stats["pool_wait_ms"].append((time.perf_counter() - waited) * 1000)
+        tx = con.transaction()
+        await tx.start()
+        try:
+            # Blocks until it is ours. It does not time out, which is the
+            # point; and because it lives in the normal lock manager it shows
+            # up in pg_locks and participates in deadlock detection -- Episode
+            # 3 arriving again by a different road.
+            await con.execute("SELECT pg_advisory_xact_lock($1)", req.sku_id)
+            row = await con.fetchrow(SQL_EP4_READ, req.sku_id)
+            if row is None or row["stock"] < req.qty:
+                await tx.commit()
+                return SOLD_OUT
+
+            started = time.perf_counter()
+            await dispatch(req.sku_id, req.customer_id, req.qty)
+            stats["dispatched"] = stats.get("dispatched", 0) + 1
+            stats["windows_ms"].append((time.perf_counter() - started) * 1000)
+
+            await con.execute(SQL_EP4_WRITE, row["stock"] - req.qty, req.sku_id)
+            await con.execute(SQL_EP4_INSERT_ORDER, req.sku_id, req.customer_id, req.qty)
+            await tx.commit()
+            return Outcome("confirmed")
+        except BaseException:
+            await tx.rollback()
+            raise
+
+
+# ── Episode 4: the decision that spans somebody else's system ────────────────
+# These are the only statements in the app written with Postgres's own
+# placeholders. Everything else in the series is written once with `?` and
+# rewritten per driver by app/engines.py -- but Episode 4 runs against a raw
+# connection rather than through PgCx, because its critical section is not a
+# transaction, so there is nothing in the path to do the rewriting.
+SQL_EP4_READ = "SELECT stock, fence_token FROM inventory WHERE sku_id = $1"
+SQL_EP4_WRITE = "UPDATE inventory SET stock = $1 WHERE sku_id = $2"
+# The punchline of the series. `<` and not `<=`, because a token stays current
+# across many writes and only a LOWER one is stale. Zero rows updated is the
+# storage layer refusing a writer whose lock is gone -- the only component in
+# the whole series in a position to refuse it.
+# Stamped at ACQUISITION, not at write time, and the difference is the whole
+# mechanism. A token written only at the end does not protect anything when the
+# stale worker happens to finish FIRST: its token is still the highest the row
+# has seen, so it is accepted, and the newer holder's write lands on top. Both
+# writes succeed and the shelf is wrong. Measured, not reasoned: the first cut
+# of this refused 1 stale write out of 30 expired leases.
+#
+# Claiming the row on the way IN is what makes the guard meaningful. The
+# acquisition stamp uses `<` because a newer token may always supersede an
+# older claim.
+SQL_EP4_CLAIM = (
+    "UPDATE inventory SET fence_token = $1 WHERE sku_id = $2 AND fence_token < $1"
+)
+# ...and the write itself uses `=`, which reads as the only question worth
+# asking at that point: does this row still think I am the holder? A worker
+# whose lease expired and whose claim was taken over by somebody else answers
+# no, and gets UPDATE 0.
+SQL_EP4_WRITE_FENCED = (
+    "UPDATE inventory SET stock = $1 WHERE sku_id = $2 AND fence_token = $3"
+)
+SQL_EP4_INSERT_ORDER = (
+    "INSERT INTO orders (sku_id, customer_id, qty) VALUES ($1, $2, $3)"
+)
+
+
+async def dispatch(sku_id: int, worker_id: int, qty: int) -> dict:
+    """Hand a parcel to fulfilment. There is no undo.
+
+    This is the line that makes the episode: after it returns, something has
+    happened in the world. ROLLBACK does not reach it, the lock does not reach
+    it, and the fencing token does not reach it either -- fencing refuses the
+    WRITE, and by then the van has already left.
+    """
+    resp = await state["fulfil"].post(
+        "/dispatch", params={"sku_id": sku_id, "worker_id": worker_id, "qty": qty}
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+async def allocate_and_dispatch(pg, req: OrderRequest, lock) -> Outcome:
+    """Read the stock, decide, dispatch a parcel, write the stock back.
+
+    Note what this is NOT doing wrong. Read-modify-write is exactly what a
+    distributed lock is FOR: inside a correctly held lock it is safe, and
+    Episode 1's atomic decrement is not available here because the decision
+    depends on work that happens outside the database. The handler is holding a
+    lock across its critical section, which is the textbook thing to do.
+
+    The bug is that the lock is a lease, and the lease can run out in the middle
+    of the dispatch. Nothing tells this function that. It carries on.
+    """
+    mode = config.get("lock")
+    if mode == "advisory":
+        # Different shape, and the difference IS the safety story. See below.
+        return await allocate_under_advisory(pg, req)
+
+    key = f"sku:{req.sku_id}"
+    owner = f"w{req.customer_id}"
+    fenced = mode == "fenced"
+
+    try:
+        held = await lock.acquire(key, owner)
+    except LockUnavailable:
+        stats["lock_unavailable"] = stats.get("lock_unavailable", 0) + 1
+        return Outcome("lock_unavailable")
+
+    try:
+        async with pg.acquire() as con:
+            if fenced:
+                # Claim the row for this token before reading it. From here on
+                # the row itself knows who the current holder is, and it is the
+                # only participant that cannot be fooled by an expired lease.
+                await con.execute(SQL_EP4_CLAIM, held.token, req.sku_id)
+            row = await con.fetchrow(SQL_EP4_READ, req.sku_id)
+        if row is None or row["stock"] < req.qty:
+            return SOLD_OUT
+
+        started = time.perf_counter()
+        parcel = await dispatch(req.sku_id, req.customer_id, req.qty)
+        # Counted the moment it happens, not after the write succeeds. A parcel
+        # dispatched by a worker whose write is later refused is still a parcel.
+        stats["dispatched"] = stats.get("dispatched", 0) + 1
+        stats["windows_ms"].append((time.perf_counter() - started) * 1000)
+
+        # The observation the whole episode turns on. The application does not
+        # do this -- no real one does -- but the capture has to, so that "the
+        # lease expired mid-work" is a measured count rather than an assertion.
+        held.lease_expired = held.ttl_ms > 0 and not await lock.still_held(held)
+        if held.lease_expired:
+            stats["lease_expired"] = stats.get("lease_expired", 0) + 1
+            stats["lease_overrun_ms"].append(held.held_for_ms() - held.ttl_ms)
+
+        async with pg.acquire() as con:
+            if fenced:
+                applied = await con.execute(
+                    SQL_EP4_WRITE_FENCED, row["stock"] - req.qty, req.sku_id, held.token
+                )
+                if applied.split()[-1] == "0":
+                    # UPDATE 0. This worker's token is behind the row's, so its
+                    # lock was handed to somebody else while it was working.
+                    stats["fenced_out"] = stats.get("fenced_out", 0) + 1
+                    stats["fenced_tokens"].append(
+                        {"worker": owner, "carried": held.token,
+                         "row_had": row["fence_token"], "rows": 0}
+                    )
+                    return Outcome("fenced_out", "", "stale token refused")
+            else:
+                await con.execute(SQL_EP4_WRITE, row["stock"] - req.qty, req.sku_id)
+            await con.execute(SQL_EP4_INSERT_ORDER, req.sku_id, req.customer_id, req.qty)
+        return Outcome("confirmed")
+    finally:
+        await lock.release(held)
+        if not held.released_cleanly and lock.name != "none":
+            # We could not release it because it was no longer ours. The
+            # hygienic Lua release is what makes this visible at all; a bare DEL
+            # would have silently deleted somebody else's lock instead.
+            stats["released_not_ours"] = stats.get("released_not_ours", 0) + 1
+
+
 async def basket_one_stmt(cx, req: OrderRequest) -> Outcome:
     """The trap fix: "just do it in one statement".
 
@@ -318,7 +506,14 @@ SCENARIOS = {
     "basket_checkout": basket_checkout,
     "basket_one_stmt": basket_one_stmt,
     "basket_values_join": basket_values_join,
+    # Episode 4's takes the pool and the lock rather than a connection already
+    # inside a transaction, because its critical section is not a transaction.
+    "allocate_and_dispatch": allocate_and_dispatch,
 }
+
+#  Scenarios that manage their own transactions. Everything before Episode 4
+#  ran inside one; this one spans an external call and must not.
+UNWRAPPED = {"allocate_and_dispatch"}
 
 
 @asynccontextmanager
@@ -335,10 +530,19 @@ async def lifespan(app: FastAPI):
         base_url=config.PRICING_URL, timeout=config.PRICING_TIMEOUT_SECONDS,
         limits=httpx.Limits(max_connections=200),
     )
+    # Episode 4. A separate client, because it is a separate service with a
+    # different timeout profile: pricing answers in tens of milliseconds and
+    # fulfilment takes the better part of a second and a half.
+    state["fulfil"] = httpx.AsyncClient(
+        base_url=config.FULFILMENT_URL, timeout=config.FULFILMENT_TIMEOUT_SECONDS,
+        limits=httpx.Limits(max_connections=200),
+    )
+    state["lock"] = build_lock(config.get("lock"), state["pg"])
     reset_stats()
     print("[app] both engines up", flush=True)
     yield
     await state["http"].aclose()
+    await state["fulfil"].aclose()
 
 
 app = FastAPI(title="System Sense — DB Concurrency Ep.2", lifespan=lifespan)
@@ -364,7 +568,15 @@ async def place_order(req: OrderRequest):
     sitting there. Turning DEADLOCK_RETRIES up is the honest tail, and it is
     measured as its own cell rather than assumed.
     """
-    scenario = SCENARIOS[config.get("scenario")]
+    name = config.get("scenario")
+    scenario = SCENARIOS[name]
+    if name in UNWRAPPED:
+        out = tally(await scenario(state["pg"], req, state["lock"]))
+        code = {"confirmed": 200}.get(out.status, 409)
+        return JSONResponse(
+            {"status": out.status, "code": out.code, "detail": out.detail},
+            status_code=code,
+        )
     isolation = config.get("isolation")
     limit = config.retries()
     deadline = time.perf_counter() + config.RETRY_BUDGET_SECONDS
@@ -402,6 +614,8 @@ class Cfg(BaseModel):
     lock_order: str | None = None
     retries: int | None = None
     lock_timeout_ms: int | None = None
+    lock: str | None = None
+    lock_ttl_ms: int | None = None
 
 
 @app.post("/admin/config")
@@ -412,11 +626,17 @@ async def set_config(body: Cfg):
     if fields.pop("lock_timeout_ms", None) is not None:
         config.set_lock_timeout_ms(body.lock_timeout_ms or 0)
         state["pg"].lock_timeout_ms = config.lock_timeout_ms()
+    if fields.pop("lock_ttl_ms", None) is not None:
+        config.set_lock_ttl_ms(body.lock_ttl_ms or 1)
     config.set_all(**fields)
+    # Rebuilt whenever the mode changes: `redis` and `fenced` share a lock
+    # implementation on purpose, and `advisory` needs the pool.
+    state["lock"] = build_lock(config.get("lock"), state["pg"])
     reset_stats()
-    now = {k: config.get(k) for k in ("engine", "isolation", "scenario", "lock_order")}
+    now = {k: config.get(k) for k in ("engine", "isolation", "scenario", "lock_order", "lock")}
     now["retries"] = config.retries()
     now["lock_timeout_ms"] = config.lock_timeout_ms()
+    now["lock_ttl_ms"] = config.lock_ttl_ms()
     print(f"[app] {now}", flush=True)
     return now
 
@@ -442,9 +662,39 @@ async def read_stats():
             "p99_ms": round(d[min(len(d) - 1, int(len(d) * 0.99))], 1),
             "max_ms": round(d[-1], 1),
         }
+    def pct(xs: list[float]) -> dict:
+        if not xs:
+            return {"count": 0}
+        v = sorted(xs)
+        return {"count": len(v), "median_ms": round(statistics.median(v), 1),
+                "p95_ms": round(v[min(len(v) - 1, int(len(v) * 0.95))], 1),
+                "p99_ms": round(v[min(len(v) - 1, int(len(v) * 0.99))], 1),
+                "max_ms": round(v[-1], 1)}
+
+    # ── Episode 4 ────────────────────────────────────────────────────────────
+    #  `dispatched` is parcels, not orders, and the gap between it and what the
+    #  shelf says is the oversell. `lease_expired` is the mechanism behind that
+    #  gap, counted directly rather than inferred, and `fenced_out` is the
+    #  storage layer refusing a writer whose lock had already gone.
+    lock4 = {
+        "mode": config.get("lock"),
+        "ttl_ms": config.lock_ttl_ms(),
+        "dispatched": stats.get("dispatched", 0),
+        "lease_expired": stats.get("lease_expired", 0),
+        "fenced_out": stats.get("fenced_out", 0),
+        "lock_unavailable": stats.get("lock_unavailable", 0),
+        "released_not_ours": stats.get("released_not_ours", 0),
+        "critical_section": pct(stats["windows_ms"]),
+        "lease_overrun": pct(stats["lease_overrun_ms"]),
+        "pool_wait": pct(stats["pool_wait_ms"]),
+        # Kept whole so the episode can put real token values on the board
+        # beside the UPDATE 0 that refused them.
+        "fenced_examples": stats["fenced_tokens"][:5],
+    }
     return {"statuses": stats["statuses"], "codes": stats["codes"], "window": window,
             "deadlock_wait": deadlock, "retries_configured": config.retries(),
             "lock_timeout_ms": config.lock_timeout_ms(),
+            "lock": lock4,
             "retries": {"total": stats["retries_total"],
                         "max_one_order": stats["max_attempts_one_order"],
                         "abandoned": stats["abandoned"],

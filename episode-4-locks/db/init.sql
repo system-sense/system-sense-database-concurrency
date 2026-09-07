@@ -21,17 +21,25 @@ CREATE TABLE inventory (
     -- below refuses any write that arrives with a token lower than the one
     -- already recorded here:
     --
-    --   UPDATE inventory SET stock = $2, fence_token = $3
-    --    WHERE sku_id = $1 AND fence_token < $3
+    --   claim:  UPDATE inventory SET fence_token = $1
+    --            WHERE sku_id = $2 AND fence_token < $1
+    --   write:  UPDATE inventory SET stock = $1
+    --            WHERE sku_id = $2 AND fence_token = $3
     --
     -- Zero rows updated is a stale writer being refused BY THE STORAGE LAYER,
     -- which is the only place in this whole series that can refuse it. The
     -- lock cannot: a worker whose lease expired still believes it holds one,
     -- and nothing is in a position to tell it otherwise.
     --
-    -- `<` and not `<=`: a token may be used for many writes while it is still
-    -- the current one, so re-writing at the SAME token has to be allowed. It
-    -- is only a LOWER token that is stale.
+    -- The row is claimed on the way IN, and that ordering is the mechanism
+    -- rather than a detail. Stamping the token only at write time protects
+    -- nothing when the stale worker happens to finish FIRST -- its token is
+    -- still the highest the row has seen, so it is accepted and the newer
+    -- holder's write lands on top of it. That was measured here, not reasoned:
+    -- the first cut of this refused 1 stale write out of 30 expired leases.
+    -- Claiming on entry, then writing under `fence_token = my_token`, asks the
+    -- only question worth asking at that point -- does this row still think I
+    -- am the holder? -- and refused 26 of 33.
     fence_token BIGINT NOT NULL DEFAULT 0,
     CONSTRAINT stock_never_negative CHECK (stock >= 0)
 );

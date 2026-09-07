@@ -130,6 +130,21 @@ class Postgres:
         async with self._pool.acquire() as con:
             return (await con.fetchval("SELECT version()")).split(",")[0]
 
+    # ── Episode 4 ────────────────────────────────────────────────────────────
+    #  A connection, WITHOUT a transaction wrapped around it.
+    #
+    #  Every episode before this one ran its whole scenario inside one
+    #  transaction, which was right: the critical section was the transaction.
+    #  Episode 4's is not. It spans a call to somebody else's system, and
+    #  holding a transaction open across a multi-second HTTP call is the exact
+    #  thing the episode measures the cost of rather than dismisses -- it pins
+    #  a pool connection for the duration, and the pool is the resource that
+    #  runs out first.
+    #
+    #  So the scenario opens its own short transactions around the long call.
+    def acquire(self):
+        return self._pool.acquire()
+
     async def run(self, scenario, req, isolation: str) -> Outcome:
         level = ISOLATION[isolation]
         began = time.perf_counter()
