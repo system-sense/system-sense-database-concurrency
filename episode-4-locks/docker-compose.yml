@@ -107,8 +107,19 @@ services:
   #  shipped that and this episode does not re-teach it -- it GRANTS the viewer
   #  a hygienic lock and then shows it failing anyway.
   #
-  #  redis-a/b/c are the Redlock quorum, and the important line in all three is
-  #  the LAST one:
+  #  redis-a..e are the Redlock quorum. FIVE, not three, and the count is
+  #  load-bearing rather than generous: with three nodes a single restart
+  #  cannot break a quorum, because the client that comes along afterwards can
+  #  only reach the one node that forgot. Measured, not assumed -- the first cut
+  #  of this used three and demonstrated nothing.
+  #
+  #  With five, a holder on a BARE majority of three can lose one of them to a
+  #  restart, and the next client acquires that node plus the two the holder
+  #  never had. Two clients, one lock. That is Kleppmann's crash-restart
+  #  argument, and it is the part of it that can be reproduced rather than
+  #  reasoned about.
+  #
+  #  The important line in all of them is the LAST one:
   #
   #      --save "" --appendonly no
   #
@@ -157,6 +168,28 @@ services:
     command: redis-server --save "" --appendonly no
     ports:
       - "6383:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis-d:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6384:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis-e:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no
+    ports:
+      - "6385:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 2s
@@ -226,7 +259,7 @@ services:
       #  is the hide-the-bug exercise.
       LOCK_TTL_MS: "${LOCK_TTL_MS:-1000}"
       REDIS_URL: "redis://redis:6379"
-      REDLOCK_URLS: "redis://redis-a:6379,redis://redis-b:6379,redis://redis-c:6379"
+      REDLOCK_URLS: "redis://redis-a:6379,redis://redis-b:6379,redis://redis-c:6379,redis://redis-d:6379,redis://redis-e:6379"
       FULFILMENT_URL: "http://fulfilment:9100"
       FULFILMENT_TIMEOUT_SECONDS: "30"
     ports:
@@ -245,6 +278,10 @@ services:
       redis-b:
         condition: service_healthy
       redis-c:
+        condition: service_healthy
+      redis-d:
+        condition: service_healthy
+      redis-e:
         condition: service_healthy
       fulfilment:
         condition: service_started
@@ -284,7 +321,7 @@ services:
       LOCK: "${LOCK:-none}"
       LOCK_TTL_MS: "${LOCK_TTL_MS:-1000}"
       REDIS_URL: "redis://redis:6379"
-      REDLOCK_URLS: "redis://redis-a:6379,redis://redis-b:6379,redis://redis-c:6379"
+      REDLOCK_URLS: "redis://redis-a:6379,redis://redis-b:6379,redis://redis-c:6379,redis://redis-d:6379,redis://redis-e:6379"
       FULFILMENT_URL: "http://fulfilment:9100"
       FULFILMENT_TIMEOUT_SECONDS: "30"
     ports:
@@ -304,6 +341,10 @@ services:
       redis-b:
         condition: service_healthy
       redis-c:
+        condition: service_healthy
+      redis-d:
+        condition: service_healthy
+      redis-e:
         condition: service_healthy
       fulfilment:
         condition: service_started

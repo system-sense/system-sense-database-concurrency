@@ -18,23 +18,23 @@
       "lock": "none",
       "lease_ms": 1000,
       "stock_total": 80,
-      "stock_left": 2,
-      "units_sold": 78,
-      "parcels": 282,
-      "parcels_without_sale": 204,
+      "stock_left": 0,
+      "units_sold": 80,
+      "parcels": 293,
+      "parcels_without_sale": 213,
       "lease_expired": 0,
       "fenced_out": 0,
       "lock_unavailable": 0,
       "released_not_ours": 0,
-      "confirmed": 282,
-      "sold_out": 18,
-      "orders": 282,
+      "confirmed": 293,
+      "sold_out": 7,
+      "orders": 293,
       "critical_section": {
-        "count": 282,
-        "median_ms": 1000.2,
-        "p95_ms": 1557.2,
-        "p99_ms": 1570.1,
-        "max_ms": 1574.7
+        "count": 293,
+        "median_ms": 999.2,
+        "p95_ms": 1557.9,
+        "p99_ms": 1568.6,
+        "max_ms": 1574.1
       },
       "lease_overrun": {
         "count": 0
@@ -43,9 +43,9 @@
         "count": 0
       },
       "fenced_examples": [],
-      "p50_ms": 1001,
+      "p50_ms": 1003,
       "p99_ms": 1582,
-      "orders_per_sec": 24.7
+      "orders_per_sec": 24.0
     },
     {
       "tag": "redis",
@@ -54,36 +54,36 @@
       "stock_total": 80,
       "stock_left": 0,
       "units_sold": 80,
-      "parcels": 118,
-      "parcels_without_sale": 38,
-      "lease_expired": 58,
+      "parcels": 114,
+      "parcels_without_sale": 34,
+      "lease_expired": 52,
       "fenced_out": 0,
-      "lock_unavailable": 0,
-      "released_not_ours": 60,
-      "confirmed": 118,
-      "sold_out": 182,
-      "orders": 118,
+      "lock_unavailable": 1,
+      "released_not_ours": 57,
+      "confirmed": 114,
+      "sold_out": 185,
+      "orders": 114,
       "critical_section": {
-        "count": 118,
-        "median_ms": 995.6,
-        "p95_ms": 1558.0,
-        "p99_ms": 1562.9,
-        "max_ms": 1565.6
+        "count": 114,
+        "median_ms": 994.2,
+        "p95_ms": 1557.1,
+        "p99_ms": 1563.0,
+        "max_ms": 1564.0
       },
       "lease_overrun": {
-        "count": 58,
-        "median_ms": 283.7,
-        "p95_ms": 564.3,
-        "p99_ms": 566.4,
-        "max_ms": 566.4
+        "count": 52,
+        "median_ms": 316.7,
+        "p95_ms": 563.1,
+        "p99_ms": 565.7,
+        "max_ms": 565.7
       },
       "pool_wait": {
         "count": 0
       },
       "fenced_examples": [],
-      "p50_ms": 882,
-      "p99_ms": 6385,
-      "orders_per_sec": 18.5
+      "p50_ms": 131,
+      "p99_ms": 6862,
+      "orders_per_sec": 22.1
     },
     {
       "tag": "redlock",
@@ -92,36 +92,36 @@
       "stock_total": 80,
       "stock_left": 0,
       "units_sold": 80,
-      "parcels": 120,
-      "parcels_without_sale": 40,
-      "lease_expired": 58,
+      "parcels": 113,
+      "parcels_without_sale": 33,
+      "lease_expired": 52,
       "fenced_out": 0,
       "lock_unavailable": 1,
-      "released_not_ours": 58,
-      "confirmed": 120,
-      "sold_out": 179,
-      "orders": 120,
+      "released_not_ours": 55,
+      "confirmed": 113,
+      "sold_out": 186,
+      "orders": 113,
       "critical_section": {
-        "count": 120,
-        "median_ms": 988.6,
-        "p95_ms": 1556.2,
-        "p99_ms": 1558.1,
-        "max_ms": 1561.0
+        "count": 113,
+        "median_ms": 990.1,
+        "p95_ms": 1491.5,
+        "p99_ms": 1561.7,
+        "max_ms": 1563.3
       },
       "lease_overrun": {
-        "count": 58,
+        "count": 52,
         "median_ms": 281.3,
-        "p95_ms": 558.9,
-        "p99_ms": 562.9,
-        "max_ms": 562.9
+        "p95_ms": 565.4,
+        "p99_ms": 567.4,
+        "max_ms": 567.4
       },
       "pool_wait": {
         "count": 0
       },
       "fenced_examples": [],
-      "p50_ms": 670,
-      "p99_ms": 7529,
-      "orders_per_sec": 19.0
+      "p50_ms": 441,
+      "p99_ms": 7401,
+      "orders_per_sec": 21.0
     },
     {
       "tag": "advisory",
@@ -141,10 +141,10 @@
       "orders": 80,
       "critical_section": {
         "count": 80,
-        "median_ms": 1006.2,
-        "p95_ms": 1554.0,
-        "p99_ms": 1566.4,
-        "max_ms": 1566.4
+        "median_ms": 1031.1,
+        "p95_ms": 1558.5,
+        "p99_ms": 1567.4,
+        "max_ms": 1567.4
       },
       "lease_overrun": {
         "count": 0
@@ -152,14 +152,14 @@
       "pool_wait": {
         "count": 300,
         "median_ms": 0.0,
-        "p95_ms": 93.2,
-        "p99_ms": 145.8,
-        "max_ms": 159.8
+        "p95_ms": 44.3,
+        "p99_ms": 156.0,
+        "max_ms": 166.8
       },
       "fenced_examples": [],
-      "p50_ms": 9,
-      "p99_ms": 4098,
-      "orders_per_sec": 26.8
+      "p50_ms": 10,
+      "p99_ms": 4101,
+      "orders_per_sec": 27.0
     },
     {
       "tag": "fenced",
@@ -168,67 +168,67 @@
       "stock_total": 80,
       "stock_left": 0,
       "units_sold": 80,
-      "parcels": 160,
-      "parcels_without_sale": 80,
-      "lease_expired": 82,
-      "fenced_out": 80,
-      "lock_unavailable": 2,
+      "parcels": 161,
+      "parcels_without_sale": 81,
+      "lease_expired": 84,
+      "fenced_out": 81,
+      "lock_unavailable": 4,
       "released_not_ours": 85,
       "confirmed": 80,
-      "sold_out": 138,
+      "sold_out": 135,
       "orders": 80,
       "critical_section": {
-        "count": 160,
-        "median_ms": 1029.3,
-        "p95_ms": 1558.3,
-        "p99_ms": 1569.4,
-        "max_ms": 1569.8
+        "count": 161,
+        "median_ms": 1000.7,
+        "p95_ms": 1555.1,
+        "p99_ms": 1563.8,
+        "max_ms": 1568.4
       },
       "lease_overrun": {
-        "count": 82,
-        "median_ms": 316.9,
-        "p95_ms": 565.8,
-        "p99_ms": 573.2,
-        "max_ms": 573.2
+        "count": 84,
+        "median_ms": 282.1,
+        "p95_ms": 563.3,
+        "p99_ms": 570.6,
+        "max_ms": 570.6
       },
       "pool_wait": {
         "count": 0
       },
       "fenced_examples": [
         {
-          "worker": "w23",
-          "carried": 38,
-          "row_has": 39,
-          "rows": 0
-        },
-        {
-          "worker": "w5",
-          "carried": 38,
-          "row_has": 39,
-          "rows": 0
-        },
-        {
-          "worker": "w12",
+          "worker": "w4",
           "carried": 39,
           "row_has": 40,
           "rows": 0
         },
         {
-          "worker": "w4",
-          "carried": 40,
-          "row_has": 41,
+          "worker": "w10",
+          "carried": 39,
+          "row_has": 40,
           "rows": 0
         },
         {
-          "worker": "w17",
-          "carried": 40,
-          "row_has": 41,
+          "worker": "w16",
+          "carried": 38,
+          "row_has": 39,
+          "rows": 0
+        },
+        {
+          "worker": "w11",
+          "carried": 39,
+          "row_has": 40,
+          "rows": 0
+        },
+        {
+          "worker": "w7",
+          "carried": 38,
+          "row_has": 39,
           "rows": 0
         }
       ],
-      "p50_ms": 1503,
-      "p99_ms": 8038,
-      "orders_per_sec": 13.2
+      "p50_ms": 1522,
+      "p99_ms": 8057,
+      "orders_per_sec": 13.6
     },
     {
       "tag": "redis-long-lease",
@@ -241,17 +241,17 @@
       "parcels_without_sale": 0,
       "lease_expired": 0,
       "fenced_out": 0,
-      "lock_unavailable": 3,
+      "lock_unavailable": 4,
       "released_not_ours": 0,
       "confirmed": 80,
-      "sold_out": 217,
+      "sold_out": 216,
       "orders": 80,
       "critical_section": {
         "count": 80,
-        "median_ms": 999.3,
-        "p95_ms": 1553.7,
-        "p99_ms": 1565.1,
-        "max_ms": 1565.1
+        "median_ms": 997.0,
+        "p95_ms": 1556.9,
+        "p99_ms": 1562.5,
+        "max_ms": 1562.5
       },
       "lease_overrun": {
         "count": 0
@@ -260,9 +260,9 @@
         "count": 0
       },
       "fenced_examples": [],
-      "p50_ms": 5,
-      "p99_ms": 8022,
-      "orders_per_sec": 24.2
+      "p50_ms": 6,
+      "p99_ms": 8072,
+      "orders_per_sec": 24.6
     }
   ],
   "evidence_only": {

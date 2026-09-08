@@ -186,35 +186,97 @@ print("   :%s dispatched=%s lease_expired=%s fenced_out=%s"
 } 2>&1 | tee "$OUT/06-forensic-pause.log"
 
 log "6/7  Redlock, and the node that forgets"
-# Measured rather than argued. Persistence is off on all three nodes, so a
-# restart genuinely loses what that node granted -- and a quorum built on a
-# node that has forgotten can hand out a lock somebody already holds.
+# MEASURED, not argued, and the setup is the whole trick.
+#
+# A client holding ALL FIVE nodes survives a restart: it still has four, and
+# the next client can only reach the one that forgot. The violation needs the
+# holder on a BARE majority -- three of five -- so that losing one of those
+# three lets the next client acquire that node plus the two the holder never
+# had. Three of five again. Two clients, one lock.
+#
+# So two nodes start DOWN, which is an ordinary thing for a five-node quorum to
+# survive and is exactly the state Redlock is designed to tolerate.
 {
   echo "== Redlock's crash-restart, single stepped =="
+  echo "-- five nodes. quorum is three."
   for port in 8000 8001; do
     curl -fsS -X POST "localhost:$port/admin/config" -H 'content-type: application/json' \
-      -d "{\"engine\":\"postgres\",\"scenario\":\"allocate_and_dispatch\",\"lock\":\"redlock\",\"lock_ttl_ms\":20000}" >/dev/null
+      -d '{"engine":"postgres","scenario":"allocate_and_dispatch","lock":"redlock","lock_ttl_ms":30000}' >/dev/null
   done
   curl -fsS -X POST "localhost:8000/admin/reset?sku_stock=1" >/dev/null
 
-  echo "-- worker-b takes the lock across all three nodes"
+  echo "-- taking redis-d and redis-e down. A five node quorum tolerates that."
+  dc stop redis-d redis-e >/dev/null 2>&1
+
+  echo "-- worker-b acquires. It can only reach a, b and c: a BARE majority."
   curl -fsS -X POST localhost:8001/api/orders -H 'content-type: application/json' \
-    -d '{"sku_id":1,"customer_id":911,"qty":1}' > /dev/null 2>&1 &
-  sleep 0.3
+    -d '{"sku_id":1,"customer_id":911,"qty":1}' > "$OUT/.redlock-b.json" 2>&1 &
+  bpid=$!
+  sleep 0.5
+  # Frozen so it KEEPS holding while the nodes move underneath it. This is the
+  # same freezer as the forensic act and it is here for the same reason: to
+  # hold a moment still long enough to look at it.
+  dc pause worker-b >/dev/null
   for n in redis-a redis-b redis-c; do
-    printf '   %s holds: ' "$n"; dc exec -T "$n" redis-cli GET lock:sku:1 || true
+    printf '   %-8s holds: ' "$n"; dc exec -T "$n" redis-cli GET lock:sku:1 || true
   done
-  echo "-- restarting redis-a. No persistence, so it comes back empty."
-  dc restart redis-a >/dev/null
-  sleep 2
-  for n in redis-a redis-b redis-c; do
-    printf '   %s holds: ' "$n"; dc exec -T "$n" redis-cli GET lock:sku:1 || true
+
+  echo "-- bringing d and e back. They were never told about this lock."
+  dc start redis-d redis-e >/dev/null 2>&1
+  sleep 3
+  echo "-- and restarting redis-c, one of the three the holder counted on."
+  echo "-- no persistence, so it comes back with no memory of granting anything."
+  dc restart redis-c >/dev/null 2>&1
+  sleep 3
+
+  echo "-- who holds the lock now:"
+  for n in redis-a redis-b redis-c redis-d redis-e; do
+    printf '   %-8s holds: ' "$n"; dc exec -T "$n" redis-cli GET lock:sku:1 || true
   done
-  echo "-- a majority is now reachable that has NOT got the lock recorded."
-  echo "-- antirez's rebuttal is fair and the episode gives it: delayed restarts"
-  echo "-- fix this, and Redlock never claimed to survive a node lying about its"
-  echo "-- state. The point is that three Redises is not a free upgrade."
-  wait || true
+  echo "-- a and b still say worker-b. c, d and e say nobody."
+
+  echo "-- worker A now asks for the same lock:"
+  # Fired into the background and caught MID-critical-section. Waiting for the
+  # response first was the original mistake here: worker A finishes in about a
+  # second and releases, so every node read back empty and the board would have
+  # shown nothing holding the lock at the exact moment two clients held it.
+  curl -fsS -X POST localhost:8000/api/orders -H 'content-type: application/json' \
+    -d '{"sku_id":1,"customer_id":912,"qty":1}' > "$OUT/.redlock-a.json" 2>&1 &
+  apid=$!
+  sleep 0.5
+  # BOTH holders frozen before the nodes are read. Reading them while worker A
+  # was still running raced its release: five sequential `compose exec` calls
+  # take longer than A's critical section, so c came back w912 and d and e came
+  # back empty, which is a photograph of a release in progress rather than of
+  # two clients holding one lock.
+  dc pause app >/dev/null
+  echo "-- and here is the quorum, WHILE BOTH OF THEM HOLD IT:"
+  for n in redis-a redis-b redis-c redis-d redis-e; do
+    printf '   %-8s holds: ' "$n"; dc exec -T "$n" redis-cli GET lock:sku:1 || true
+  done
+  dc unpause app >/dev/null
+  echo "-- a and b say w911. c, d and e say w912. Three each, out of five."
+  echo "-- TWO CLIENTS, ONE LOCK, and neither of them did anything wrong."
+  wait $apid || true
+  echo "-- worker A's own result: $(cat "$OUT/.redlock-a.json")"
+  rm -f "$OUT/.redlock-a.json"
+
+  echo "-- unfreezing worker-b, which has no idea any of that happened."
+  dc unpause worker-b >/dev/null
+  wait $bpid || true
+  echo "-- worker-b's own result: $(cat "$OUT/.redlock-b.json")"
+  echo "-- the shelf, after both of them sold the same single unit:"
+  psql -c "SELECT sku_id, stock, fence_token FROM inventory WHERE sku_id = 1;"
+  rm -f "$OUT/.redlock-b.json"
+
+  echo
+  echo "-- antirez's rebuttal, and it is fair: a node that restarts should DELAY"
+  echo "-- before serving again, for at least one lock TTL, and then it cannot"
+  echo "-- contribute to a second quorum while the first is still valid. Redlock"
+  echo "-- never claimed to survive a node lying about what it granted. The point"
+  echo "-- is that three more Redises is not the free upgrade it looks like: it"
+  echo "-- buys availability, and the safety still rests on assumptions about"
+  echo "-- restarts and clocks that nobody checks."
 } 2>&1 | tee "$OUT/07-redlock-restart.log"
 
 log "7/7  Summarising"

@@ -1,15 +1,43 @@
 == Redlock's crash-restart, single stepped ==
--- worker-b takes the lock across all three nodes
-   redis-a holds: w911
-   redis-b holds: w911
-   redis-c holds: w911
--- restarting redis-a. No persistence, so it comes back empty.
- Container episode-4-locks-redis-a-1 Restarting 
- Container episode-4-locks-redis-a-1 Started 
-   redis-a holds: 
-   redis-b holds: 
-   redis-c holds: 
--- a majority is now reachable that has NOT got the lock recorded.
--- antirez's rebuttal is fair and the episode gives it: delayed restarts
--- fix this, and Redlock never claimed to survive a node lying about its
--- state. The point is that three Redises is not a free upgrade.
+-- five nodes. quorum is three.
+-- taking redis-d and redis-e down. A five node quorum tolerates that.
+-- worker-b acquires. It can only reach a, b and c: a BARE majority.
+ Container episode-4-locks-worker-b-1 Paused 
+   redis-a  holds: w911
+   redis-b  holds: w911
+   redis-c  holds: w911
+-- bringing d and e back. They were never told about this lock.
+-- and restarting redis-c, one of the three the holder counted on.
+-- no persistence, so it comes back with no memory of granting anything.
+-- who holds the lock now:
+   redis-a  holds: w911
+   redis-b  holds: w911
+   redis-c  holds: 
+   redis-d  holds: 
+   redis-e  holds: 
+-- a and b still say worker-b. c, d and e say nobody.
+-- worker A now asks for the same lock:
+ Container episode-4-locks-app-1 Paused 
+-- and here is the quorum, WHILE BOTH OF THEM HOLD IT:
+   redis-a  holds: w911
+   redis-b  holds: w911
+   redis-c  holds: w912
+   redis-d  holds: w912
+   redis-e  holds: w912
+ Container episode-4-locks-app-1 Unpaused 
+-- a and b say w911. c, d and e say w912. Three each, out of five.
+-- TWO CLIENTS, ONE LOCK, and neither of them did anything wrong.
+-- worker A's own result: {"status":"confirmed","code":"","detail":""}
+-- unfreezing worker-b, which has no idea any of that happened.
+ Container episode-4-locks-worker-b-1 Unpaused 
+-- worker-b's own result: {"status":"confirmed","code":"","detail":""}
+-- the shelf, after both of them sold the same single unit:
+1 0 123
+
+-- antirez's rebuttal, and it is fair: a node that restarts should DELAY
+-- before serving again, for at least one lock TTL, and then it cannot
+-- contribute to a second quorum while the first is still valid. Redlock
+-- never claimed to survive a node lying about what it granted. The point
+-- is that three more Redises is not the free upgrade it looks like: it
+-- buys availability, and the safety still rests on assumptions about
+-- restarts and clocks that nobody checks.
