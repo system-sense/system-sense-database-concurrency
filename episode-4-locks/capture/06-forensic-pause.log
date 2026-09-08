@@ -12,7 +12,7 @@
  Container episode-4-locks-worker-b-1 Unpaused 
 -- worker-b's own result: {"status":"confirmed","code":"","detail":""}
 -- the shelf, and the row's fence token:
-1 0 150
+1 0 74
 -- parcels dispatched across both workers:
    :8000 dispatched=1 lease_expired=1 fenced_out=0
    :8001 dispatched=1 lease_expired=1 fenced_out=0
@@ -30,7 +30,7 @@
  Container episode-4-locks-worker-b-1 Unpaused 
 -- worker-b's own result: curl: (22) The requested URL returned error: 409
 -- the shelf, and the row's fence token:
-1 0 154
+1 0 114
 -- parcels dispatched across both workers:
    :8000 dispatched=1 lease_expired=1 fenced_out=0
    :8001 dispatched=1 lease_expired=1 fenced_out=1
