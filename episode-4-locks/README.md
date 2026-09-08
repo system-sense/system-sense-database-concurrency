@@ -34,9 +34,31 @@ docker compose up --build          # in one terminal
 | `advisory` | `pg_advisory_xact_lock` — no TTL to expire, because it dies with the session. |
 | `fenced` | The lock is still lost. The storage layer refuses the stale write anyway. |
 
-## Status
+## The numbers
 
-**Phase 1 — the demo is being built and nothing here has been measured yet.**
-There is no `capture/metrics.json` in this folder, and until there is, no number
-about this episode exists. That is deliberate: in this series the narration is
-written against the capture, never the other way round.
+Measured by `./scripts/capture-demo.sh`, from **80 units on 8 shelves, 300
+customers, 25 in flight**, and a **1000 ms lease** against a critical section
+whose median is 994 ms. The lease sits below the median, so which workers
+overrun is decided by arithmetic on the ids rather than by a sleep.
+
+| `LOCK` | parcels | sold | no sale | leases expired | writes refused |
+| --- | --- | --- | --- | --- | --- |
+| `none` | 293 | 80 | 213 | 0 | 0 |
+| `redis` | 114 | 80 | 34 | 52 | 0 |
+| `redlock` | 113 | 80 | 33 | 52 | 0 |
+| `advisory` | 80 | 80 | 0 | 0 | 0 |
+| `fenced` | 161 | 80 | 81 | 84 | 81 |
+| `redis` at `LOCK_TTL_MS=2600` | 80 | 80 | 0 | 0 | 0 |
+
+Read the last two rows together, because they are the episode:
+
+- **`fenced` gets the shelf exactly right and makes the parcel count worse** —
+  81 parcels with nothing sold behind them, against `redis`'s 34. A refused
+  write leaves the stock undecremented, so the next worker finds stock and
+  dispatches. Fencing moves the damage out of your data and into your loading
+  bay. The write is refused; the van has already gone.
+- **Raising the lease to 2600 ms takes every one of those numbers to zero, and
+  fixes nothing.** The window is narrower. That is the exercise.
+
+Every figure traces to `capture/metrics.json`. Re-run it and the counts move by
+a few, because it is a real race; the split between the modes does not move.
