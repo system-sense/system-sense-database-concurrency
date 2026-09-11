@@ -16,7 +16,7 @@ and the videos read it.
 | 1 — The Phantom Update | [`episode-1-lost-update/`](episode-1-lost-update/) | Read-then-write. 100 in stock, 300 sold, 88 still on the shelf. | [**watch**](https://youtu.be/IU96-QIg7no) · [guide](episode-1-lost-update/GUIDE.md) |
 | 2 — Transaction Isolation Is a Lie | [`episode-2-isolation/`](episode-2-isolation/) | The same statements at `REPEATABLE READ` on Postgres and MySQL, and they swap which one is safe. | [**watch**](https://youtu.be/ZAnJ6O1rVDk) · [guide](episode-2-isolation/GUIDE.md) |
 | 3 — The Deadlock | [`episode-3-deadlock/`](episode-3-deadlock/) | Correct locks taken in the order the customer's basket happened to be in. 159 turned away, 446 units on the shelf. | [**watch**](https://youtu.be/_Xikd8fBb8g) · [guide](episode-3-deadlock/GUIDE.md) |
-| 4 — Distributed Locks Without Disaster | `episode-4-locks/` | Not started. | |
+| 4 — Distributed Locks Without Disaster | [`episode-4-locks/`](episode-4-locks/) | A correct Redis lock whose lease expires mid-job. 114 parcels for 80 units. | [guide](episode-4-locks/GUIDE.md) |
 
 ```bash
 cd episode-1-lost-update
@@ -40,3 +40,4 @@ and they are where the operational detail lives.
 | [1 — The Gap Between the Read and the Write](episode-1-lost-update/GUIDE.md) | what an ORM emits for `item.stock -= 1` · choosing between the four fixes · finding this in a codebase you did not write · what to log |
 | [2 — One Level Name, Two Different Guarantees](episode-2-isolation/GUIDE.md) | what the SQL standard actually defines · reading a lock view mid-load · a cheat sheet for the level you are on · the retry loop every level assumes |
 | [3 — Nobody Chose the Order](episode-3-deadlock/GUIDE.md) | reading a Postgres deadlock report line by line · why `deadlock_timeout` is a full second · `lock_timeout` versus a retry · lock ordering across tables |
+| [4 — A Lock With a Timeout Is a Lease](episode-4-locks/GUIDE.md) | sizing a lease against your own critical section · reproducing Redlock's crash-restart on five nodes · the three advisory-lock caveats · retrofitting a fence onto a live table |

@@ -22,6 +22,12 @@ docker compose up --build          # in one terminal
 ./scripts/capture-demo.sh          # in another
 ```
 
+> **[GUIDE.md](GUIDE.md)** is the written companion: the same ground more
+> slowly, plus what would not fit — how to size a lease against your own
+> critical section, reproducing Redlock's crash-restart on five nodes, the three
+> advisory-lock caveats that bite in production, and how to retrofit a fencing
+> token onto a table that already has rows.
+
 ## The knob
 
 `LOCK`, and `LOCK_TTL_MS` beside it.
